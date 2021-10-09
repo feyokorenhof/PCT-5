@@ -1,30 +1,47 @@
 <template>
-  <Page>
-    <ActionBar>
-      <Label text="Home"/>
-    </ActionBar>
-
-    <GridLayout>
-      <Label class="info">
-        <FormattedString>
-          <Span class="fas" text.decode="&#xf135; "/>
-          <Span :text="message"/>
-        </FormattedString>
-      </Label>
+  <Page actionBarHidden="true">
+    <GridLayout rows="2*, 12*, *" height="100%">
+      <ActionBarTop row="0" />
+      <Login row="1" v-show="!loggedIn" @onLogin="login" />
+      <Posts row="1" v-show="loggedIn" />
+      <ActionBarBottom row="2" />
     </GridLayout>
   </Page>
 </template>
 
 <script lang="ts">
   import Vue from "nativescript-vue";
+  import { Component, Prop } from "vue-property-decorator";
+  import { openUrl } from "@nativescript/core/utils";
 
-  export default Vue.extend({
-    computed: {
-      message() {
-        return "Blank {N}-Vue app";
-      }
+  import ActionBarTop from "./ActionBars/ActionBarTop.vue";
+  import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
+  import Login from "./Login.vue";
+  import Posts from "./Posts.vue";
+
+openUrl('your website url here');
+
+  @Component({
+    name: "Home",
+    components: {
+      ActionBarTop,
+      ActionBarBottom,
+      Login,
+      Posts
     }
-  });
+  })
+  export default class Home extends Vue {
+    msg: string = "Home";
+    loggedIn: boolean = false;
+    login() {
+      this.loggedIn = true;
+    }
+
+    openLink() {
+      console.log("HI");
+      //openUrl("www.google.com");
+    }
+  }
 </script>
 
 <style scoped lang="scss">
@@ -35,9 +52,4 @@
     @include colorize($color: accent);
   }
 
-  .info {
-    font-size: 20;
-    horizontal-align: center;
-    vertical-align: center;
-  }
 </style>

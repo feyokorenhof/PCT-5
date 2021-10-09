@@ -19,3 +19,25 @@
   font-family: 'Font Awesome 5 Free', 'fa-regular-400';
   font-weight: 400;
 }
+
+.blue-top {
+  background-image: linear-gradient(to right,#2C3153, #555FA4);
+  height: 50%;
+}
+
+.red-top {
+  background-color: #A04F5F;
+  clip-path: polygon(0 0, 0 60%, 100% 0);
+  height: 25%;
+}
+
+.blue-bottom {
+  background-image: linear-gradient(to right,#2C3153, #555FA4);
+  height: 50%;
+}
+
+.red-bottom {
+  background-color: #A04F5F;
+  clip-path: polygon(0 100%, 100% 100%, 100% 40%);
+  height: 50%;
+}
