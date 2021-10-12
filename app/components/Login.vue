@@ -9,13 +9,12 @@
         <TextField hint="Wachtwoord" secure="true"></TextField>
       </StackLayout>
       <Button text="Login" @tap="goToHome"></Button>
-      <Label textAlignment="center" @tap="openLink">
+      <Label textAlignment="center">
         <FormattedString>
           <Span text="Geen account? Klik dan "/>
           <Span 
             text="hier." 
             color="blue"
-            @tap="openLink" 
             textDecoration="underline"
             fontWeight="bold"
           />
@@ -28,9 +27,7 @@
 <script lang="ts">
   import Vue from "nativescript-vue";
   import { Component, Prop } from "vue-property-decorator";
-  import { openUrl } from "@nativescript/core/utils";
 
-openUrl('your website url here');
 
   @Component({
     name: "Login",
@@ -40,11 +37,6 @@ openUrl('your website url here');
   })
   export default class Login extends Vue {
     msg: string = "Login";
-
-    openLink() {
-      console.log("HI");
-      //openUrl("www.google.com");
-    }
 
     goToHome() {
       this.$emit("onLogin");

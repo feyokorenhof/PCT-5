@@ -19,8 +19,6 @@
   import Login from "./Login.vue";
   import Posts from "./Posts.vue";
 
-openUrl('your website url here');
-
   @Component({
     name: "Home",
     components: {
@@ -35,11 +33,6 @@ openUrl('your website url here');
     loggedIn: boolean = false;
     login() {
       this.loggedIn = true;
-    }
-
-    openLink() {
-      console.log("HI");
-      //openUrl("www.google.com");
     }
   }
 </script>
