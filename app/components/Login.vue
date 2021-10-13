@@ -8,7 +8,7 @@
         <TextField hint="Naam of e-mailadres"></TextField>
         <TextField hint="Wachtwoord" secure="true"></TextField>
       </StackLayout>
-      <Button text="Login" @tap="goToHome"></Button>
+      <Button class="-outline -rounded-sm" text="Login" padding="5" @tap="goToHome"></Button>
       <Label textAlignment="center">
         <FormattedString>
           <Span text="Geen account? Klik dan "/>

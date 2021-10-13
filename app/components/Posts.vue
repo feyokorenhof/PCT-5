@@ -73,21 +73,21 @@ export default class Posts extends Vue {
       id: "0",
       type: "p",
       mentions: [],
-      header: "Formula E-racewagen van Nissan",
-      image: "https://arriyadiyah.com/media/thumb/c5/0a/800_94a0700f09.jpg",
+      header: "Formule E: met de E van Energietransitie",
+      image: "https://rotterdamsedromers.nl/wp-content/uploads/2020/10/WhatsApp-Image-2020-10-20-at-15.52.01-1536x778.jpeg",
       footer:
-        "Formula E-racewagen van Nissan krijgt nieuwe look met kimonothema",
+        "De toekomst is groen en de toekomst is elektrisch. De kaarten van de duurzame economie worden op dit moment geschud en een sterk imago met aansluitende strategie gaat helpen om de beste kaarten naar je regio toe te trekken. ",
       timestamp: "11/10/2021/2/44",
       likes: 0,
-      username: "TeamNissan",
+      username: "TeamPhidippides",
       comments: [
         {
           id: "0-0",
           type: "c1",
           mentions: [],
-          username: "TeamNissan",
+          username: "TeamPhidippides",
           comment: "Wat vinden jullie er van 👀",
-          likes: 58,
+          likes: 580,
           timestamp: "11/10/2021/2/44",
           comments: [
             {
@@ -115,7 +115,7 @@ export default class Posts extends Vue {
               type: "c2",
               mentions: ["Keesje"],
               username: "Klaas",
-              comment: "Okay leuk @Keesje?",
+              comment: "Okay leuk @Keesje ?",
               likes: 5,
               timestamp: "12/10/2021/22/44"
             },
@@ -154,7 +154,7 @@ export default class Posts extends Vue {
           type: "c1",
           mentions: [],
           username: "Klaas",
-          comment: "Use this comment as a bruh button",
+          comment: "Lorem ipsum dorem et amit",
           likes: 0,
           timestamp: "11/10/2021/22/58",
           comments: []
@@ -191,7 +191,7 @@ export default class Posts extends Vue {
 }
 
 .post-container {
-  background-color: rgb(250, 249, 249);
+  background-color: transparent;
   margin-top: 20;
 }
 

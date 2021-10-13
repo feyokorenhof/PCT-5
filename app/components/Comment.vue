@@ -114,8 +114,8 @@ export default class Comments extends Vue {
 
   fakeUsers: User[] = [
     new User(
-      "TeamNissan",
-      "https://yt3.ggpht.com/ytc/AKedOLT2c9K3qkeUWye5jQRFXx7Vqja1EVK7RqxbEYXmBQ=s900-c-k-c0x00ffffff-no-rj"
+      "TeamPhidippides",
+      "https://scontent-ams4-1.cdninstagram.com/v/t51.2885-19/s320x320/84434528_171860137571179_2936525756534095872_n.jpg?_nc_ht=scontent-ams4-1.cdninstagram.com&_nc_ohc=k7E9Glt4BnoAX_ZX7lb&edm=ABfd0MgBAAAA&ccb=7-4&oh=4eb8752178b1805110e848b04783e343&oe=616D2C4E&_nc_sid=7bff83"
     ),
     new User("Keesje", "https://randomuser.me/api/portraits/thumb/men/75.jpg"),
     new User(
@@ -307,34 +307,15 @@ export default class Comments extends Vue {
   max-height: 40;
   border-radius: 50;
   object-fit: scale-down;
+  margin-right: 5;
 }
 
-.comment-body {
-  padding: 5;
-}
-
-.post-container {
-  background-color: rgb(250, 249, 249);
-  margin-top: 20;
-}
-
-.comments-container {
-  background-color: rgb(61, 60, 60);
-}
 
 .comment-container {
-  background-color: rgb(82, 82, 82);
+  background-color: rgb(82, 82, 82); // slightlylighter
+  //background-color: rgb(102, 101, 101); // og
+  //background-color: rgb(61, 60, 60); // instagram
   margin-bottom: 5;
-  padding: 10;
-}
-
-.post-footer {
-  background-color: rgb(61, 60, 60);
-  border-bottom-right-radius: 10;
-  border-bottom-left-radius: 10;
-  label {
-    color: white;
-  }
   padding: 10;
 }
 </style>

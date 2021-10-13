@@ -1,7 +1,7 @@
 <template>
   <GridLayout
     row="0"
-    rows="*, 8*, *"
+    rows="2*, 10*, *"
     height="100%"
     class="comments-container"
     top="0"
@@ -13,6 +13,7 @@
       columns="*, 8*, *"
       class="comments-top-panel"
       marginTop="10"
+      padding="10"
     >
       <GridLayout col="0" class="comments-back-button-container" @tap="goBack">
         <Image src="~/Images/back_btn.png" class="comments-back-button"></Image>
@@ -245,7 +246,7 @@ export default class Comments extends Vue {
 
 .reply-textfield {
   color: white;
-  font-size: 18;
+  font-size: 16;
   placeholder-color: white;
   background-color: rgb(61, 60, 60);
   border-radius: 10;
@@ -356,9 +357,10 @@ export default class Comments extends Vue {
 }
 
 .comment-container {
-  background-color: rgb(102, 101, 101);
-  margin-bottom: 5;
-  padding: 10;
+  // background-color: rgb(102, 101, 101);
+  // background-color: rgb(61, 60, 60);
+  // margin-bottom: 5;
+  // padding: 10;
 }
 
 .post-footer {
