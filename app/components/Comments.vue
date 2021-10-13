@@ -1,184 +1,373 @@
 <template>
-  <GridLayout rows="*, 8*, *" height="100%" class="comments-container">
+  <GridLayout
+    row="0"
+    rows="*, 8*, *"
+    height="100%"
+    class="comments-container"
+    top="0"
+    left="0"
+  >
+    <!-- Back button and info -->
+    <GridLayout
+      row="0"
+      columns="*, 8*, *"
+      class="comments-top-panel"
+      marginTop="10"
+    >
+      <GridLayout col="0" class="comments-back-button-container" @tap="goBack">
+        <Image src="~/Images/back_btn.png" class="comments-back-button"></Image>
+      </GridLayout>
+      <GridLayout col="1" class="comments-info-container">
+        <Label text="Opmerkingen" class="comments-info"></Label>
+      </GridLayout>
+    </GridLayout>
     <ScrollView row="1" height="100%">
       <StackLayout>
-        <GridLayout rows="3*, *, 2*" columns="2*, 2*, 4*, 4*, 2*" v-for="comment in post.comments" :key="comment.id" class="comment-container">
-          <!-- Profile Pic -->
-          <GridLayout row="0" rowSpan="2" col="0">
-            <Image src="https://randomuser.me/api/portraits/thumb/men/75.jpg" class="comment-profile-pic"></Image>
-          </GridLayout> 
-          <!-- Comment -->
-          <GridLayout row="0" col="1" colSpan="3" rowSpan="2" class="comment-body">
-            <Label textWrap="true" class="comment-text">
-              <FormattedString>
-                <Span :text="`${comment.username} `" fontWeight="bold"></Span>
-                <Span :text="comment.comment"></Span>
-              </FormattedString>
-            </Label>
-          </GridLayout>
-          <!-- Heart -->
-          <GridLayout row="0" rowSpan="2" col="4" @tap="heartComment($event, comment.id)">
-            <Image v-show="!liked.includes(comment.id)" src="~/Images/heart-empty.png" class="comment-heart"></Image>
-            <Image v-show="liked.includes(comment.id)" src="~/Images/heart-full.png" class="comment-heart"></Image>
-          </GridLayout> 
-          <!-- Time -->
-          <GridLayout row="1" col="1">
-            <Label :text="toTimePassed(comment.timestamp)" class="comment-time-passed" textWrap="true"></Label>
-          </GridLayout>
-          <!-- Comments -->
-          <GridLayout row="2" col="1" colSpan="3" rowSpan="2">
-            <ScrollView height="100%">
-                <StackLayout>
-                    <GridLayout v-for="cmt in comment.comments" :key="cmt.id" width="90%">
-                        <Label :text="`'${(cmt.username)} ${cmt.comment}`"></Label>
-                    </GridLayout>
-                </StackLayout>      
-            </ScrollView>
-          </GridLayout>
-        </GridLayout>
-      </StackLayout>      
+        <Comment
+          v-for="comment in post.comments"
+          :key="comment.id"
+          :comment="comment"
+          @onReply="setReplyTarget"
+        />
+      </StackLayout>
     </ScrollView>
+    <GridLayout
+      row="2"
+      rows="*, auto"
+      class="reply-container"
+      height="10%"
+      top="100%"
+      ref="replyView"
+    >
+      <!-- Reply Input -->
+      <GridLayout row="1" columns="*, 6*, 2*">
+        <!-- Image of the logged-in user -->
+        <GridLayout col="0">
+          <Image
+            :src="this.currentUser.pfp_url"
+            class="reply-user-image"
+          ></Image>
+        </GridLayout>
+        <!-- Text Input -->
+        <GridLayout col="1" class="reply-textfield-container">
+          <TextField
+            v-model="replyText"
+            hint="Een opmerking toevoegen..."
+            class="reply-textfield"
+          />
+        </GridLayout>
+        <!-- Reply Button -->
+        <GridLayout col="2">
+          <Label
+            text="Plaatsen"
+            @tap="sendReply"
+            class="reply-send-button"
+            :isEnabled="canReply"
+          ></Label>
+        </GridLayout>
+      </GridLayout>
+    </GridLayout>
   </GridLayout>
 </template>
 
 <script lang="ts">
-  import Vue from "nativescript-vue";
-  import { Component, Prop } from "vue-property-decorator";
-  import { openUrl } from "@nativescript/core/utils";
-import { TapGestureEventData } from "@nativescript/core";
+import Vue from "nativescript-vue";
+import { Component, Prop } from "vue-property-decorator";
+import { GridLayout, TapGestureEventData } from "@nativescript/core";
 
-import {Screen} from "@nativescript/core/platform";
+import { Screen } from "@nativescript/core/platform";
 
 import Post from "@/Models/Post";
+import Comment from "@/components/Comment.vue";
 
-  @Component({
-    name: "Comments",
-    components: {
-  
-    }
-  })
-  export default class Comments extends Vue {
-    @Prop() post!: Post;
-    liked: Number[] = [];
+import User from "@/Models/User";
 
-    sh() {
-        return Screen.mainScreen.heightDIPs;
-    }
+@Component({
+  name: "Comments",
+  components: { Comment }
+})
+export default class Comments extends Vue {
+  @Prop() post!: Post;
+  liked: Number[] = [];
+  opened: String[] = [];
 
-    mounted() {
-        console.log(this.post);
-    }
+  keyboardOpen: Boolean = false;
 
-    heartComment($event: TapGestureEventData, id: Number) {
-      let found = this.liked.indexOf(id);
-      if (found != -1) {
-        this.liked.splice(found, 1);
-        return;
-      }
-      this.liked.push(id);
-    }
+  currentUser!: User;
 
-    toTimePassed(timestamp: string) {
-      let arr = timestamp.split("/");
-      let day = parseInt(arr[0]), month = parseInt(arr[1])-1, year = parseInt(arr[2]);
-      let hours = parseInt(arr[3]), minutes = parseInt(arr[4]);
+  replyText: String = "";
 
-      let d1 = new Date(year, month, day, hours, minutes);
+  replyTarget: any = null;
 
-      return this.timeSince(d1);
-    }
-
-    timeSince(date: Date) {
-      let seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
-
-      var interval = seconds / 31536000;
-
-      if (interval > 1) {
-        return Math.floor(interval) + "Y";
-      }
-      interval = seconds / 2592000;
-      if (interval > 1) {
-        return Math.floor(interval) + "M";
-      }
-      interval = seconds / 86400;
-      if (interval > 1) {
-        return Math.floor(interval) + "D";
-      }
-      interval = seconds / 3600;
-      if (interval > 1) {
-        return Math.floor(interval) + "H";
-      }
-      interval = seconds / 60;
-      if (interval > 1) {
-        return Math.floor(interval) + "min";
-      }
-      return Math.floor(seconds) + "sec";
+  get canReply() {
+    let test1 = this.replyText.length > 0 && this.replyText != " ";
+    let trimmed = this.replyText.trim();
+    let test2 = trimmed != " " && trimmed != "";
+    return test1 && test2;
   }
 
-
-
+  beforeMount() {
+    this.currentUser = new User(
+      "fkorrie",
+      "https://cdn.vox-cdn.com/thumbor/VVXayrypyYIMqiHWIYdL77FRF_o=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/22408516/Big_Chungus.png"
+    );
   }
+
+  sh() {
+    return Screen.mainScreen.heightDIPs;
+  }
+
+  mounted() {}
+
+  goBack() {
+    if (this.$modal) this.$modal.close();
+  }
+
+  setReplyTarget(target: any) {
+    this.replyTarget = target;
+    console.log(this.replyTarget.type);
+    if (this.replyText.includes("@")) this.replyText = "";
+    this.replyText += ` @${target.username} `;
+  }
+
+  sendReply(event: TapGestureEventData) {
+    if (this.replyTarget != null) {
+      console.log(this.replyTarget);
+      // Reply to a c1:
+      if (this.replyTarget.type == "c1") {
+        let id_prefix = this.replyTarget.id;
+        let new_id = `${id_prefix}-${this.replyTarget.comments.length}`;
+        console.log(new_id);
+        this.replyTarget.comments.push({
+          id: new_id,
+          type: "c2",
+          mentions: [this.replyTarget.username],
+          username: this.currentUser.username,
+          comment: this.replyText,
+          likes: 0,
+          timestamp: this.getTimeStamp()
+        });
+      }
+      // Reply to a c2:
+      else if (this.replyTarget == "c2") {
+        // TODO: add it to the parent c1 posts comments
+      }
+    } else {
+      // Comment to post
+      let id_prefix = this.post.id;
+      let new_id = `${id_prefix}-${this.post.comments.length}`;
+      this.post.comments.push({
+        id: new_id,
+        type: "c1",
+        mentions: [],
+        username: this.currentUser.username,
+        comment: this.replyText,
+        likes: 0,
+        timestamp: this.getTimeStamp(),
+        comments: []
+      });
+    }
+
+    this.replyText = "";
+    this.replyTarget = null;
+  }
+
+  getTimeStamp() {
+    // TODO: don't trust the client for this..
+    //"11/10/2021/2/44"
+    let now = new Date();
+    let day = now.getDate();
+    let month = now.getMonth() + 1;
+    let year = now.getFullYear();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    let timestamp = `${day}/${month}/${year}/${hours}/${minutes}`;
+    console.log(timestamp);
+    return timestamp;
+  }
+
+  heartComment($event: TapGestureEventData, id: Number) {
+    let found = this.liked.indexOf(id);
+    if (found != -1) {
+      this.liked.splice(found, 1);
+      return;
+    }
+    this.liked.push(id);
+  }
+
+  toTimePassed(timestamp: string) {
+    let arr = timestamp.split("/");
+    let day = parseInt(arr[0]),
+      month = parseInt(arr[1]) - 1,
+      year = parseInt(arr[2]);
+    let hours = parseInt(arr[3]),
+      minutes = parseInt(arr[4]);
+
+    let d1 = new Date(year, month, day, hours, minutes);
+
+    return this.timeSince(d1);
+  }
+
+  timeSince(date: Date) {
+    let seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+
+    var interval = seconds / 31536000;
+
+    if (interval > 1) {
+      return Math.floor(interval) + "Y";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return Math.floor(interval) + "M";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return Math.floor(interval) + "D";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return Math.floor(interval) + "H";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return Math.floor(interval) + "min";
+    }
+    return Math.floor(seconds) + "sec";
+  }
+}
 </script>
 
 <style scoped lang="scss">
-  @import '@nativescript/theme/scss/variables/blue';
+@import "@nativescript/theme/scss/variables/blue";
 
-  // Custom styles
-  .fas {
-    @include colorize($color: accent);
-  }
+.reply-textfield-container {
+}
 
-  .comment-time-passed {
+.reply-textfield {
+  color: white;
+  font-size: 18;
+  placeholder-color: white;
+  background-color: rgb(61, 60, 60);
+  border-radius: 10;
+  padding: 10;
+  border-bottom-width: 1;
+  border-bottom-color: transparent;
+}
+
+// Custom styles
+.fas {
+  @include colorize($color: accent);
+}
+
+.reply-user-image {
+  max-width: 40;
+  max-height: 40;
+  border-radius: 50;
+  object-fit: scale-down;
+  align-content: center;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.reply-send-button {
+  color: rgb(1, 132, 255);
+  font-size: 18;
+  align-content: center;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.reply-container {
+  background-color: rgb(36, 36, 36);
+  padding: 2;
+  align-content: center;
+  vertical-align: middle;
+  // rgb(102, 101, 101);
+}
+
+.comments-info-container {
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+  padding-top: 5;
+}
+
+.comments-info {
+  color: white;
+  font-size: 25;
+  vertical-align: middle;
+}
+
+.comments-back-button-container {
+  padding-left: 5;
+  padding-top: 10;
+}
+
+.comments-back-button {
+  width: 50;
+  height: 50;
+  vertical-align: middle;
+}
+
+.comment-open-comments {
+  color: white;
+}
+
+.comment-likes {
+  color: white;
+}
+
+.comment-time-passed {
+  color: white;
+  font-style: italic;
+}
+
+.comment-heart {
+  height: 20;
+  width: 20;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.comment-text {
+  color: white;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 15em;
+}
+
+.comment-profile-pic {
+  width: 50;
+  height: 50;
+  border-radius: 50;
+}
+
+.comment-body {
+  padding: 5;
+}
+
+.post-container {
+  background-color: rgb(250, 249, 249);
+  margin-top: 20;
+}
+
+.comments-container {
+  background-color: rgb(61, 60, 60);
+}
+
+.comment-container {
+  background-color: rgb(102, 101, 101);
+  margin-bottom: 5;
+  padding: 10;
+}
+
+.post-footer {
+  background-color: rgb(61, 60, 60);
+  border-bottom-right-radius: 10;
+  border-bottom-left-radius: 10;
+  label {
     color: white;
-    font-style: italic;
   }
-
-  .comment-heart {
-    height: 20;
-    width: 20;
-    vertical-align: middle;
-    text-align: center;
-  }
-
-  .comment-text {
-    color: white;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 15em;
-  }
-
-  .comment-profile-pic {
-    width: 50;
-    height: 50;
-    border-radius: 50;
-  }
-
-  .comment-body {
-    padding: 5;
-  }
-
-  .post-container {
-    background-color: rgb(250, 249, 249);
-    margin-top: 20;
-  }
-
-  .comments-container {
-    background-color: rgb(61, 60, 60);
-  }
-
-  .comment-container {
-    background-color: rgb(102, 101, 101);
-    margin-bottom: 5;
-    padding: 10;
-  }
-
-  .post-footer {
-    background-color: rgb(61, 60, 60);
-    border-bottom-right-radius: 10;
-    border-bottom-left-radius: 10;
-    Label {
-      color: white;
-    }
-    padding: 10;
-  }
-
+  padding: 10;
+}
 </style>

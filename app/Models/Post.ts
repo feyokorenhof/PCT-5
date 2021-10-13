@@ -4,10 +4,14 @@ export default class Post {
     header: String;
     image: any;
     footer: String;
-    constructor(type: PostType, header: String, image: any, footer: String) {
+    comments: any[];
+    id: String;
+    constructor(id: String, type: PostType, header: String, image: any, footer: String) {
+        this.id = id;
         this.type = type;
         this.header = header;
         this.image = image;
         this.footer = footer;
+        this.comments = [];
     }
 }
