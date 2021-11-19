@@ -3,6 +3,7 @@
     <GridLayout row="0" height="100%" class="posts-container">
       <ScrollView height="100%" width="95%" class="posts-listview">
         <StackLayout>
+          <Button class="-outline -rounded-sm" text="Mijn Profiel" fontSize="20" padding="5" @tap="goToProfiel()"></Button>
           <GridLayout row="0">
             <Label
               text="Posts"
@@ -56,13 +57,15 @@ import { TapGestureEventData } from "@nativescript/core";
 
 import Post from "@/Models/Post";
 import Comments from "@/components/Comments.vue";
+import Profiel from "@/components/Profiel.vue"
 
 import User from "@/Models/User";
 
 @Component({
   name: "Posts",
   components: {
-    Comments
+    Comments,
+    Profiel
   }
 })
 export default class Posts extends Vue {
@@ -176,6 +179,13 @@ export default class Posts extends Vue {
   goToHome() {
     console.log("Going to home");
   }
+
+  goToProfiel(){
+    this.$showModal(Profiel, {
+      fullscreen: true,
+    });
+  }
+  
 }
 </script>
 
