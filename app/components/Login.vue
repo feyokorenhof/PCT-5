@@ -5,8 +5,8 @@
     </StackLayout>
     <StackLayout row="2">
       <StackLayout marginBottom="10">
-        <TextField hint="Naam of e-mailadres"></TextField>
-        <TextField hint="Wachtwoord" secure="true"></TextField>
+        <TextField ref="Naam" hint="Naam of e-mailadres"></TextField>
+        <TextField ref="Wachtwoord" hint="Wachtwoord" secure="true"></TextField>
       </StackLayout>
       <Button class="-outline -rounded-sm" text="Login" padding="5" @tap="goToHome"></Button>
       <Label textAlignment="center">
@@ -25,6 +25,7 @@
 </template>
 
 <script lang="ts">
+  import { Button, TapGestureEventData, TextField } from "@nativescript/core";
   import Vue from "nativescript-vue";
   import { Component, Prop } from "vue-property-decorator";
 
@@ -37,19 +38,11 @@
   })
   export default class Login extends Vue {
     msg: string = "Login";
-
-    goToHome() {
-      this.$emit("onLogin");
+    goToHome(args: TapGestureEventData) {
+      let button: Button = args.object as Button;
+      const username: TextField = (this.$refs.Naam as any).nativeView as TextField;
+      const wachtwoord: TextField = (this.$refs.Wachtwoord as any).nativeView as TextField;
+      
     }
   }
 </script>
-
-<style scoped lang="scss">
-  @import '@nativescript/theme/scss/variables/blue';
-
-  // Custom styles
-  .fas {
-    @include colorize($color: accent);
-  }
-
-</style>
