@@ -24,25 +24,59 @@
   </GridLayout>
 </template>
 
+// <script lang="js">
+//   const {Client} = require('pg')
+
+//   const client = new Client({
+//     host: "localhost",
+//     user: "postgres",
+//     port: 5432,
+//     password: "rootUser",
+//     database: "postgres"
+//   })
+
+//   client.connect();
+
+//   client.query('SELECT * FROM Users', (err, res)=>{
+//     if(!err){
+//       console.log(res.rows);
+//     }
+//     else {
+//       console.log(err.message);
+//     }
+//     client.end;
+//   })
+</script>
+
 <script lang="ts">
   import { Button, TapGestureEventData, TextField } from "@nativescript/core";
   import Vue from "nativescript-vue";
   import { Component, Prop } from "vue-property-decorator";
+  import newPerson from "@/Models/newPerson";
 
+  let users = [new newPerson("Rikkumoist",
+      "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
+      "Rick Slingerland", "kotorem.sama@gmail.com", "password1"),
+      new newPerson("Rikkumoist2",
+      "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
+      "Ricky Slingerplant", "rickyman2002.rick@gmail.com", "password2")];
 
-  @Component({
-    name: "Login",
-    components: { 
+  @Component({ name: "Login", components: {}})
 
-    }
-  })
   export default class Login extends Vue {
     msg: string = "Login";
     goToHome(args: TapGestureEventData) {
       let button: Button = args.object as Button;
-      const username: TextField = (this.$refs.Naam as any).nativeView as TextField;
+      const gebruikersnaam: TextField = (this.$refs.Naam as any).nativeView as TextField;
       const wachtwoord: TextField = (this.$refs.Wachtwoord as any).nativeView as TextField;
-      
+      let found = false;
+      for (var index in users){
+        if ((users[index].username == gebruikersnaam.text || users[index].username == gebruikersnaam.text) && users[index].password == wachtwoord.text){
+          found = true;
+          
+        }
+      }
     }
+
   }
 </script>
