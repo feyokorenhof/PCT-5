@@ -8,7 +8,7 @@
         <TextField ref="Naam" hint="Naam of e-mailadres"></TextField>
         <TextField ref="Wachtwoord" hint="Wachtwoord" secure="true"></TextField>
       </StackLayout>
-      <Button class="-outline -rounded-sm" text="Login" padding="5" @tap="goToHome"></Button>
+      <Button class="-outline -rounded-sm" borderColor="3EC0FF" text="Login" padding="5" @tap="goToHome"></Button>
       <Label textAlignment="center">
         <FormattedString>
           <Span text="Geen account? Klik dan "/>
@@ -49,7 +49,7 @@
 </script>
 
 <script lang="ts">
-  import { Button, TapGestureEventData, TextField } from "@nativescript/core";
+  import { Button, Color, TapGestureEventData, TextField } from "@nativescript/core";
   import Vue from "nativescript-vue";
   import { Component, Prop } from "vue-property-decorator";
   import newPerson from "@/Models/newPerson";
@@ -67,13 +67,17 @@
     msg: string = "Login";
     goToHome(args: TapGestureEventData) {
       let button: Button = args.object as Button;
-      const gebruikersnaam: TextField = (this.$refs.Naam as any).nativeView as TextField;
-      const wachtwoord: TextField = (this.$refs.Wachtwoord as any).nativeView as TextField;
+      button.borderColor = new Color("red");
+      let gebruikersnaam: TextField = (this.$refs.Naam as any).nativeView as TextField;
+      let wachtwoord: TextField = (this.$refs.Wachtwoord as any).nativeView as TextField;
       let found = false;
       for (var index in users){
-        if ((users[index].username == gebruikersnaam.text || users[index].username == gebruikersnaam.text) && users[index].password == wachtwoord.text){
-          found = true;
-          
+        if ((users[index].username.toLowerCase() == gebruikersnaam.text.toLowerCase() || users[index].email.toLowerCase() == gebruikersnaam.text.toLowerCase()) && users[index].password == wachtwoord.text){
+          this.$emit("onLogin");
+        }
+        else{
+
+          wachtwoord.text = "";
         }
       }
     }
