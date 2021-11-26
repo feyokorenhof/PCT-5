@@ -1,11 +1,11 @@
 <template>
 <GridLayout rows="auto" height="100%" class="profile-container">
   <GridLayout rows="4*, 12*, 14*" height="100%">
-    <ActionBarTop row="-1" marginTop="-35" height="100"/>
+    <ActionBarTop row="0" marginTop="-35" height="20%"/>
     <!--Profile Pic en Pagina naam-->
     <GridLayout row="1" height="200" marginTop="-90">
       <Image src="~/Images/back_btn.png" class="back-button" horizontalAlignment="left" verticalAlignment="top" marginLeft="15" tintColor="black" width = "50" height="50" @tap="goBack"></Image>
-      <Label text="Mijn Profiel" fontSize="32" textAlignment="center" ></Label>
+      <Label text="Mijn Profiel" fontSize="32" textAlignment="center"></Label>
       <!--Pak profielfoto van gebruiker-->
       <Image :src="this.currentUser.pfp_url" width="100" height="100" class="profile-pic"></Image>
     </GridLayout>
@@ -33,7 +33,7 @@
         <!--Rol-->
         <Label>
           <FormattedString>
-            <Span text="   Rol: " fontSize="20" fontWeight="bold"/>
+            <Span text="   Rol:     " fontSize="20" fontWeight="bold"/>
             <Span :text ="this.currentUser.role" fontSize="20"/>
           </FormattedString>
         </Label>        
@@ -63,7 +63,8 @@
   import { Component, Prop } from "vue-property-decorator";
   import ActionBarTop from "./ActionBars/ActionBarTop.vue";
   import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
-  import User from "@/Models/User";
+  import UserProfile from "@/Models/UserProfile";
+  
   @Component({
     name: "Profiel",
     components: {
@@ -73,11 +74,10 @@
   })
   export default class Profiel extends Vue {
     msg: string = "Profiel";
-    currentUser!: User;
-
+    currentUser!: UserProfile;
     beforeMount() {
       //Tijdelijk hier gebruiker inloggen.  
-    this.currentUser = new User(
+    this.currentUser = new UserProfile(
       "Sponsor123",
       "https://cdn.vox-cdn.com/thumbor/VVXayrypyYIMqiHWIYdL77FRF_o=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/22408516/Big_Chungus.png"
     );
@@ -116,6 +116,7 @@
     border-color: rgb(61, 60, 60);
     object-fit: scale-down;
     margin-right: 5;
+    
   }
   
   .profile-container {
@@ -123,21 +124,24 @@
   margin-top: 20;
 }
   .profile-header {
-  background-color: rgb(61, 60, 60);
+  background-color: rgb(204, 200, 200);
+
   border-top-right-radius: 10;
   border-top-left-radius: 10;
+  border-width: 5px;
   label {
-    color: white;
+    color: black;
   }
   padding: 10;
 }
 
 .profile-footer {
-  background-color: rgb(61, 60, 60);
+  background-color: rgb(204, 200, 200);
+  border-width: 5px;
   border-bottom-right-radius: 10;
   border-bottom-left-radius: 10;
   label {
-    color: white;
+    color: black;
   }
   padding: 10;
 }
