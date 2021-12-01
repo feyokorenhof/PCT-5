@@ -1,7 +1,6 @@
 <template>
-<GridLayout rows="auto" height="100%" class="profile-container">
   <GridLayout rows="4*, 12*, 14*" height="100%">
-    <ActionBarTop row="0" marginTop="-35" height="20%"/>
+    <ActionBarTop row="0"/>
     <!--Profile Pic en Pagina naam-->
     <GridLayout row="1" height="200" marginTop="-90">
       <Image src="~/Images/back_btn.png" class="back-button" horizontalAlignment="left" verticalAlignment="top" marginLeft="15" tintColor="black" width = "50" height="50" @tap="goBack"></Image>
@@ -17,7 +16,7 @@
         <!--Weergeven Username gebruiker-->
         <Label>
           <FormattedString>
-            <Span text="   Naam: " fontSize="20" fontWeight="bold"/>
+            <Span text="Naam: " fontSize="20" fontWeight="bold"/>
             <Span :text ="this.currentUser.username" fontSize="20"/>
           </FormattedString>
         </Label>
@@ -25,7 +24,7 @@
         <!--Email-->
         <Label textWrap="true">
           <FormattedString>
-            <Span text="   Email: " fontSize="20" fontWeight="bold"/>
+            <Span text="Email: " fontSize="20" fontWeight="bold"/>
             <Span :text ="this.currentUser.email" fontSize="20"/>
           </FormattedString>
         </Label>
@@ -33,7 +32,7 @@
         <!--Rol-->
         <Label>
           <FormattedString>
-            <Span text="   Rol:     " fontSize="20" fontWeight="bold"/>
+            <Span text="Rol:     " fontSize="20" fontWeight="bold"/>
             <Span :text ="this.currentUser.role" fontSize="20"/>
           </FormattedString>
         </Label>        
@@ -45,17 +44,15 @@
         <Label textWrap="true">
           <FormattedString>
             <Span text="Gebruiker info: \n" fontSize="18" fontWeight="bold" marginLeft= "30"/>
-            <Span  
-              :text="this.currentUser.gebruikerinfo" fontSize="16"
-            />
+            <Span :text="this.currentUser.gebruikerinfo" fontSize="16"/>
           </FormattedString>
         </Label>
       </StackLayout>
 
     </StackLayout>
-    <ActionBarBottom row="4" height="50" marginBottom="-3" />
+    <ActionBarBottom row="4" height="7%" marginBottom="-3" />
   </GridLayout>
-</GridLayout>
+
 </template>
 
 <script lang="ts">
@@ -106,6 +103,9 @@
     width: 40;
     height: 40;
     vertical-align: middle;
+    border-width: 2px;
+    border-color: rgb(61, 60, 60);
+    border-radius: 5;
   }
 
   .profile-pic {
@@ -124,11 +124,12 @@
   margin-top: 20;
 }
   .profile-header {
-  background-color: rgb(204, 200, 200);
-
+  background-color: rgb(255, 255, 255);
+  border-top-width: 5px;
+  border-left-width: 5px;
+  border-right-width: 5px;
   border-top-right-radius: 10;
   border-top-left-radius: 10;
-  border-width: 5px;
   label {
     color: black;
   }
@@ -136,10 +137,13 @@
 }
 
 .profile-footer {
-  background-color: rgb(204, 200, 200);
-  border-width: 5px;
+  background-color: rgb(255, 255, 255);
   border-bottom-right-radius: 10;
   border-bottom-left-radius: 10;
+  border-top-width: 2px;
+  border-bottom-width: 5px;
+  border-left-width: 5px;
+  border-right-width: 5px;
   label {
     color: black;
   }
