@@ -5,8 +5,8 @@
         <StackLayout>
           <GridLayout row="0">
             <Label
-              text="Posts"
-              fontSize="20"
+              text="Goedendag"
+              fontSize="25"
               horizontalAlignment="center"
             ></Label>
           </GridLayout>
@@ -17,19 +17,41 @@
             class="post-container"
           >
             <!-- Username / Header / ? -->
-            <GridLayout row="0" class="post-header">
-              <Label :text="post.header"></Label>
+            <GridLayout row="0" class="post-username">
+              <Label :text="post.username"></Label>
             </GridLayout>
             <!-- Image / Tekst -->
             <GridLayout row="1" class="post-body">
               <Image :src="post.image"> </Image>
             </GridLayout>
+            <!-- Header -->
+            <GridLayout row="2" class="post-header">
+              <Label :text="post.header" textWrap="true"></Label>
+            </GridLayout>
             <!-- Text -->
-            <GridLayout row="2" class="post-footer">
+            <GridLayout row="3" class="post-footer">
               <Label :text="post.footer" textWrap="true"></Label>
             </GridLayout>
+            <!-- Heart -->
+              <GridLayout 
+                row="2"
+                class="post-heart"
+              >
+                <!-- <Label :text="post.likes"></Label> -->
+                <!-- <Button 
+                  horizontalAlignment="left"
+                  tintColor="#efefef"                 
+                  src="~/Images/heart-empty.png"
+                  @tap="heartPost($event, post)"
+                ></Button> -->
+                <!-- v-show="likes.includes(post.id)" -->
+                <!-- <Image
+                  src="~/Images/heart-empty.png"
+                  class="post-heart"
+                ></Image> -->
+              </GridLayout>
             <!-- Comments preview (take first/last/most liked / ?) -->
-            <StackLayout row="2" class="post-footer">
+            <StackLayout row="3" class="post-footer">
               <StackLayout
                 @tap="openComments($event, post)"
                 class="post-comments"
@@ -59,14 +81,37 @@ import Comments from "@/components/Comments.vue";
 
 import User from "@/Models/User";
 
+// import { mapActions, mapGetters } from "vuex";
+
 @Component({
   name: "Posts",
   components: {
     Comments
-  }
+  },
+  // computed: {
+  //   ...mapGetters(["posts", "liked"]),
+  //   ...mapActions(["heartContent"])
+  // }
 })
 export default class Posts extends Vue {
-  msg: string = "Posts";
+  posts2!: Post[];
+  liked!: Number[];
+
+  heartContent!: (id: String) => void;
+
+  
+  heartPost($event: TapGestureEventData, post: any) {
+    // let id = post.id;
+    // let found = post.likes.indexOf(id);
+    // if (found != -1) {
+    //   post.likes.splice(found, 1);
+    //   post.likes--;
+    //   return;
+    // }
+    // post.likes.push(id);
+    // post.likes++;
+ 
+  }
 
   posts = [
     {
@@ -78,7 +123,7 @@ export default class Posts extends Vue {
       footer:
         "De toekomst is groen en de toekomst is elektrisch. De kaarten van de duurzame economie worden op dit moment geschud en een sterk imago met aansluitende strategie gaat helpen om de beste kaarten naar je regio toe te trekken. ",
       timestamp: "11/10/2021/2/44",
-      likes: 0,
+      likes: 25,
       username: "TeamPhidippides",
       comments: [
         {
@@ -160,6 +205,69 @@ export default class Posts extends Vue {
           comments: []
         }
       ]
+    },
+    {
+      id: "1",
+      type: "p",
+      mentions: [],
+      header: "Team Phidippides 2020",
+      image: "https://www.rdmcoe.nl/wp-content/uploads/2020/03/Triga-web-1536x864.jpg",
+      footer:
+        "We love to see it happen <3 #TeamPhiddipes #Dreams",
+      timestamp: "11/10/2021/2/44",
+      likes: 120,
+      username: "TeamPhidippides",
+      comments: [
+        {
+          id: "1-0",
+          type: "c1",
+          mentions: [],
+          username: "TeamPhidippides",
+          comment: "Wat vinden jullie er van 👀",
+          likes: 580,
+          timestamp: "17/11/2021/1/01",
+          comments: [
+            {
+              id: "1-0-0",
+              type: "c2",
+              mentions: [],
+              username: "Sofia",
+              comment: "I love it :D!",
+              likes: 16,
+              timestamp: "17/11/2021/1/01"
+            }
+          ]
+        }, 
+          {
+           id: "1-1",
+           type: "c1",
+           mentions: [],
+           username: "Tim",
+           comment: "Wat cool, ik duim voor jullie vandaag!",
+           likes: 165,
+           timestap: "17/11/2021/1/45",
+           comments: [
+            {
+              id: "1-1-1",
+              type: "c2",
+              mentions: [],
+              username: "Roos",
+              comment: "Wij ook hoor!",
+              likes: 25,
+              timestamp: "17/11/2021/1/50"     
+            }        
+           ]
+          },
+        {
+          id: "1-2",
+            type: "c1",
+            mentions: [],
+            username: "Kimberley",
+            comment: "VEEL SUCCES !!!",
+            likes: 2,
+            timestamp: "18/11/2021/1/53"
+        }
+      ]
     }
   ];
 
@@ -187,38 +295,86 @@ export default class Posts extends Vue {
   @include colorize($color: accent);
 }
 
+
+.posts-container{
+  background-color: rgb(239, 239, 239);
+}
+
+.post-heart {
+  height: 35;
+  width: 35;
+  float: left;
+  label
+  {
+    color: rgb(0, 0, 0);
+  }
+}
+
 .posts-listview {
+  // background-color: black;
+  border-radius: 20;
+}
+
+.post-body{
+  // width: 900px;
+  image
+  {
+    width: auto;
+    height: 500px;
+  }
 }
 
 .post-container {
-  background-color: transparent;
+  height: auto;
+  width: auto;
+  margin-right: 10;
+  margin-left: 10;
+  border-color: rgb(204, 200, 200);
   margin-top: 20;
+  border-radius: 10;
+  border-width: 2px;
 }
 
-.post-header {
-  background-color: rgb(61, 60, 60);
+.post-username {
+  font-size: 18;
+  background-color: rgb(255, 255, 255);
   border-top-right-radius: 10;
   border-top-left-radius: 10;
+  border-bottom-width: 2px;
+  border-color: rgb(204, 200, 200);  
   label {
-    color: white;
+    color: black;
   }
   padding: 10;
 }
 
+.post-header{
+  font-size: 14;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  label{
+    color: black;
+  }
+}
+
 .post-footer {
-  background-color: rgb(61, 60, 60);
+  font-size: 16;
+  background-color: rgb(255, 255, 255);
   border-bottom-right-radius: 10;
   border-bottom-left-radius: 10;
   label {
-    color: white;
+    color: black;
   }
   padding: 10;
 }
 
 .post-comments {
-  background-color: rgb(102, 101, 101);
+  font-size: 14;
+  background-color: rgb(255, 255, 255);
   padding: 10;
-  border-bottom-right-radius: 10;
-  border-bottom-left-radius: 10;
+  // border-bottom-right-radius: 10;
+  // border-bottom-left-radius: 10;
+  // border-bottom-width: 2px;
+  // border-color: rgb(204, 200, 200);
 }
 </style>
