@@ -1,5 +1,6 @@
 import Vue from 'nativescript-vue'
 import Home from './components/Home.vue'
+import Chats from './components/Chats.vue'
 
 declare let __DEV__: boolean;
 
