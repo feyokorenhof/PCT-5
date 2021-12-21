@@ -1,6 +1,8 @@
 <template>
-  <StackLayout row="0" class="top-container">
-    <GridLayout class="blue-top"></GridLayout>
+  <StackLayout row="0" class="top-container">    
+    <GridLayout class="blue-top">
+      <Image src="https://cdn.vox-cdn.com/thumbor/VVXayrypyYIMqiHWIYdL77FRF_o=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/22408516/Big_Chungus.png" width = "50" height="50" horizontalAlignment="right" class="profile-pic"></Image>
+    </GridLayout>
     <GridLayout class="red-top"></GridLayout>
   </StackLayout>
 </template>
@@ -49,4 +51,11 @@ export default class ActionBarTop extends Vue {
   clip-path: polygon(0 100%, 100% 100%, 100% 40%);
   height: 50%;
 }
+.profile-pic {
+    border-radius: 50;
+    border-width: 2;
+    border-color: #555fa4;
+    object-fit: scale-down; 
+  }
+
 </style>
