@@ -12,10 +12,10 @@
         <TextField class="nom" ref="Wachtwoord" hint="Wachtwoord" secure="true"></TextField>
       </StackLayout>
       <Button class="loginbutton" text="Inloggen" @tap="goToHome"></Button>
-      <Label textAlignment="center">
-        <FormattedString>
-          <Span text="Geen account? Klik dan "/>
-          <Span class="hiertext" text="hier"/>
+      <Label textAlignment="center" @tap="onLinkTap($event)">
+        <FormattedString linkTap="goToHome">
+          <Label text="Geen account? Klik dan "/>
+          <Label class="hiertext" text="hier"/>
         </FormattedString>
       </Label>
     </StackLayout>
@@ -47,23 +47,30 @@
 </script>
 
 <script lang="ts">
-  import { Button, Color, TapGestureEventData, TextField } from "@nativescript/core";
+  import { Button, Color, EventData, Span, TapGestureEventData, TextField } from "@nativescript/core";
   import Vue from "nativescript-vue";
   import { Component, Prop } from "vue-property-decorator";
   import newPerson from "@/Models/newPerson";
   import "./Loginstyle.css";
 
-  let users = [new newPerson("Rikkumoist",
+  let users = [new newPerson("user1",
       "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
       "Rick Slingerland", "kotorem.sama@gmail.com", "password1"),
-      new newPerson("Rikkumoist2",
+      new newPerson("user2",
       "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
       "Ricky Slingerplant", "rickyman2002.rick@gmail.com", "password2")];
 
-  @Component({ name: "Login", components: {}})
+  
 
+  @Component({ name: "Login", components: {}})
+  
   export default class Login extends Vue {
     msg: string = "Login";
+    
+    onLinkTap(args: TapGestureEventData) {
+      let button: Button = args.object as Button;
+      this.$emit("accountAangevraagd");
+    }
 
     goToHome(args: TapGestureEventData) {
       let button: Button = args.object as Button;
@@ -80,8 +87,8 @@
       }
       gebruikersnaam.className = "WrongG";
       wachtwoord.className = "WrongG";
-      let bl = (this.$refs.badlog as any).nativeView;
-      bl.className = "badlogin2";
+      let blt = (this.$refs.badlog as any).nativeView;
+      blt.className = "badlogin2";
     }
   }
 </script>
