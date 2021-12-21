@@ -59,11 +59,13 @@
 
 <script lang="ts">
   //import from other files
+  import { Http, HttpResponse } from '@nativescript/core';
   import Vue from "nativescript-vue";
   import { Component, Prop } from "vue-property-decorator";
   import ActionBarTop from "./ActionBars/ActionBarTop.vue";
   import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
   import UserProfile from "@/Models/UserProfile";
+  import { getJSON } from '@nativescript/core/http';
   
   //Defines main component and add other components if necessary
   @Component({
@@ -73,21 +75,60 @@
       ActionBarBottom
     }
   })
+
+  
   export default class Profiel extends Vue {
     msg: string = "Profiel";
-    currentUser!: UserProfile;
+    str: string = "";
+    currentUser!: UserProfile;  
 
+    
     //The code that runs before the page is loaded
     beforeMount() {
-      //Get user info here.  
-    this.currentUser = new UserProfile(
-      "Sponsor123",
-      "https://cdn.vox-cdn.com/thumbor/VVXayrypyYIMqiHWIYdL77FRF_o=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/22408516/Big_Chungus.png"
-    );
-  }
+    var TheUser = undefined;
+    Http.request({
+      url: 'http://192.168.178.221/ASPNET_Core_Web_API/user',
+      method: 'GET'
+    }).then(
+      (response: HttpResponse) => {
+        console.log(`Response Status Code: ${response.statusCode}` )
+        console.log(`Response String: ${response}`)
+        console.log(`Content: ${response.content}`)
+        TheUser = response.content?.toJSON;
+        
+        // const stuff = response.content
+        // var stuffToString = stuff?.toString;
+        // this.currentUser.gebruikerinfo = stuffToString;
+        // var json = stuff?.toJSON();
+        // this.currentUser = new UserProfile(json.Username, json.PfP_Url, json.Role, json.Email, json.Status)
+      },
+      ((reason: any) => {console.log(`error: ${reason}`)})
+    )
+            //Get user info here.   
+    console.log("User loaded test")
+    
+    this.currentUser = new UserProfile("Sponsor123", 
+    "https://cdn.vox-cdn.com/thumbor/VVXayrypyYIMqiHWIYdL77FRF_o=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/22408516/Big_Chungus.png", 
+    "Sponsor", 
+    "Generic.Email@gmail.com", 
+    "Hier komt wat tekst te staan die de gebruiker zelf kan instellen. Denk aan Status of een quote. In iedergeval kan dit veel tekst zijn, maar ook erg weinig"
+    )
+
+  //   //http://127.0.0.1:19351
+  //  //https://localhost:44328/User
+  //  //http://localhost/ASPNET_Core_Web_API/user
+  //  //'http://10.0.2.2/ASPNET_Core_Web_API/user'
+  //  //http://192.168.178.221/ASPNET_Core_Web_API/user
+      
+    console.log("test");   
+    //Check if user is copied from Http Request
+    console.log(`The user is: ${TheUser}`)
+     }
+    
+
     goBack() {
       //Back to Posts page.
-    if (this.$modal) this.$modal.close();
+      if (this.$modal) this.$modal.close();
   }
   }
 </script>
