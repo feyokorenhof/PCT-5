@@ -1,6 +1,7 @@
 import Vue from 'nativescript-vue'
 import Home from './components/Home.vue'
 import Chats from './components/Chats.vue'
+import ChatDisplay from './components/ChatDisplay.vue'
 
 declare let __DEV__: boolean;
 
@@ -8,5 +9,5 @@ declare let __DEV__: boolean;
 Vue.config.silent = !__DEV__
 
 new Vue({
-  render: (h) => h('frame', [h(Home)]),
+  render: (h) => h('frame', [h(Chats)]),
 }).$start()
