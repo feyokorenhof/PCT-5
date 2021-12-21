@@ -5,7 +5,7 @@
         <StackLayout>
           <GridLayout row="0">
             <Label
-              text="Goedendag"
+              text="Goedendag" 
               fontSize="25"
               horizontalAlignment="center"
             ></Label>
@@ -19,14 +19,21 @@
             <!-- Username / Header / ? -->
             <GridLayout row="0" class="post-username">
               <Label :text="post.username"></Label>
+            <Button
+              src="~/Images/add_btn.png"
+              class="add-post"
+              @tap="MakePost"
+              horizontalAlignment="right"
+            >
+            </Button>
+            <!-- Header -->
+            <GridLayout row="0" class="post-header">
+              <Label :text="post.header" textWrap="true"></Label>
+            </GridLayout>
             </GridLayout>
             <!-- Image / Tekst -->
             <GridLayout row="1" class="post-body">
-              <Image :src="post.image"> </Image>
-            </GridLayout>
-            <!-- Header -->
-            <GridLayout row="2" class="post-header">
-              <Label :text="post.header" textWrap="true"></Label>
+              <Image :src=resizeInput(post)> </Image>
             </GridLayout>
             <!-- Text -->
             <GridLayout row="3" class="post-footer">
@@ -37,13 +44,15 @@
                 row="2"
                 class="post-heart"
               >
-                <!-- <Label :text="post.likes"></Label> -->
-                <!-- <Button 
+                <Label :text="[post.likes + ' likes']"></Label>
+                <Button 
+                  class="button-heart"
                   horizontalAlignment="left"
-                  tintColor="#efefef"                 
-                  src="~/Images/heart-empty.png"
-                  @tap="heartPost($event, post)"
-                ></Button> -->
+                  src="~/Images/heart-empty.png"    
+                  @tap="heartPost"
+                ></Button>
+                  <!-- src="~/Images/heart-empty.png"
+                  @tap="heartPost($event, post)" -->
                 <!-- v-show="likes.includes(post.id)" -->
                 <!-- <Image
                   src="~/Images/heart-empty.png"
@@ -74,24 +83,23 @@
 <script lang="ts">
 import Vue from "nativescript-vue";
 import { Component, Prop } from "vue-property-decorator";
-import { TapGestureEventData } from "@nativescript/core";
+import { TapGestureEventData, Label } from "@nativescript/core";
 
 import Post from "@/Models/Post";
 import Comments from "@/components/Comments.vue";
+import AddPost from "@/components/AddPost.vue"
 
 import User from "@/Models/User";
+import { PostType } from "~/Models/PostType";
 
 // import { mapActions, mapGetters } from "vuex";
 
 @Component({
   name: "Posts",
   components: {
-    Comments
-  },
-  // computed: {
-  //   ...mapGetters(["posts", "liked"]),
-  //   ...mapActions(["heartContent"])
-  // }
+    Comments,
+    AddPost
+  }
 })
 export default class Posts extends Vue {
   posts2!: Post[];
@@ -99,8 +107,13 @@ export default class Posts extends Vue {
 
   heartContent!: (id: String) => void;
 
-  
-  heartPost($event: TapGestureEventData, post: any) {
+  MakePost(){
+    this.$showModal(AddPost, {
+      fullscreen: true,
+    });
+  }
+
+  heartPost($event: TapGestureEventData, post: Post) {
     // let id = post.id;
     // let found = post.likes.indexOf(id);
     // if (found != -1) {
@@ -110,13 +123,12 @@ export default class Posts extends Vue {
     // }
     // post.likes.push(id);
     // post.likes++;
- 
   }
 
   posts = [
     {
       id: "0",
-      type: "p",
+      type: 2,
       mentions: [],
       header: "Formule E: met de E van Energietransitie",
       image: "https://rotterdamsedromers.nl/wp-content/uploads/2020/10/WhatsApp-Image-2020-10-20-at-15.52.01-1536x778.jpeg",
@@ -208,7 +220,7 @@ export default class Posts extends Vue {
     },
     {
       id: "1",
-      type: "p",
+      type: 2,
       mentions: [],
       header: "Team Phidippides 2020",
       image: "https://www.rdmcoe.nl/wp-content/uploads/2020/03/Triga-web-1536x864.jpg",
@@ -281,6 +293,29 @@ export default class Posts extends Vue {
     });
   }
 
+  resizeInput(input: Post): any{
+    if (input.type == 1){
+      console.log("ImageText!");
+      return input.image;
+    }
+    else if (input.type == 2){
+      console.log("Image!");
+      let width = input.image.clientWidth;
+      let height = input.image.clientHeight;
+      console.log(width);
+      console.log("PiXeLs")
+      console.log(height);
+      return input.image;
+    }
+    else if (input.type == 3){
+      console.log("Text!");
+      return input.image;
+    }
+    else{
+      console.log("Fail!")
+    }
+  }
+
   goToHome() {
     console.log("Going to home");
   }
@@ -300,13 +335,17 @@ export default class Posts extends Vue {
   background-color: rgb(239, 239, 239);
 }
 
+.button-heart{
+  
+}
+
 .post-heart {
-  height: 35;
-  width: 35;
-  float: left;
   label
   {
+    font-size:12;
     color: rgb(0, 0, 0);
+    text-align:right;
+    margin-right: 100px;
   }
 }
 
@@ -322,6 +361,13 @@ export default class Posts extends Vue {
     width: auto;
     height: 500px;
   }
+}
+
+.add-post{
+  // position: absolute;
+  bottom: 500px;
+  height: 50;
+  width: 50;
 }
 
 .post-container {
@@ -350,7 +396,7 @@ export default class Posts extends Vue {
 
 .post-header{
   font-size: 14;
-  text-align: center;
+  text-align: left;
   background-color: rgb(255, 255, 255);
   label{
     color: black;
@@ -372,9 +418,5 @@ export default class Posts extends Vue {
   font-size: 14;
   background-color: rgb(255, 255, 255);
   padding: 10;
-  // border-bottom-right-radius: 10;
-  // border-bottom-left-radius: 10;
-  // border-bottom-width: 2px;
-  // border-color: rgb(204, 200, 200);
 }
 </style>
