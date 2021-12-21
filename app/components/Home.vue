@@ -2,8 +2,9 @@
   <Page actionBarHidden="true">
     <GridLayout rows="2*, 12*, *" height="100%">
       <ActionBarTop row="0" />
-      <Login row="1" v-show="!loggedIn" @onLogin="login" />
-      <Posts row="1" v-show="loggedIn" />
+      <Login row="1" v-show="!loggedIn&&!accountaanvragen" @onLogin="login" @accountAangevraagd="acaangevraagd"/>
+      <Posts row="1" v-show="loggedIn&&!accountaanvragen" />
+      <AccountAanvragen row="1" v-show="accountaanvragen" @accountAangevraagd="acaangevraagd"/>
       <ActionBarBottom row="2" />
     </GridLayout>
   </Page>
@@ -17,6 +18,7 @@ import ActionBarTop from "./ActionBars/ActionBarTop.vue";
 import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
 import Login from "./Login.vue";
 import Posts from "./Posts.vue";
+import AccountAanvragen from "./AccountAanvragen.vue";
 
 @Component({
   name: "Home",
@@ -24,14 +26,19 @@ import Posts from "./Posts.vue";
     ActionBarTop,
     ActionBarBottom,
     Login,
-    Posts
+    Posts,
+    AccountAanvragen
   }
 })
 export default class Home extends Vue {
   msg: string = "Home";
   loggedIn: boolean = false;
+  accountaanvragen: boolean = false;
   login() {
     this.loggedIn = true;
+  }
+  acaangevraagd(){
+    this.accountaanvragen = !this.accountaanvragen;
   }
 }
 </script>
