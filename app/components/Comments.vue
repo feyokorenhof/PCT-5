@@ -245,10 +245,10 @@ export default class Comments extends Vue {
 }
 
 .reply-textfield {
-  color: white;
+  color: black;
   font-size: 16;
   placeholder-color: white;
-  background-color: rgb(61, 60, 60);
+  background-color: rgb(255, 255, 255);
   border-radius: 10;
   padding: 10;
   border-bottom-width: 1;
@@ -294,7 +294,7 @@ export default class Comments extends Vue {
 }
 
 .comments-info {
-  color: white;
+  color: black;
   font-size: 25;
   vertical-align: middle;
 }
@@ -311,15 +311,15 @@ export default class Comments extends Vue {
 }
 
 .comment-open-comments {
-  color: white;
+  color: black;
 }
 
 .comment-likes {
-  color: white;
+  color: black;
 }
 
 .comment-time-passed {
-  color: white;
+  color: black;
   font-style: italic;
 }
 
@@ -331,7 +331,7 @@ export default class Comments extends Vue {
 }
 
 .comment-text {
-  color: white;
+  color: black;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 15em;
@@ -348,12 +348,12 @@ export default class Comments extends Vue {
 }
 
 .post-container {
-  background-color: rgb(250, 249, 249);
+  background-color: rgb(255, 255, 255);
   margin-top: 20;
 }
 
 .comments-container {
-  background-color: rgb(61, 60, 60);
+  background-color: rgb(255, 255, 255);
 }
 
 .comment-container {
@@ -364,11 +364,11 @@ export default class Comments extends Vue {
 }
 
 .post-footer {
-  background-color: rgb(61, 60, 60);
+  background-color: rgb(255, 255, 255);
   border-bottom-right-radius: 10;
   border-bottom-left-radius: 10;
   label {
-    color: white;
+    color: black;
   }
   padding: 10;
 }
