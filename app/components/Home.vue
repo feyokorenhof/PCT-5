@@ -9,7 +9,7 @@
   </Page>
 </template>
 
-<script lang="ts">
+<script lang="ts">  
 import Vue from "nativescript-vue";
 import { Component, Prop } from "vue-property-decorator";
 
