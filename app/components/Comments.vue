@@ -60,7 +60,7 @@
         <!-- Reply Button -->
         <GridLayout col="2">
           <Label
-            text="Plaatsen"
+            text="Plaatsen" marginTop="8"
             @tap="sendReply"
             class="reply-send-button"
             :isEnabled="canReply"
@@ -109,8 +109,8 @@ export default class Comments extends Vue {
 
   beforeMount() {
     this.currentUser = new User(
-      "fkorrie",
-      "https://cdn.vox-cdn.com/thumbor/VVXayrypyYIMqiHWIYdL77FRF_o=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/22408516/Big_Chungus.png"
+      "Rick Slingerland",
+      "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj"
     );
   }
 
@@ -245,10 +245,10 @@ export default class Comments extends Vue {
 }
 
 .reply-textfield {
-  color: white;
+  color: black;
   font-size: 16;
   placeholder-color: white;
-  background-color: rgb(61, 60, 60);
+  background-color: rgb(255, 255, 255);
   border-radius: 10;
   padding: 10;
   border-bottom-width: 1;
@@ -311,15 +311,15 @@ export default class Comments extends Vue {
 }
 
 .comment-open-comments {
-  color: white;
+  color: black;
 }
 
 .comment-likes {
-  color: white;
+  color: black;
 }
 
 .comment-time-passed {
-  color: white;
+  color: black;
   font-style: italic;
 }
 
@@ -331,7 +331,7 @@ export default class Comments extends Vue {
 }
 
 .comment-text {
-  color: white;
+  color: black;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 15em;
@@ -348,27 +348,27 @@ export default class Comments extends Vue {
 }
 
 .post-container {
-  background-color: rgb(250, 249, 249);
+  background-color: rgb(255, 255, 255);
   margin-top: 20;
 }
 
-.comments-container {
-  background-color: rgb(61, 60, 60);
-}
+// .comments-container {
+//   background-color: rgb(255, 255, 255);
+// }
 
-.comment-container {
-  // background-color: rgb(102, 101, 101);
-  // background-color: rgb(61, 60, 60);
-  // margin-bottom: 5;
-  // padding: 10;
+.comments-container {
+  background-color: rgb(102, 101, 101);
+  background-color: rgb(61, 60, 60);
+  margin-bottom: 5;
+  padding: 10;
 }
 
 .post-footer {
-  background-color: rgb(61, 60, 60);
+  background-color: rgb(255, 255, 255);
   border-bottom-right-radius: 10;
   border-bottom-left-radius: 10;
   label {
-    color: white;
+    color: black;
   }
   padding: 10;
 }

@@ -1,0 +1,97 @@
+.nom:focus{
+    border-color:rgb(133, 198, 229);
+    height: 12%;
+}
+
+.nom{
+    border-color:rgb(133, 133, 133);
+    border-bottom-width: 1cm;
+    height: 12%;
+}
+
+.loginbutton{
+    color:rgb(255, 255, 255);
+    border-radius: 75%;
+    background-color: rgb(57, 55, 121);
+    font-family: Arial;
+    font-size: 30%;
+    font-weight:bold;
+    width: 45%;
+    padding: 5;
+    box-shadow: 6px 6px 6px rgba(0,0,0,155);
+}
+
+.loginbutton:active{
+    color:white;
+    background-color: rgb(21, 18, 110);
+    box-shadow: 6px 6px 6px rgba(0,0,0,200);
+}
+
+.accaanbutton{
+    color:rgb(255, 255, 255);
+    border-radius: 10%;
+    background-color: rgb(57, 55, 121);
+    font-family: Arial;
+    font-size: 30%;
+    font-weight:bold;
+    width: 75%;
+    padding: 5;
+    box-shadow: 6px 6px 6px rgba(0,0,0,155);
+}
+
+.accaanbutton:active{
+    color:white;
+    background-color: rgb(21, 18, 110);
+    box-shadow: 6px 6px 6px rgba(0,0,0,200);
+}
+
+.verplicht{
+    margin-top:20;
+    color:rgb(0, 0, 0);
+    opacity:1;
+    text-align: center;
+}
+
+.badlogin{
+    margin-top:20;
+    color:rgb(255, 0, 0);
+    opacity:0;
+    text-align: center;
+}
+
+.WrongG:focus{
+    border-color:rgb(133, 198, 229);
+    height: 12%;
+}
+
+.WrongG{
+    border-color:rgb(255, 0, 0);
+    border-bottom-width: 1cm;
+    height: 12%;
+}
+
+.badlogin2{
+    opacity:1;
+    color:rgb(255, 0, 0);
+    text-align: center;
+}
+
+.logintext{
+    color:rgb(119, 119, 119);   
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+.accaantext{
+    color: rgb(119, 119, 119);
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+.hiertext{
+    color: rgb(43,98,209);
+    text-decoration: underline;
+    font-weight: bold;
+}
