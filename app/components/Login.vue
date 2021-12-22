@@ -8,7 +8,7 @@
     </StackLayout>
     <StackLayout row="2">
       <StackLayout marginBottom="10">
-        <TextField class="nom" ref="Naam" hint="Naam of e-mailadres"></TextField>
+        <TextField class="nom" ref="Naam" hint="Gebruikersnaam of e-mailadres"></TextField>
         <TextField class="nom" ref="Wachtwoord" hint="Wachtwoord" secure="true"></TextField>
       </StackLayout>
       <Button class="loginbutton" text="Inloggen" @tap="goToHome"></Button>
@@ -55,10 +55,11 @@
 
   let users = [new newPerson("user1",
       "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-      "Rick Slingerland", "kotorem.sama@gmail.com", "password1"),
-      new newPerson("user2",
-      "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-      "Ricky Slingerplant", "rickyman2002.rick@gmail.com", "password2")];
+      "Rick Slingerland", "kotorem.sama@gmail.com", "password1")
+      // new newPerson("user2",
+      // "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
+      // "Ricky Slingerplant", "rickyman2002.rick@gmail.com", "password2")
+      ];
 
   
 
