@@ -6,7 +6,7 @@
     <TextField class="nom" height="7%" marginTop="230" ref="Achternaam" hint="Achternaam *"></TextField>
     <TextField class="nom" height="7%" marginTop="320" ref="Emailadres" hint="E-mailadres *"></TextField>
     <TextField class="nom" height="7%" marginTop="410" ref="Bedrijfsnaam" hint="Bedrijfsnaam"></TextField>
-    <Button class="loginbutton" marginTop="560" text="Inloggen" @tap="onLinkTap"></Button>
+    <Button class="accaanbutton" marginTop="560" text="Account Aanvragen" @tap="onLinkTap"></Button>
   </GridLayout>
 </template>
 
