@@ -1,7 +1,7 @@
 <template>
   <StackLayout row="0" class="top-container">    
     <GridLayout class="blue-top">
-      <Image src="https://cdn.vox-cdn.com/thumbor/VVXayrypyYIMqiHWIYdL77FRF_o=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/22408516/Big_Chungus.png" width = "50" height="50" horizontalAlignment="right" class="profile-pic"></Image>
+      <Image src="https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj" width = "40" height="40" horizontalAlignment="right" class="profile-pic"></Image>
     </GridLayout>
     <GridLayout class="red-top"></GridLayout>
   </StackLayout>
@@ -52,8 +52,8 @@ export default class ActionBarTop extends Vue {
   height: 50%;
 }
 .profile-pic {
-    border-radius: 50;
-    border-width: 2;
+    border-radius: 100;
+    border-width: 0;
     border-color: #555fa4;
     object-fit: scale-down; 
   }
