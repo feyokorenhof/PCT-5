@@ -47,7 +47,7 @@
       <ActionBarBottom row="2"/>
     </GridLayout>
     <GridLayout columns="60, 410, 60" rows="50, 720, 60">
-        <Image src="~/Images/back_btn.png" row=0 col=0 marginTop=10 @tap="goHome"></Image>
+        <Image src="~/Images/back_btn.png" row=0 col=0 marginTop=10 @tap="goBack"></Image>
         <Image src="~/Images/add_btn.png" row=3 col=3></Image>
     </GridLayout>
     </AbsoluteLayout>
@@ -63,7 +63,7 @@ import User from "@/Models/User";
 
 import ActionBarTop from "./ActionBars/ActionBarTop.vue";
 import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
-import Home from "./Home.vue";
+//import Home from "./Home.vue";
 import ChatDisplay from "./ChatDisplay.vue"
 
 @Component({
@@ -71,7 +71,7 @@ import ChatDisplay from "./ChatDisplay.vue"
   components: {
     ActionBarTop,
     ActionBarBottom,
-    Home
+    //Home
   }
 })
 
@@ -86,9 +86,13 @@ export default class Chats extends Vue {
     return txt;
   }  
   // function to go back to main screen
-  goHome(){
-    this.$showModal(Home, {fullscreen: true})
-  }
+  // goHome(){
+  //   this.$showModal(Home, {fullscreen: true})
+  // }
+  goBack() {
+      //Back to Posts page.
+      if (this.$modal) this.$modal.close();}
+
   goChat(receiver_id: String){
     this.$showModal(ChatDisplay, {fullscreen: true, props: {receiver_id}})
   }

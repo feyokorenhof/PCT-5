@@ -109,8 +109,8 @@ export default class Comments extends Vue {
 
   beforeMount() {
     this.currentUser = new User(
-      "Sponsor123",
-      "https://cdn.vox-cdn.com/thumbor/VVXayrypyYIMqiHWIYdL77FRF_o=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/22408516/Big_Chungus.png"
+      "Rick Slingerland",
+      "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj"
     );
   }
 
