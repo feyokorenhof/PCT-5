@@ -294,7 +294,7 @@ export default class Comments extends Vue {
 }
 
 .comments-info {
-  color: black;
+  color: white;
   font-size: 25;
   vertical-align: middle;
 }
@@ -352,15 +352,15 @@ export default class Comments extends Vue {
   margin-top: 20;
 }
 
-.comments-container {
-  background-color: rgb(255, 255, 255);
-}
+// .comments-container {
+//   background-color: rgb(255, 255, 255);
+// }
 
-.comment-container {
-  // background-color: rgb(102, 101, 101);
-  // background-color: rgb(61, 60, 60);
-  // margin-bottom: 5;
-  // padding: 10;
+.comments-container {
+  background-color: rgb(102, 101, 101);
+  background-color: rgb(61, 60, 60);
+  margin-bottom: 5;
+  padding: 10;
 }
 
 .post-footer {
