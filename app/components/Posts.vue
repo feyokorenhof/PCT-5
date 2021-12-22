@@ -23,13 +23,13 @@
             <!-- Username / Header / ? -->
             <GridLayout row="0" class="post-username">
               <Label :text="post.username"></Label>
-            <Button
+            <!-- <Button
               src="~/Images/add_btn.png"
               class="add-post"
               @tap="MakePost"
               horizontalAlignment="right"
             >
-            </Button>
+            </Button> -->
             <!-- Header -->
             <GridLayout row="0" class="post-header">
               <Label :text="post.header" textWrap="true"></Label>
@@ -44,7 +44,7 @@
               <Label :text="post.footer" textWrap="true"></Label>
             </GridLayout>
             <!-- Heart -->
-              <GridLayout 
+              <!--<GridLayout 
                 row="2"
                 class="post-heart"
               >
@@ -55,14 +55,14 @@
                   src="~/Images/heart-empty.png"    
                   @tap="heartPost"
                 ></Button>
-                  <!-- src="~/Images/heart-empty.png"
-                  @tap="heartPost($event, post)" -->
-                <!-- v-show="likes.includes(post.id)" -->
-                <!-- <Image
+                   src="~/Images/heart-empty.png"
+                  @tap="heartPost($event, post)" 
+                 v-show="likes.includes(post.id)"
+                 <Image
                   src="~/Images/heart-empty.png"
                   class="post-heart"
-                ></Image> -->
-              </GridLayout>
+                ></Image>
+              </GridLayout> -->
             <!-- Comments preview (take first/last/most liked / ?) -->
             <StackLayout row="3" class="post-footer">
               <StackLayout
