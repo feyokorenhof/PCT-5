@@ -7,7 +7,7 @@
       <Image src="~/Images/back_btn.png" class="back-button" horizontalAlignment="left" verticalAlignment="top" marginLeft="15" tintColor="black" width = "50" height="50" @tap="goBack"></Image>
       <Label text="Mijn Profiel" fontSize="32" textAlignment="center"></Label>
       <!--Get profile picture of user-->
-      <Image :src="this.currentUser.pfp_url" width="100" height="100" class="profile-pic"></Image>
+      <Image :src="profielGegevens.pfp_url" width="100" height="100" class="profile-pic"></Image>
     </GridLayout>
 
     <StackLayout width="95%" row="2" marginTop="-80">
@@ -18,7 +18,7 @@
         <Label>
           <FormattedString>
             <Span text="Naam: " fontSize="20" fontWeight="bold"/>
-            <Span :text ="this.currentUser.username" fontSize="20"/>
+            <Span :text ="profielGegevens.username" fontSize="20"/>
           </FormattedString>
         </Label>
 
@@ -26,7 +26,7 @@
         <Label textWrap="true">
           <FormattedString>
             <Span text="Email: " fontSize="20" fontWeight="bold"/>
-            <Span :text ="this.currentUser.email" fontSize="20"/>
+            <Span :text ="profielGegevens.email" fontSize="20"/>
           </FormattedString>
         </Label>
 
@@ -34,7 +34,7 @@
         <Label>
           <FormattedString>
             <Span text="Rol:     " fontSize="20" fontWeight="bold"/>
-            <Span :text ="this.currentUser.role" fontSize="20"/>
+            <Span :text ="profielGegevens.role" fontSize="20"/>
           </FormattedString>
         </Label>        
       </StackLayout>
@@ -45,7 +45,7 @@
         <Label textWrap="true">
           <FormattedString>
             <Span text="Info: \n" fontSize="18" fontWeight="bold" marginLeft= "30"/>
-            <Span :text="this.currentUser.gebruikerinfo" fontSize="16"/>
+            <Span :text="profielGegevens.gebruikerinfo" fontSize="16"/>
           </FormattedString>
         </Label>
       </StackLayout>
@@ -66,7 +66,7 @@
   import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
   import UserProfile from "@/Models/UserProfile";
   import { getJSON } from '@nativescript/core/http';
-  
+
   //Defines main component and add other components if necessary
   @Component({
     name: "Profiel",
@@ -81,6 +81,8 @@
     msg: string = "Profiel";
     str: string = "";
     currentUser!: UserProfile;  
+    
+    @Prop() profielGegevens!: UserProfile;
 
     
     //The code that runs before the page is loaded
@@ -114,11 +116,12 @@
     // "Hier komt wat tekst te staan die de gebruiker zelf kan instellen. Denk aan Status of een quote. In iedergeval kan dit veel tekst zijn, maar ook erg weinig"
     // )
 
-    this.currentUser = new UserProfile("Rick Slingerland",
-    "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-    "Student",
-    "kotorem.sama@gmail.com",
-    "Hier komt wat tekst te staan die de gebruiker zelf kan instellen. Denk aan Status of een quote. In iedergeval kan dit veel tekst zijn, maar ook erg weinig")
+    //this.currentUser = new UserProfile(currentJSONstring.username, currentJSONstring.pfp_url, currentJSONstring.role, currentJSONstring.email, currentJSONstring.gebruikerinfo)
+    // this.currentUser = new UserProfile("Rick Slingerland",
+    // "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
+    // "Student",
+    // "kotorem.sama@gmail.com",
+    // "Hier komt wat tekst te staan die de gebruiker zelf kan instellen. Denk aan Status of een quote. In iedergeval kan dit veel tekst zijn, maar ook erg weinig")
 
   //   //http://127.0.0.1:19351
   //  //https://localhost:44328/User
