@@ -8,8 +8,8 @@
     </StackLayout>
     <StackLayout row="2">
       <StackLayout marginBottom="10">
-        <TextField class="nom" ref="Naam" hint="Gebruikersnaam of e-mailadres"></TextField>
-        <TextField class="nom" ref="Wachtwoord" hint="Wachtwoord" secure="true"></TextField>
+        <TextField returnKeyType="next" autocapitalizationType="none" class="nom" ref="Naam" hint="Gebruikersnaam of e-mailadres"></TextField>
+        <TextField returnKeyType="done" autocapitalizationType="none" class="nom" ref="Wachtwoord" hint="Wachtwoord" secure="true" @returnPress="goToHome"></TextField>
       </StackLayout>
       <Button class="loginbutton" text="Inloggen" @tap="goToHome"></Button>
       <Label textAlignment="center" @tap="onLinkTap($event)">
@@ -22,36 +22,13 @@
   </GridLayout>
 </template>
 
-// <script lang="js">
-//   const {Client} = require('pg')
-
-//   const client = new Client({
-//     host: "localhost",
-//     user: "postgres",
-//     port: 5432,
-//     password: "rootUser",
-//     database: "postgres"
-//   })
-
-//   client.connect();
-
-//   client.query('SELECT * FROM Users', (err, res)=>{
-//     if(!err){
-//       console.log(res.rows);
-//     }
-//     else {
-//       console.log(err.message);
-//     }
-//     client.end;
-//   })
-</script>
-
 <script lang="ts">
   import { Button, Color, EventData, Span, TapGestureEventData, TextField } from "@nativescript/core";
   import Vue from "nativescript-vue";
   import { Component, Prop } from "vue-property-decorator";
   import newPerson from "@/Models/newPerson";
   import "./Loginstyle.css";
+  var applicationSettingsModule = require("application-settings");
 
   let users = [new newPerson("user1",
       "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
