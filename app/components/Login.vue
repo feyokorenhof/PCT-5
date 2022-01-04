@@ -28,15 +28,11 @@
   import { Component, Prop } from "vue-property-decorator";
   import newPerson from "@/Models/newPerson";
   import "./Loginstyle.css";
-  var applicationSettingsModule = require("application-settings");
+  import * as AppSettings from '@nativescript/core/application-settings';
 
   let users = [new newPerson("user1",
       "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-      "Rick Slingerland", "kotorem.sama@gmail.com", "password1")
-      // new newPerson("user2",
-      // "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-      // "Ricky Slingerplant", "rickyman2002.rick@gmail.com", "password2")
-      ];
+      "Rick Slingerland", "kotorem.sama@gmail.com", "password1", "useless thing here")];
 
   
 
@@ -58,6 +54,12 @@
       for (var index in users){
         if ((users[index].username.toLowerCase() == gebruikersnaam.text.toLowerCase() || users[index].email.toLowerCase() == gebruikersnaam.text.toLowerCase()) && users[index].password == wachtwoord.text){
           this.$emit("onLogin");
+          AppSettings.setString("LoggedinUsername", users[index].username);
+          AppSettings.setString("LoggedinPFPUrl", users[index].pfp_url);
+          AppSettings.setString("LoggedinName", users[index].name);
+          AppSettings.setString("LoggedinEmail", users[index].email);
+          AppSettings.setString("LoggedinPassword", users[index].password);
+          AppSettings.setString("LoggedinDescription", users[index].description);
         }
         else{
           wachtwoord.text = "";

@@ -16,16 +16,7 @@
   import { Component, Prop } from "vue-property-decorator";
   import newPerson from "@/Models/newPerson";
   import "./Loginstyle.css";
-  import * as email from "nativescript-email";
-
-  let users = [new newPerson("user1",
-      "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-      "Rick Slingerland", "kotorem.sama@gmail.com", "password1"),
-      new newPerson("user2",
-      "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-      "Ricky Slingerplant", "rickyman2002.rick@gmail.com", "password2")];
-
-  
+  import * as email from "nativescript-email";  
 
   @Component({ name: "AccountAanvragen", components: {}})
   

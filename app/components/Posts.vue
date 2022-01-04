@@ -1,4 +1,6 @@
 <template>
+  <GridLayout>
+    <Button class="logoutbutton" text="Uitloggen" @tap="logOutFunction"></Button>
   <GridLayout rows="auto" height="100%">
     <GridLayout row="0" height="100%" class="posts-container">
       <ScrollView height="100%" width="95%" class="posts-listview">
@@ -82,6 +84,7 @@
       </ScrollView>
     </GridLayout>
   </GridLayout>
+</GridLayout>
 </template>
 
 <script lang="ts">
@@ -339,6 +342,10 @@ export default class Posts extends Vue {
     });
   }
   
+  logOutFunction(){
+    this.$emit("onLogin");
+  }
+  
 }
 </script>
 
@@ -346,6 +353,21 @@ export default class Posts extends Vue {
 @import "@nativescript/theme/scss/variables/blue";
 
 // Custom styles
+
+.logoutbutton{
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  border-radius: 10%;
+  background-color: rgb(57, 55, 121);
+  font-family: Arial;
+  font-size: 10%;
+  font-weight: bold;
+  width: 15%;
+  height: 5%;
+  margin-top: 0;
+  box-shadow: 6px 6px 6px rgba(0,0,0,155);
+}
+
 .fas {
   @include colorize($color: accent);
 }
