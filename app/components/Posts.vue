@@ -101,6 +101,7 @@ import Chats from "@/components/Chats.vue"
 
 import User from "@/Models/User";
 import { PostType } from "~/Models/PostType";
+import UserProfile from "~/Models/UserProfile";
 
 // import { mapActions, mapGetters } from "vuex";
 
@@ -115,6 +116,13 @@ import { PostType } from "~/Models/PostType";
 export default class Posts extends Vue {
   posts2!: Post[];
   liked!: Number[];
+  test: UserProfile = {
+    username: "Sponsor123",
+    pfp_url: "https://cdn.vox-cdn.com/thumbor/VVXayrypyYIMqiHWIYdL77FRF_o=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/22408516/Big_Chungus.png",
+    role: "Sponsor",
+    email: "Generic.Email@gmail.com",
+    gebruikerinfo: "Hier komt wat tekst te staan die de gebruiker zelf kan instellen. Denk aan Status of een quote. In iedergeval kan dit veel tekst zijn, maar ook erg weinig"
+  }
 
   heartContent!: (id: String) => void;
 

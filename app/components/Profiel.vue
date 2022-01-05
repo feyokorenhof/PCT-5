@@ -65,9 +65,12 @@
   import ActionBarTop from "./ActionBars/ActionBarTop.vue";
   import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
   import UserProfile from "@/Models/UserProfile";
-  import { getJSON } from '@nativescript/core/http';
   import * as AppSettings from '@nativescript/core/application-settings';
   
+
+  import { getFile, getJSON } from '@nativescript/core/http';
+  import {knownFolders, Folder, File} from '@nativescript/core';
+
   //Defines main component and add other components if necessary
   @Component({
     name: "Profiel",
@@ -82,38 +85,28 @@
     msg: string = "Profiel";
     str: string = "";
     currentUser!: UserProfile;  
-
     
     //The code that runs before the page is loaded
     beforeMount() {
-    var TheUser = undefined;
-    // Http.request({
-    //   url: 'http://192.168.178.221/ASPNET_Core_Web_API/user',
-    //   method: 'GET'
-    // }).then(
-    //   (response: HttpResponse) => {
-    //     console.log(`Response Status Code: ${response.statusCode}` )
-    //     console.log(`Response String: ${response}`)
-    //     console.log(`Content: ${response.content}`)
-    //     TheUser = response.content?.toJSON;
-        
-        // const stuff = response.content
-        // var stuffToString = stuff?.toString;
-        // this.currentUser.gebruikerinfo = stuffToString;
-        // var json = stuff?.toJSON();
-        // this.currentUser = new UserProfile(json.Username, json.PfP_Url, json.Role, json.Email, json.Status)
-    //   },
-    //   ((reason: any) => {console.log(`error: ${reason}`)})
-    // )
-            //Get user info here.   
+
     console.log("User loaded test")
 
     this.currentUser = new UserProfile(AppSettings.getString("LoggedinName"), AppSettings.getString("LoggedinPFPUrl"),
     AppSettings.getString("LoggedinRole"), AppSettings.getString("LoggedinEmail"), AppSettings.getString("LoggedinDescription"));
     
-    console.log("test");   
-    //Check if user is copied from Http Request
-    console.log(`The user is: ${TheUser}`)
+      //NIET AF
+      // const documentsFolder: Folder =<Folder>knownFolders.documents();
+      // const filePath: string = path.join(documentsFolder.path, "FileFromPath.txt")
+      // const file: File = File.FileFromPath(filePath)
+      const documents : Folder =<Folder>knownFolders.documents();
+      const file: File = documents.getFile("UserJSON.json");
+      //const fileText = file.readTextSync((error: undefined) => console.log("lala-lion"), 'UTF-8');
+      //const fileText = file.read();
+      const fileText = file.readText().then((res: any) =>{
+        console.log(res)
+      }).catch((error: undefined) => console.log("lala-lion"));;
+      //const fileString = fileText.toString();
+      console.log(`De content van de gelezen JSON bevat: ${fileText}`);
      }
     
 

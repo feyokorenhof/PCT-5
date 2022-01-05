@@ -28,7 +28,10 @@
   import { Component, Prop } from "vue-property-decorator";
   import newPerson from "@/Models/newPerson";
   import "./Loginstyle.css";
+
   import * as AppSettings from '@nativescript/core/application-settings';
+  import UserProfile from "~/Models/UserProfile";
+
 
   let users = [new newPerson("user1",
       "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
@@ -42,7 +45,8 @@
   
   export default class Login extends Vue {
     msg: string = "Login";
-    
+    public JSONString = "";
+
     onLinkTap(args: TapGestureEventData) {
       let button: Button = args.object as Button;
       this.$emit("accountAangevraagd");
@@ -52,10 +56,11 @@
       let button: Button = args.object as Button;
       let gebruikersnaam: TextField = (this.$refs.Naam as any).nativeView as TextField;
       let wachtwoord: TextField = (this.$refs.Wachtwoord as any).nativeView as TextField;
-
+      let ProfielStuff: UserProfile;
+      
       for (var index in users){
         if ((users[index].username.toLowerCase() == gebruikersnaam.text.toLowerCase() || users[index].email.toLowerCase() == gebruikersnaam.text.toLowerCase()) && users[index].password == wachtwoord.text){
-          this.$emit("onLogin");
+
           AppSettings.setString("LoggedinUsername", users[index].username);
           AppSettings.setString("LoggedinPFPUrl", users[index].pfp_url);
           AppSettings.setString("LoggedinName", users[index].name);
@@ -63,6 +68,18 @@
           AppSettings.setString("LoggedinPassword", users[index].password);
           AppSettings.setString("LoggedinDescription", users[index].description);
           AppSettings.setString("LoggedinRole", users[index].role);
+
+          
+          //User information to JSON string
+          ProfielStuff = new UserProfile(users[index].username, users[index].pfp_url, "Student", users[index].email, `password: ${users[index].password}`);
+          this.JSONString = JSON.stringify(ProfielStuff);
+          //JSON.parse(this.JSONString)
+          console.log(this.JSONString);
+          
+          //back to Home
+          this.$emit("onLogin", this.JSONString);
+        }
+        else{
         }
       }
       wachtwoord.text = "";
