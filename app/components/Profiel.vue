@@ -65,6 +65,9 @@
   import ActionBarTop from "./ActionBars/ActionBarTop.vue";
   import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
   import UserProfile from "@/Models/UserProfile";
+  import * as AppSettings from '@nativescript/core/application-settings';
+  
+
   import { getFile, getJSON } from '@nativescript/core/http';
   import {knownFolders, Folder, File} from '@nativescript/core';
 
@@ -85,6 +88,12 @@
     
     //The code that runs before the page is loaded
     beforeMount() {
+
+    console.log("User loaded test")
+
+    this.currentUser = new UserProfile(AppSettings.getString("LoggedinName"), AppSettings.getString("LoggedinPFPUrl"),
+    AppSettings.getString("LoggedinRole"), AppSettings.getString("LoggedinEmail"), AppSettings.getString("LoggedinDescription"));
+    
       //NIET AF
       // const documentsFolder: Folder =<Folder>knownFolders.documents();
       // const filePath: string = path.join(documentsFolder.path, "FileFromPath.txt")
@@ -98,12 +107,6 @@
       }).catch((error: undefined) => console.log("lala-lion"));;
       //const fileString = fileText.toString();
       console.log(`De content van de gelezen JSON bevat: ${fileText}`);
-
-    this.currentUser = new UserProfile("Rick Slingerland",
-    "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-    "Student",
-    "kotorem.sama@gmail.com",
-    "Hier komt wat tekst te staan die de gebruiker zelf kan instellen. Denk aan Status of een quote. In iedergeval kan dit veel tekst zijn, maar ook erg weinig")
      }
     
 

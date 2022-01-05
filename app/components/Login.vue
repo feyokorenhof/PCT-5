@@ -8,8 +8,8 @@
     </StackLayout>
     <StackLayout row="2">
       <StackLayout marginBottom="10">
-        <TextField class="nom" ref="Naam" hint="Gebruikersnaam of e-mailadres"></TextField>
-        <TextField class="nom" ref="Wachtwoord" hint="Wachtwoord" secure="true"></TextField>
+        <TextField returnKeyType="next" autocapitalizationType="none" class="nom" ref="Naam" hint="Gebruikersnaam of e-mailadres"></TextField>
+        <TextField returnKeyType="done" autocapitalizationType="none" class="nom" ref="Wachtwoord" hint="Wachtwoord" secure="true" @returnPress="goToHome"></TextField>
       </StackLayout>
       <Button class="loginbutton" text="Inloggen" @tap="goToHome"></Button>
       <Label textAlignment="center" @tap="onLinkTap($event)">
@@ -22,45 +22,22 @@
   </GridLayout>
 </template>
 
-// <script lang="js">
-//   const {Client} = require('pg')
-
-//   const client = new Client({
-//     host: "localhost",
-//     user: "postgres",
-//     port: 5432,
-//     password: "rootUser",
-//     database: "postgres"
-//   })
-
-//   client.connect();
-
-//   client.query('SELECT * FROM Users', (err, res)=>{
-//     if(!err){
-//       console.log(res.rows);
-//     }
-//     else {
-//       console.log(err.message);
-//     }
-//     client.end;
-//   })
-</script>
-
 <script lang="ts">
   import { Button, Color, EventData, Span, TapGestureEventData, TextField } from "@nativescript/core";
   import Vue from "nativescript-vue";
   import { Component, Prop } from "vue-property-decorator";
   import newPerson from "@/Models/newPerson";
   import "./Loginstyle.css";
+
+  import * as AppSettings from '@nativescript/core/application-settings';
   import UserProfile from "~/Models/UserProfile";
+
 
   let users = [new newPerson("user1",
       "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-      "Rick Slingerland", "kotorem.sama@gmail.com", "password1")
-      // new newPerson("user2",
-      // "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-      // "Ricky Slingerplant", "rickyman2002.rick@gmail.com", "password2")
-      ];
+      "Rick Slingerland", "kotorem.sama@gmail.com", "password1", "useless thing here", "Student"),
+      new newPerson("user2", "https://wallpapernoon.com/wp/medium/anime_pfp_wallpapers_212_df4fe.jpg",
+      "Jeremy Jonker", "prachtemail@yopmail.com", "password2", "YES BOYS LETS GOOO", "Student")];
 
   
 
@@ -83,6 +60,15 @@
       
       for (var index in users){
         if ((users[index].username.toLowerCase() == gebruikersnaam.text.toLowerCase() || users[index].email.toLowerCase() == gebruikersnaam.text.toLowerCase()) && users[index].password == wachtwoord.text){
+
+          AppSettings.setString("LoggedinUsername", users[index].username);
+          AppSettings.setString("LoggedinPFPUrl", users[index].pfp_url);
+          AppSettings.setString("LoggedinName", users[index].name);
+          AppSettings.setString("LoggedinEmail", users[index].email);
+          AppSettings.setString("LoggedinPassword", users[index].password);
+          AppSettings.setString("LoggedinDescription", users[index].description);
+          AppSettings.setString("LoggedinRole", users[index].role);
+
           
           //User information to JSON string
           ProfielStuff = new UserProfile(users[index].username, users[index].pfp_url, "Student", users[index].email, `password: ${users[index].password}`);
@@ -94,9 +80,9 @@
           this.$emit("onLogin", this.JSONString);
         }
         else{
-          wachtwoord.text = "";
         }
       }
+      wachtwoord.text = "";
       gebruikersnaam.className = "WrongG";
       wachtwoord.className = "WrongG";
       let blt = (this.$refs.badlog as any).nativeView;
