@@ -32,7 +32,7 @@
 
   let users = [new newPerson("user1",
       "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-      "Rick Slingerland", "kotorem.sama@gmail.com", "password1", "useless thing here")];
+      "Rick Slingerland", "kotorem.sama@gmail.com", "password1", "useless thing here", "Student")];
 
   
 
@@ -60,6 +60,7 @@
           AppSettings.setString("LoggedinEmail", users[index].email);
           AppSettings.setString("LoggedinPassword", users[index].password);
           AppSettings.setString("LoggedinDescription", users[index].description);
+          AppSettings.setString("LoggedinRole", users[index].role);
         }
         else{
           wachtwoord.text = "";

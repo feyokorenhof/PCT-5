@@ -14,9 +14,8 @@
   import { Button, Color, EventData, Span, TapGestureEventData, TextField } from "@nativescript/core";
   import Vue from "nativescript-vue";
   import { Component, Prop } from "vue-property-decorator";
-  import newPerson from "@/Models/newPerson";
   import "./Loginstyle.css";
-  import * as email from "nativescript-email";  
+  // import * as email from "nativescript-email";  
 
   @Component({ name: "AccountAanvragen", components: {}})
   
@@ -61,7 +60,7 @@
       if (voornaam.text != "" && achternaam.text != "" && emailadres.text != ""){
         this.$emit("accountAangevraagd");
 
-        //  email.available().then((avail: boolean) => {
+        // email.available().then((avail: boolean) => {
         //   console.log("Email available? " + avail);
         // })
         

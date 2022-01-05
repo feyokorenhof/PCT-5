@@ -52,6 +52,7 @@ export default class Home extends Vue {
       AppSettings.remove("LoggedinEmail");
       AppSettings.remove("LoggedinPassword");
       AppSettings.remove("LoggedinDescription");
+      AppSettings.remove("LoggedinRole");
     }
     else{
       AppSettings.setBoolean("Loggedin", true);
