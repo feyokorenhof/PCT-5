@@ -1,4 +1,6 @@
 <template>
+  <GridLayout>
+    <Button class="logoutbutton" text="Uitloggen" @tap="logOutFunction"></Button>
   <GridLayout rows="auto" height="100%">
     <GridLayout row="0" height="100%" class="posts-container">
       <ScrollView height="100%" width="95%" class="posts-listview">
@@ -6,8 +8,8 @@
           <!-- Button that executes the goToProfiel() function -->
           
           <Button class="-outline -rounded-sm" text="Mijn Profiel" fontSize="20" marginTop= "70" padding="5" @tap="goToProfiel()"></Button>
-          
           <Button class="-outline -rounded-sm" text="Chats" width="20%" height="5%" fontsize="20" padding="5" @tap="goToChats"></Button>
+          
           <GridLayout row="0">
             <Label
               text="Goedendag" 
@@ -83,6 +85,7 @@
       </ScrollView>
     </GridLayout>
   </GridLayout>
+</GridLayout>
 </template>
 
 <script lang="ts">
@@ -340,6 +343,10 @@ export default class Posts extends Vue {
     });
   }
   
+  logOutFunction(){
+    this.$emit("onLogin");
+  }
+  
 }
 </script>
 
@@ -347,6 +354,22 @@ export default class Posts extends Vue {
 @import "@nativescript/theme/scss/variables/blue";
 
 // Custom styles
+
+.logoutbutton{
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  border-radius: 10%;
+  background-color: rgb(57, 55, 121);
+  font-family: Arial;
+  font-size: 10;
+  font-weight: bold;
+  width: 60;
+  height: 20;
+  margin-left: -250;
+  margin-top: -500;
+  box-shadow: 6px 6px 6px rgba(0,0,0,155);
+}
+
 .fas {
   @include colorize($color: accent);
 }
