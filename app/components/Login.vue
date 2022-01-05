@@ -32,7 +32,9 @@
 
   let users = [new newPerson("user1",
       "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-      "Rick Slingerland", "kotorem.sama@gmail.com", "password1", "useless thing here", "Student")];
+      "Rick Slingerland", "kotorem.sama@gmail.com", "password1", "useless thing here", "Student"),
+      new newPerson("user2", "https://wallpapernoon.com/wp/medium/anime_pfp_wallpapers_212_df4fe.jpg",
+      "Jeremy Jonker", "prachtemail@yopmail.com", "password2", "YES BOYS LETS GOOO", "Student")];
 
   
 
@@ -62,10 +64,8 @@
           AppSettings.setString("LoggedinDescription", users[index].description);
           AppSettings.setString("LoggedinRole", users[index].role);
         }
-        else{
-          wachtwoord.text = "";
-        }
       }
+      wachtwoord.text = "";
       gebruikersnaam.className = "WrongG";
       wachtwoord.className = "WrongG";
       let blt = (this.$refs.badlog as any).nativeView;
