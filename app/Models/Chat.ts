@@ -4,6 +4,7 @@ export default class Chat{
     receiver_id: string;
     username: String;
     pfp_url: String;
+    messages: any[];
     last_message: String;
     message_time: String;
 
@@ -13,6 +14,7 @@ export default class Chat{
         this.receiver_id = receiver_id;
         this.username = username;
         this.pfp_url = pfp_url;
+        this.messages = [];
         this.last_message = last_message;
         this.message_time = message_time;
     }
