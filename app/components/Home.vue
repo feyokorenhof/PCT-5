@@ -1,13 +1,21 @@
 <template>
   <Page actionBarHidden="true">
-    <GridLayout rows="2*, 12*, *" height="100%">
+    <AbsoluteLayout>
+    <GridLayout rows="2*, 12*, *" height="100%" width=100%>
+      
+      <Login row="1" v-show="!loggedIn&&!accountaanvragen" @onLogin="login" @accountAangevraagd="acaangevraagd"/>
+      <AccountAanvragen row="1" v-show="accountaanvragen" @accountAangevraagd="acaangevraagd"/>
+      
+    </GridLayout>
+    <GridLayout height="100%" width=100%>
+      <Posts row="1" v-show="loggedIn&&!accountaanvragen" @onLogin="login"/>
+    </GridLayout>
+    <GridLayout rows="2*, 12*, *" height="100%" width=100%>
       <ActionBarTop row="0" v-show="loggedIn"/>
       <ActionBarTopLogIn row="0" v-show="!loggedIn"/>
-      <Login row="1" v-show="!loggedIn&&!accountaanvragen" @onLogin="login" @accountAangevraagd="acaangevraagd"/>
-      <Posts row="1" v-show="loggedIn&&!accountaanvragen" @onLogin="login"/>
-      <AccountAanvragen row="1" v-show="accountaanvragen" @accountAangevraagd="acaangevraagd"/>
       <ActionBarBottom row="2" />
     </GridLayout>
+    </AbsoluteLayout>
   </Page>
 </template>
 

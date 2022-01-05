@@ -6,8 +6,10 @@
       <ScrollView height="100%" width="95%" class="posts-listview">
         <StackLayout>
           <!-- Button that executes the goToProfiel() function -->
-          <Button class="-outline -rounded-sm" text="Mijn Profiel" fontSize="20" padding="5" @tap="goToProfiel()"></Button>
+          
+          <Button class="-outline -rounded-sm" text="Mijn Profiel" fontSize="20" marginTop= "70" padding="5" @tap="goToProfiel()"></Button>
           <Button class="-outline -rounded-sm" text="Chats" width="20%" height="5%" fontsize="20" padding="5" @tap="goToChats"></Button>
+          
           <GridLayout row="0">
             <Label
               text="Goedendag" 
