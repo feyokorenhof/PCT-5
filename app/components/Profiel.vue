@@ -7,7 +7,7 @@
       <Image src="~/Images/back_btn.png" class="back-button" horizontalAlignment="left" verticalAlignment="top" marginLeft="15" tintColor="black" width = "50" height="50" @tap="goBack"></Image>
       <Label text="Mijn Profiel" fontSize="32" textAlignment="center"></Label>
       <!--Get profile picture of user-->
-      <Image :src="profielGegevens.pfp_url" width="100" height="100" class="profile-pic"></Image>
+      <Image :src="this.currentUser.pfp_url" width="100" height="100" class="profile-pic"></Image>
     </GridLayout>
 
     <StackLayout width="95%" row="2" marginTop="-80">
@@ -18,7 +18,7 @@
         <Label>
           <FormattedString>
             <Span text="Naam: " fontSize="20" fontWeight="bold"/>
-            <Span :text ="profielGegevens.username" fontSize="20"/>
+            <Span :text ="this.currentUser.username" fontSize="20"/>
           </FormattedString>
         </Label>
 
@@ -26,7 +26,7 @@
         <Label textWrap="true">
           <FormattedString>
             <Span text="Email: " fontSize="20" fontWeight="bold"/>
-            <Span :text ="profielGegevens.email" fontSize="20"/>
+            <Span :text ="this.currentUser.email" fontSize="20"/>
           </FormattedString>
         </Label>
 
@@ -34,7 +34,7 @@
         <Label>
           <FormattedString>
             <Span text="Rol:     " fontSize="20" fontWeight="bold"/>
-            <Span :text ="profielGegevens.role" fontSize="20"/>
+            <Span :text ="this.currentUser.role" fontSize="20"/>
           </FormattedString>
         </Label>        
       </StackLayout>
@@ -45,7 +45,7 @@
         <Label textWrap="true">
           <FormattedString>
             <Span text="Info: \n" fontSize="18" fontWeight="bold" marginLeft= "30"/>
-            <Span :text="profielGegevens.gebruikerinfo" fontSize="16"/>
+            <Span :text="this.currentUser.gebruikerinfo" fontSize="16"/>
           </FormattedString>
         </Label>
       </StackLayout>
@@ -65,7 +65,8 @@
   import ActionBarTop from "./ActionBars/ActionBarTop.vue";
   import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
   import UserProfile from "@/Models/UserProfile";
-  import { getJSON } from '@nativescript/core/http';
+  import { getFile, getJSON } from '@nativescript/core/http';
+  import {knownFolders, Folder, File} from '@nativescript/core';
 
   //Defines main component and add other components if necessary
   @Component({
@@ -82,56 +83,27 @@
     str: string = "";
     currentUser!: UserProfile;  
     
-    @Prop() profielGegevens!: UserProfile;
-
-    
     //The code that runs before the page is loaded
     beforeMount() {
-    var TheUser = undefined;
-    Http.request({
-      url: 'http://192.168.178.221/ASPNET_Core_Web_API/user',
-      method: 'GET'
-    }).then(
-      (response: HttpResponse) => {
-        console.log(`Response Status Code: ${response.statusCode}` )
-        console.log(`Response String: ${response}`)
-        console.log(`Content: ${response.content}`)
-        TheUser = response.content?.toJSON;
-        
-        // const stuff = response.content
-        // var stuffToString = stuff?.toString;
-        // this.currentUser.gebruikerinfo = stuffToString;
-        // var json = stuff?.toJSON();
-        // this.currentUser = new UserProfile(json.Username, json.PfP_Url, json.Role, json.Email, json.Status)
-      },
-      ((reason: any) => {console.log(`error: ${reason}`)})
-    )
-            //Get user info here.   
-    console.log("User loaded test")
-    
-    // this.currentUser = new UserProfile("Sponsor123", 
-    // "https://cdn.vox-cdn.com/thumbor/VVXayrypyYIMqiHWIYdL77FRF_o=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/22408516/Big_Chungus.png", 
-    // "Sponsor", 
-    // "Generic.Email@gmail.com", 
-    // "Hier komt wat tekst te staan die de gebruiker zelf kan instellen. Denk aan Status of een quote. In iedergeval kan dit veel tekst zijn, maar ook erg weinig"
-    // )
+      //NIET AF
+      // const documentsFolder: Folder =<Folder>knownFolders.documents();
+      // const filePath: string = path.join(documentsFolder.path, "FileFromPath.txt")
+      // const file: File = File.FileFromPath(filePath)
+      const documents : Folder =<Folder>knownFolders.documents();
+      const file: File = documents.getFile("UserJSON.json");
+      //const fileText = file.readTextSync((error: undefined) => console.log("lala-lion"), 'UTF-8');
+      //const fileText = file.read();
+      const fileText = file.readText().then((res: any) =>{
+        console.log(res)
+      }).catch((error: undefined) => console.log("lala-lion"));;
+      //const fileString = fileText.toString();
+      console.log(`De content van de gelezen JSON bevat: ${fileText}`);
 
-    //this.currentUser = new UserProfile(currentJSONstring.username, currentJSONstring.pfp_url, currentJSONstring.role, currentJSONstring.email, currentJSONstring.gebruikerinfo)
-    // this.currentUser = new UserProfile("Rick Slingerland",
-    // "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-    // "Student",
-    // "kotorem.sama@gmail.com",
-    // "Hier komt wat tekst te staan die de gebruiker zelf kan instellen. Denk aan Status of een quote. In iedergeval kan dit veel tekst zijn, maar ook erg weinig")
-
-  //   //http://127.0.0.1:19351
-  //  //https://localhost:44328/User
-  //  //http://localhost/ASPNET_Core_Web_API/user
-  //  //'http://10.0.2.2/ASPNET_Core_Web_API/user'
-  //  //http://192.168.178.221/ASPNET_Core_Web_API/user
-      
-    console.log("test");   
-    //Check if user is copied from Http Request
-    console.log(`The user is: ${TheUser}`)
+    this.currentUser = new UserProfile("Rick Slingerland",
+    "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
+    "Student",
+    "kotorem.sama@gmail.com",
+    "Hier komt wat tekst te staan die de gebruiker zelf kan instellen. Denk aan Status of een quote. In iedergeval kan dit veel tekst zijn, maar ook erg weinig")
      }
     
 

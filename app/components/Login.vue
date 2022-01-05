@@ -87,7 +87,7 @@
           //User information to JSON string
           ProfielStuff = new UserProfile(users[index].username, users[index].pfp_url, "Student", users[index].email, `password: ${users[index].password}`);
           this.JSONString = JSON.stringify(ProfielStuff);
-          JSON.parse(this.JSONString)
+          //JSON.parse(this.JSONString)
           console.log(this.JSONString);
           
           //back to Home

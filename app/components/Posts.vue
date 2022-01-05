@@ -5,7 +5,7 @@
         <StackLayout>
           <!-- Button that executes the goToProfiel() function -->
           
-          <Button class="-outline -rounded-sm" text="Mijn Profiel" fontSize="20" padding="5" @tap="goToProfiel($event, test )"></Button>
+          <Button class="-outline -rounded-sm" text="Mijn Profiel" fontSize="20" padding="5" @tap="goToProfiel()"></Button>
           <Button class="-outline -rounded-sm" text="Chats" width="20%" height="5%" fontsize="20" padding="5" @tap="goToChats"></Button>
           <GridLayout row="0">
             <Label
@@ -336,12 +336,9 @@ export default class Posts extends Vue {
   }
 
   // Open your profile page 
-  goToProfiel(args: TapGestureEventData, profielGegevens: UserProfile){
+  goToProfiel(){
     this.$showModal(Profiel, {
       fullscreen: true,
-      props: {
-        profielGegevens: profielGegevens
-      }
     });
   }
   goToChats(){
