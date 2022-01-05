@@ -9,14 +9,14 @@
                 orientation="horizontal"
                 class="message right"
                 @tap="onMessageTap($event, msg)">
-                <Label :text="`${msg.text}`" textWrap="true" fontSize="25" />
+                <Label :text="`${msg.text}`" textWrap="true" fontSize="20" />
             </GridLayout>
             <GridLayout v-if="!isSender(msg)" columns="auto, *"                
                 orientation="horizontal"
                 class="message left"
                 col="0"
                 @tap="onMessageTap($event, msg)">
-                <Label :text="`${msg.text}`" textWrap="true" fontSize="25" />
+                <Label :text="`${msg.text}`" textWrap="true" fontSize="20" />
             </GridLayout>
           </GridLayout>
         </StackLayout>
@@ -24,8 +24,8 @@
       <GridLayout rows="2*, 12*, *" height="100%" width="100%">
         <ActionBarTop row="0" />
       </GridLayout>
-      <GridLayout rows="2*, 13*, *" columns="16*, 2*, 1" height="100%" width="100%">
-        <TextField row="2" width="85%" class="message-textfield" ref="Message" hint="Bericht" horizontalAlignment="left" returnKeyType="send" @returnPress="sendMsg($event)"></TextField>
+      <GridLayout rows="8*, 52*, 5*" columns="16*, 2*, 2, 2" height="100%" width="100%">
+        <TextField row="2" width="82.5%" class="message-textfield" ref="Message" hint="Bericht" horizontalAlignment="left" returnKeyType="send" @returnPress="sendMsg($event)"></TextField>
         <Image
           src="~/Images/send_btn.png"
           row="2"

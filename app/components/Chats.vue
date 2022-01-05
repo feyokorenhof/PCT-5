@@ -91,7 +91,7 @@ export default class Chats extends Vue {
 
   // set max character size in string, and when it exceeds max_char it truncates it with ellipsis.
   format(txt: string) {
-    if (txt.length > Screen.mainScreen.widthDIPs / 16) return `${txt.substr(0, Screen.mainScreen.widthDIPs / 16)}...`;
+    if (txt.length > Screen.mainScreen.widthDIPs / 18) return `${txt.substr(0, Screen.mainScreen.widthDIPs / 18)}...`;
     return txt;
   }
   // function to go back to main screen
@@ -176,9 +176,9 @@ export default class Chats extends Vue {
   padding: 10;
 }
 .chat-profile-pic {
-  width: 80;
-  height: 80;
-  border-radius: 60;
+  width: 70;
+  height: 70;
+  border-radius: 90;
   border-width: 1;
   border-color: #757575;
   object-fit: scale-down;
