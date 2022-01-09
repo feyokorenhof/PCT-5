@@ -66,10 +66,8 @@
   import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
   import UserProfile from "@/Models/UserProfile";
   import * as AppSettings from '@nativescript/core/application-settings';
-  
-
-  import { getFile, getJSON } from '@nativescript/core/http';
-  import {knownFolders, Folder, File} from '@nativescript/core';
+  import {WriteFile, ReadFile, ReadFileSync} from "@/Models/FileSystemFunctions";
+  import newPerson from '~/Models/newPerson';
 
   //Defines main component and add other components if necessary
   @Component({
@@ -85,35 +83,32 @@
     msg: string = "Profiel";
     str: string = "";
     currentUser!: UserProfile;  
-    
     //The code that runs before the page is loaded
-    beforeMount() {
-
+    beforeMount() 
+    {
+    var FileContent = ReadFile("Models", "UserJSON.json");
+    FileContent = "[" + FileContent + "]";
+    let JSONFileContent = JSON.parse(FileContent);
+    this.currentUser =  new UserProfile(JSONFileContent.username, JSONFileContent.pfp_url, JSONFileContent.role, JSONFileContent.email, JSONFileContent.description);
+    console.log(this.currentUser)
+    console.log(JSONFileContent)
     console.log("User loaded test")
+    
 
     this.currentUser = new UserProfile(AppSettings.getString("LoggedinName"), AppSettings.getString("LoggedinPFPUrl"),
     AppSettings.getString("LoggedinRole"), AppSettings.getString("LoggedinEmail"), AppSettings.getString("LoggedinDescription"));
+
+    //ReadFile needs: FolderName(string) and FileName(string)
+    console.log(`FileContent in Profiel.vue = ${FileContent}`);
     
-      //NIET AF
-      // const documentsFolder: Folder =<Folder>knownFolders.documents();
-      // const filePath: string = path.join(documentsFolder.path, "FileFromPath.txt")
-      // const file: File = File.FileFromPath(filePath)
-      const documents : Folder =<Folder>knownFolders.documents();
-      const file: File = documents.getFile("UserJSON.json");
-      //const fileText = file.readTextSync((error: undefined) => console.log("lala-lion"), 'UTF-8');
-      //const fileText = file.read();
-      const fileText = file.readText().then((res: any) =>{
-        console.log(res)
-      }).catch((error: undefined) => console.log("lala-lion"));;
-      //const fileString = fileText.toString();
-      console.log(`De content van de gelezen JSON bevat: ${fileText}`);
-     }
+    }
     
 
-    goBack() {
+    goBack() 
+    {
       //Back to Posts page.
       if (this.$modal) this.$modal.close();
-  }
+    }
   }
 </script>
 
@@ -121,12 +116,14 @@
   @import '@nativescript/theme/scss/variables/blue';
 
   // Custom styles
-  .fas {
+  .fas 
+  {
     @include colorize($color: accent);
   }
 
   //Back button styling and border
-  .back-button {
+  .back-button 
+  {
     width: 40;
     height: 40;
     vertical-align: middle;
@@ -136,7 +133,8 @@
   }
 
   //Profile picture styling and border
-  .profile-pic {
+  .profile-pic 
+  {
     max-width: 40;
     max-height: 40;
     border-radius: 50;
@@ -148,31 +146,35 @@
   }
   
   //Top part of user info container
-  .profile-header {
+  .profile-header 
+  {
   background-color: rgb(255, 255, 255);
   border-top-width: 5px;
   border-left-width: 5px;
   border-right-width: 5px;
   border-top-right-radius: 10;
   border-top-left-radius: 10;
-  label {
+  label 
+    {
     color: black;
-  }
+    }
   padding: 10;
-}
+  }
 
 //Bottom part of user info container
-.profile-footer {
-  background-color: rgb(255, 255, 255);
-  border-bottom-right-radius: 10;
-  border-bottom-left-radius: 10;
-  border-top-width: 2px;
-  border-bottom-width: 5px;
-  border-left-width: 5px;
-  border-right-width: 5px;
-  label {
-    color: black;
+  .profile-footer 
+  {
+    background-color: rgb(255, 255, 255);
+    border-bottom-right-radius: 10;
+    border-bottom-left-radius: 10;
+    border-top-width: 2px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-right-width: 5px;
+    label 
+      {
+        color: black;
+      }
+    padding: 10;
   }
-  padding: 10;
-}
 </style>
