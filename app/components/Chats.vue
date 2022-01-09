@@ -2,11 +2,10 @@
   <Page actionBarHidden="true">
     <!-- absolute layout for custom actionbar -->
     <AbsoluteLayout>
-      <!-- scroll voor grote hoeveelheid chats -->
-      <ScrollView width="100%" height="100%" marginTop="6%" marginBottom="5%">
+      <!-- scroll for big amount of chats -->
+      <ScrollView width="100%" height="100%" marginTop="10%" marginBottom="10%">
         <!-- start stacklayout with starter so chats don't fall behind actionbar -->
         <StackLayout>
-          <label height="30" class="chat-container" />
           <!-- create a frontend for every chat -->
           <Gridlayout
             v-for="chat in chats"
@@ -41,7 +40,9 @@
             </GridLayout>
           </Gridlayout>
           <!-- end chats with ender so chats don't fall behind bottom actionbar /-->
-          <label height="180" class="chat-container" />
+          <label height="10" class="chat-container"/>
+          <label height="50" text="geen chats meer..." fontSize="15" horizontalAlignment="center"/>
+          <label height="60"></label>         
         </StackLayout>
       </ScrollView>
       <!-- load in actiobar top and bottom in absolute layout -->
@@ -49,6 +50,11 @@
         <ActionBarTop row="0" />
         <ActionBarBottom row="2" />
       </GridLayout>
+      <!-- add button chats -->
+      <GridLayout columns="5*, 5*, 2*" rows="2*, 12*, 1*" height="94%" width="100%">
+        <Image @tap="goChatNew($event)" src="~/Images/add_btn.png" row="2" col="2"></Image>
+      </GridLayout> 
+      <!-- back button left top -->
       <GridLayout columns="60, 410, 60" rows="50, 720, 60">
         <Image
           src="~/Images/back_btn.png"
@@ -57,7 +63,6 @@
           marginTop="10"
           @tap="goBack"
         ></Image>
-        <Image src="~/Images/add_btn.png" row="3" col="3"></Image>
       </GridLayout>
     </AbsoluteLayout>
   </Page>
@@ -73,6 +78,8 @@ import ActionBarTop from "./ActionBars/ActionBarTop.vue";
 import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
 //import Home from "./Home.vue";
 import ChatDisplay from "./ChatDisplay.vue";
+import ChatNew from "./ChatNew.vue";
+import { Screen } from "@nativescript/core/platform";
 @Component({
   name: "Chats",
   components: {
@@ -82,24 +89,32 @@ import ChatDisplay from "./ChatDisplay.vue";
 })
 export default class Chats extends Vue {
   msg: string = "Chats";
-  max_char: number = 30;
+  static chats: Array<any>;
+
   // set max character size in string, and when it exceeds max_char it truncates it with ellipsis.
   format(txt: string) {
-    if (txt.length > this.max_char) return `${txt.substr(0, this.max_char)}...`;
+    if (txt.length > Screen.mainScreen.widthDIPs / 16) return `${txt.substr(0, Screen.mainScreen.widthDIPs / 16)}...`;
     return txt;
   }
   // function to go back to main screen
   goBack() {
     if (this.$modal) this.$modal.close();
   }
+  // function to go to the ChatDisplay
   goChat(args: TapGestureEventData, chat: Chat) {
     this.$showModal(ChatDisplay, {
       fullscreen: true,
       props: { chat: chat }
     });
   }
-  // chats aanmaken voor template, later inladen via API
-  chats = [
+  // function to create new chat
+  goChatNew(args: TapGestureEventData) {
+    this.$showModal(ChatNew, {
+      fullscreen: true
+      });
+  }
+  // chats to load in, hopefully later via API or local JSON
+  chats: Array<any> = [
     {
       chat_id: "1",
       sender_id: "1",
@@ -107,7 +122,7 @@ export default class Chats extends Vue {
       username: "fkorrie",
       pfp_url:
         "https://cdn.vox-cdn.com/thumbor/VVXayrypyYIMqiHWIYdL77FRF_o=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/22408516/Big_Chungus.png",
-      last_message: "Over het laatste nieuws gesproken",
+      last_message: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
       message_time: "18:46",
       messages: [
         {
@@ -126,7 +141,49 @@ export default class Chats extends Vue {
         },
         {
           type: 5,
-          text: "Over het laatste nieuws gesproken",
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
+          message_id: "3",
+          sender_id: "1",
+          receiver_id: "2"
+        },
+        {
+          type: 5,
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
+          message_id: "3",
+          sender_id: "1",
+          receiver_id: "2"
+        },
+        {
+          type: 5,
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
+          message_id: "3",
+          sender_id: "1",
+          receiver_id: "2"
+        },
+        {
+          type: 5,
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
+          message_id: "3",
+          sender_id: "1",
+          receiver_id: "2"
+        },
+        {
+          type: 5,
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
+          message_id: "3",
+          sender_id: "1",
+          receiver_id: "2"
+        },
+        {
+          type: 5,
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
+          message_id: "3",
+          sender_id: "1",
+          receiver_id: "2"
+        },
+        {
+          type: 5,
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
           message_id: "3",
           sender_id: "1",
           receiver_id: "2"
@@ -169,9 +226,9 @@ export default class Chats extends Vue {
   padding: 10;
 }
 .chat-profile-pic {
-  width: 80;
-  height: 80;
-  border-radius: 60;
+  width: 60;
+  height: 60;
+  border-radius: 90;
   border-width: 1;
   border-color: #757575;
   object-fit: scale-down;
@@ -181,11 +238,11 @@ export default class Chats extends Vue {
   color: black;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  font-size: 22em;
+  font-size: 18em;
 }
 .chat-time-passed {
   color: black;
   font-style: italic;
-  font-size: 18em;
+  font-size: 14em;
 }
 </style>

@@ -2,34 +2,37 @@
   <Page actionBarHidden="true">
     <!-- absolute layout for custom actiobar -->
     <AbsoluteLayout>
-      <ScrollView width="100%" height="100%" marginTop="10%" marginBottom="5%">
+      <ScrollView width="100%" height="100%" marginTop="6%" ref="scrollView"> 
         <StackLayout>
+          <Label height="20"/>
           <GridLayout v-for="msg in chat.messages" :key="msg.message_id">
-            <GridLayout v-if="isSender(msg)" columns="*, auto">
-              <StackLayout
+            <GridLayout v-if="isSender(msg)" columns="*, auto" 
                 orientation="horizontal"
-                class="message right"
-                col="1"
-                @tap="onMessageTap($event, msg)"
-              >
-                <Label :text="`${msg.text}`" textWrap="true" />
-              </StackLayout>
+                @tap="onMessageTap($event, msg)">
+                <Label :text="`${msg.text}`" textWrap="true" fontSize="20" class="message right" textAlignment="right" horizontalAlignment="right" marginRight="4" marginLeft="4"/>
             </GridLayout>
-            <GridLayout v-if="!isSender(msg)" columns="auto, *">
-              <StackLayout
+            <GridLayout v-if="!isSender(msg)" columns="auto, *"                
                 orientation="horizontal"
-                class="message left"
                 col="0"
-                @tap="onMessageTap($event, msg)"
-              >
-                <Label :text="`${msg.text}`" textWrap="true" />
-              </StackLayout>
+                @tap="onMessageTap($event, msg)">
+                <Label :text="`${msg.text}`" textWrap="true" fontSize="20" class="message left" textAlignment="left" marginLeft="4" marginRight="4"/>
             </GridLayout>
           </GridLayout>
+          <Label height="120"/>
         </StackLayout>
       </ScrollView>
       <GridLayout rows="2*, 12*, *" height="100%" width="100%">
         <ActionBarTop row="0" />
+      </GridLayout>
+      <GridLayout rows="16*, 104*, 10*, 1*" columns="16*, 2*, 2, 2" height="100%" width="100%">
+        <TextField row="2" width="82.5%" class="message-textfield" ref="Message" hint="Bericht" horizontalAlignment="left" returnKeyType="send" @returnPress="sendMsg($event)"></TextField>
+        <Image
+          src="~/Images/send_btn.png"
+          row="2"
+          col="1"
+          marginBottom="5"
+          @tap="sendMsg($event)"
+        ></Image>
       </GridLayout>
       <GridLayout columns="60, 410, 60" rows="50, 720, 60">
         <Image
@@ -49,7 +52,7 @@ import Vue from "nativescript-vue";
 import ActionBarTop from "./ActionBars/ActionBarTop.vue";
 import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
 import { Component, Prop } from "vue-property-decorator";
-import { GridLayout, TapGestureEventData } from "@nativescript/core";
+import { Button, EventData, GridLayout, ImageAsset, ScrollView, TapGestureEventData, TextField } from "@nativescript/core";
 import { Screen } from "@nativescript/core/platform";
 import Message from "@/Models/Message";
 import Chat from "@/Models/Chat";
@@ -65,6 +68,9 @@ export default class ChatDisplay extends Vue {
   get GetSH() {
     return Screen.mainScreen.heightDIPs;
   }
+  getRandomInt(max: number) {
+    return Math.floor(Math.random() * max);
+  }
   isSender(msg: Message) {
     console.log(msg.sender_id == this.chat.sender_id);
     return msg.sender_id == this.chat.sender_id;
@@ -78,10 +84,39 @@ export default class ChatDisplay extends Vue {
   goBack() {
     if (this.$modal) this.$modal.close();
   }
+  sendMsg(event: TapGestureEventData) {
+    let rawtxt: TextField = (this.$refs.Message as any).nativeView as TextField;
+    let txt = rawtxt.text.trim()
+    if (txt !== null && txt !== "") {
+        this.chat.messages.push({
+        message_id: `${this.getRandomInt(99999999)}`,
+        type: 5,
+        text: txt,
+        sender_id: this.chat.sender_id,
+        receiver_id: this.chat.receiver_id
+      })
+      rawtxt.text = ""
+    }
+    rawtxt.dismissSoftInput();
+  }
+  // Scrolldown(data: EventData) {
+  // let scrollView: ScrollView = (this.$refs.scrollView as any) as ScrollView
+  // scrollView.scrollToVerticalOffset(scrollView.scrollableHeight, false)
+  // }
 }
 </script>
 
 <style lang="scss" scoped>
+.message-textfield {
+  color: black;
+  font-size: 16;
+  background-color: rgb(207, 207, 207);
+  border-radius: 10;
+  padding: 10;
+  border-bottom-width: 1;
+  border-bottom-color: transparent;
+}
+
 .chat-container {
   border-top-width: 2px;
   border-color: #757575;
@@ -98,8 +133,7 @@ export default class ChatDisplay extends Vue {
 }
 .right {
   background-color: #CD1045;
-  text-align: right;
-  float: right;
+  // horizontal-align: right;
 }
 .left {
   background-color: #615a5c;

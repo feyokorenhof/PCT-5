@@ -1,8 +1,6 @@
 <template>
   <StackLayout row="0" class="top-container">    
-    <GridLayout class="blue-top">
-      <!-- <Image @src="AppSettings.getString('LoggedinPFPUrl')" width = "40" height="40" horizontalAlignment="right" class="profile-pic"></Image> -->
-    </GridLayout>
+    <GridLayout class="blue-top"></GridLayout>
     <GridLayout class="red-top"></GridLayout>
   </StackLayout>
 </template>
