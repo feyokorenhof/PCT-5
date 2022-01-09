@@ -39,7 +39,6 @@
       new newPerson("user2", "https://i.pinimg.com/originals/d1/1e/20/d11e20d44501e1a59439b5344e07f5d7.jpg",
       "Jeremy Jonker", "test.studenten@gmail.com", "password2", "This can not continue", "Student")];
 
-  
 
   @Component({ name: "Login", components: {}})
   
@@ -68,6 +67,7 @@
           AppSettings.setString("LoggedinPassword", users[index].password);
           AppSettings.setString("LoggedinDescription", users[index].description);
           AppSettings.setString("LoggedinRole", users[index].role);
+          AppSettings.setString("LoggedinID", users[index].ID);
 
           //User information to JSON string
           ProfielStuff = new UserProfile(users[index].username, users[index].pfp_url, "Student", users[index].email, users[index].description);

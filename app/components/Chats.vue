@@ -52,7 +52,7 @@
       </GridLayout>
       <!-- add button chats -->
       <GridLayout columns="5*, 5*, 2*" rows="2*, 12*, 1*" height="94%" width="100%">
-        <Image src="~/Images/add_btn.png" row="2" col="2"></Image>
+        <Image @tap="goChatNew($event)" src="~/Images/add_btn.png" row="2" col="2"></Image>
       </GridLayout> 
       <!-- back button left top -->
       <GridLayout columns="60, 410, 60" rows="50, 720, 60">
@@ -78,6 +78,7 @@ import ActionBarTop from "./ActionBars/ActionBarTop.vue";
 import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
 //import Home from "./Home.vue";
 import ChatDisplay from "./ChatDisplay.vue";
+import ChatNew from "./ChatNew.vue";
 import { Screen } from "@nativescript/core/platform";
 @Component({
   name: "Chats",
@@ -88,10 +89,11 @@ import { Screen } from "@nativescript/core/platform";
 })
 export default class Chats extends Vue {
   msg: string = "Chats";
+  static chats: Array<any>;
 
   // set max character size in string, and when it exceeds max_char it truncates it with ellipsis.
   format(txt: string) {
-    if (txt.length > Screen.mainScreen.widthDIPs / 18) return `${txt.substr(0, Screen.mainScreen.widthDIPs / 18)}...`;
+    if (txt.length > Screen.mainScreen.widthDIPs / 16) return `${txt.substr(0, Screen.mainScreen.widthDIPs / 16)}...`;
     return txt;
   }
   // function to go back to main screen
@@ -105,8 +107,14 @@ export default class Chats extends Vue {
       props: { chat: chat }
     });
   }
+  // function to create new chat
+  goChatNew(args: TapGestureEventData) {
+    this.$showModal(ChatNew, {
+      fullscreen: true
+      });
+  }
   // chats to load in, hopefully later via API or local JSON
-  chats = [
+  chats: Array<any> = [
     {
       chat_id: "1",
       sender_id: "1",
@@ -114,7 +122,7 @@ export default class Chats extends Vue {
       username: "fkorrie",
       pfp_url:
         "https://cdn.vox-cdn.com/thumbor/VVXayrypyYIMqiHWIYdL77FRF_o=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/22408516/Big_Chungus.png",
-      last_message: "Over het laatste nieuws gesproken",
+      last_message: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
       message_time: "18:46",
       messages: [
         {
@@ -133,7 +141,49 @@ export default class Chats extends Vue {
         },
         {
           type: 5,
-          text: "Over het laatste nieuws gesproken",
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
+          message_id: "3",
+          sender_id: "1",
+          receiver_id: "2"
+        },
+        {
+          type: 5,
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
+          message_id: "3",
+          sender_id: "1",
+          receiver_id: "2"
+        },
+        {
+          type: 5,
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
+          message_id: "3",
+          sender_id: "1",
+          receiver_id: "2"
+        },
+        {
+          type: 5,
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
+          message_id: "3",
+          sender_id: "1",
+          receiver_id: "2"
+        },
+        {
+          type: 5,
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
+          message_id: "3",
+          sender_id: "1",
+          receiver_id: "2"
+        },
+        {
+          type: 5,
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
+          message_id: "3",
+          sender_id: "1",
+          receiver_id: "2"
+        },
+        {
+          type: 5,
+          text: "Over het laatste nieuws gesproken, ik weet niet of we morgen nog wel kunnen samenkomen voor de bespreking gezien de huidige corona maatregelen",
           message_id: "3",
           sender_id: "1",
           receiver_id: "2"
@@ -176,8 +226,8 @@ export default class Chats extends Vue {
   padding: 10;
 }
 .chat-profile-pic {
-  width: 70;
-  height: 70;
+  width: 60;
+  height: 60;
   border-radius: 90;
   border-width: 1;
   border-color: #757575;
@@ -188,11 +238,11 @@ export default class Chats extends Vue {
   color: black;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  font-size: 22em;
+  font-size: 18em;
 }
 .chat-time-passed {
   color: black;
   font-style: italic;
-  font-size: 18em;
+  font-size: 14em;
 }
 </style>
