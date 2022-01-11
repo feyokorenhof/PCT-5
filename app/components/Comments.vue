@@ -82,6 +82,7 @@ import Post from "@/Models/Post";
 import Comment from "@/components/Comment.vue";
 
 import User from "@/Models/User";
+import * as AppSettings from '@nativescript/core/application-settings';
 
 @Component({
   name: "Comments",
@@ -108,10 +109,7 @@ export default class Comments extends Vue {
   }
 
   beforeMount() {
-    this.currentUser = new User(
-      "Rick Slingerland",
-      "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj"
-    );
+    this.currentUser = new User(AppSettings.getString("LoggedinName"), AppSettings.getString("LoggedinPFPUrl")); 
   }
 
   sh() {

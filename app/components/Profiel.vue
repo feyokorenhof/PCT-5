@@ -86,21 +86,13 @@
     //The code that runs before the page is loaded
     beforeMount() 
     {
-    var FileContent = ReadFile("Models", "UserJSON.json");
-    FileContent = "[" + FileContent + "]";
+    var FileContent = ReadFileSync("Models", "UserJSON.json");
+
     let JSONFileContent = JSON.parse(FileContent);
-    this.currentUser =  new UserProfile(JSONFileContent.username, JSONFileContent.pfp_url, JSONFileContent.role, JSONFileContent.email, JSONFileContent.description);
-    console.log(this.currentUser)
-    console.log(JSONFileContent)
+    this.currentUser =  JSON.parse(FileContent);
+    console.log(`CurrentUser: this.currentUser`)
+    console.log(`FileContent CurrentUser: ${JSONFileContent}`)
     console.log("User loaded test")
-    
-
-    this.currentUser = new UserProfile(AppSettings.getString("LoggedinName"), AppSettings.getString("LoggedinPFPUrl"),
-    AppSettings.getString("LoggedinRole"), AppSettings.getString("LoggedinEmail"), AppSettings.getString("LoggedinDescription"));
-
-    //ReadFile needs: FolderName(string) and FileName(string)
-    console.log(`FileContent in Profiel.vue = ${FileContent}`);
-    
     }
     
 

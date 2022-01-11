@@ -6,7 +6,8 @@ export function WriteFile(FileContent: any, FolderName: string, FileName: string
             const folder: Folder = <Folder>documents.getFolder(FolderName);
             const file: File = <File>folder.getFile(FileName);
             
-            return file.writeText(FileContent);
+            file.writeText(FileContent);
+            return FileContent;
         }
         
 export function ReadFile(FolderName: string, FileName: string): string
