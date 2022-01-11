@@ -2,29 +2,28 @@
   <Page actionBarHidden="true">
     <!-- absolute layout for custom actiobar -->
     <AbsoluteLayout>
-      <ScrollView width="100%" height="100%" marginTop="10%" marginBottom="5%">
+      <ScrollView width="100%" height="100%" marginTop="6%" ref="scrollView"> 
         <StackLayout>
+          <Label height="20"/>
           <GridLayout v-for="msg in chat.messages" :key="msg.message_id">
             <GridLayout v-if="isSender(msg)" columns="*, auto" 
                 orientation="horizontal"
-                class="message right"
                 @tap="onMessageTap($event, msg)">
-                <Label :text="`${msg.text}`" textWrap="true" fontSize="20" />
+                <Label :text="`${msg.text}`" textWrap="true" fontSize="20" class="message right" textAlignment="right" horizontalAlignment="right" marginRight="4" marginLeft="4"/>
             </GridLayout>
             <GridLayout v-if="!isSender(msg)" columns="auto, *"                
                 orientation="horizontal"
-                class="message left"
-                col="0"
                 @tap="onMessageTap($event, msg)">
-                <Label :text="`${msg.text}`" textWrap="true" fontSize="20" />
+                <Label :text="`${msg.text}`" textWrap="true" fontSize="20" class="message left" textAlignment="left" horizontalAlignment="right" marginLeft="4" marginRight="4"/>
             </GridLayout>
           </GridLayout>
+          <Label height="120"/>
         </StackLayout>
       </ScrollView>
       <GridLayout rows="2*, 12*, *" height="100%" width="100%">
         <ActionBarTop row="0" />
       </GridLayout>
-      <GridLayout rows="8*, 52*, 5*" columns="16*, 2*, 2, 2" height="100%" width="100%">
+      <GridLayout rows="16*, 104*, 10*, 1*" columns="16*, 2*, 2, 2" height="100%" width="100%">
         <TextField row="2" width="82.5%" class="message-textfield" ref="Message" hint="Bericht" horizontalAlignment="left" returnKeyType="send" @returnPress="sendMsg($event)"></TextField>
         <Image
           src="~/Images/send_btn.png"
@@ -52,7 +51,7 @@ import Vue from "nativescript-vue";
 import ActionBarTop from "./ActionBars/ActionBarTop.vue";
 import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
 import { Component, Prop } from "vue-property-decorator";
-import { Button, GridLayout, ImageAsset, TapGestureEventData, TextField } from "@nativescript/core";
+import { Button, EventData, GridLayout, ImageAsset, ScrollView, TapGestureEventData, TextField } from "@nativescript/core";
 import { Screen } from "@nativescript/core/platform";
 import Message from "@/Models/Message";
 import Chat from "@/Models/Chat";
@@ -89,8 +88,10 @@ export default class ChatDisplay extends Vue {
     let txt = rawtxt.text.trim()
     if (txt !== null && txt !== "") {
         this.chat.messages.push({
-        message_id: `${this.getRandomInt(999999)}`,
+        message_id: `${this.getRandomInt(99999999)}`,
         type: 5,
+        image: null,
+        video: null,
         text: txt,
         sender_id: this.chat.sender_id,
         receiver_id: this.chat.receiver_id
@@ -99,6 +100,10 @@ export default class ChatDisplay extends Vue {
     }
     rawtxt.dismissSoftInput();
   }
+  // Scrolldown(data: EventData) {
+  // let scrollView: ScrollView = (this.$refs.scrollView as any) as ScrollView
+  // scrollView.scrollToVerticalOffset(scrollView.scrollableHeight, false)
+  // }
 }
 </script>
 
@@ -124,13 +129,12 @@ export default class ChatDisplay extends Vue {
 .message {
   color: white;
   border-radius: 20;
-  padding: 5 10;
+  padding: 5 8;
   margin-bottom: 5;
 }
 .right {
   background-color: #CD1045;
-  text-align: right;
-  float: right;
+  // horizontal-align: right;
 }
 .left {
   background-color: #615a5c;

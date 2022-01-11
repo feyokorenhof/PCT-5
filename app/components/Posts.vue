@@ -97,9 +97,14 @@ import Comments from "@/components/Comments.vue";
 import AddPost from "@/components/AddPost.vue"
 import Profiel from "@/components/Profiel.vue"
 import Chats from "@/components/Chats.vue"
+import Chat from "@/Models/Chat";
 
 import User from "@/Models/User";
 import { PostType } from "~/Models/PostType";
+import UserProfile from "~/Models/UserProfile";
+import {WriteFile, ReadFile, ReadFileSync, FileExist} from "@/Models/FileSystemFunctions";
+import * as AppSettings from '@nativescript/core/application-settings';
+import Message from "~/Models/Message";
 
 // import { mapActions, mapGetters } from "vuex";
 
@@ -114,6 +119,8 @@ import { PostType } from "~/Models/PostType";
 export default class Posts extends Vue {
   posts2!: Post[];
   liked!: Number[];
+  JSONString: string = "";
+  JSONStringFile: string = "";
 
   heartContent!: (id: String) => void;
 
@@ -337,6 +344,24 @@ export default class Posts extends Vue {
     });
   }
   goToChats(){
+    try {
+      if (FileExist("Models", "ChatsJSON.json") != true){
+        let newMessage = new Message("FirstMessage", 5, null, null, "Welkom bij de team Phidippides app! \n heb je vragen of opmerkingen? \n Neem dan contact op met de berheerder.", AppSettings.getString("LoggedinID"), "ChatBot",)
+        let newchat = new Chat("FirstChat", "ChatBot", AppSettings.getString("LoggedinID"), "Team Phidippides", "https://i.ibb.co/vQDQgX3/ic-launcher.png", [newMessage], "Welkom bij de team Phidippides app! \n heb je vragen of opmerkingen? \n Neem dan contact op met de berheerder.", "nu")
+        let ChatsArray: Array<any> = ["FirstChat.json"];
+        this.JSONString = JSON.stringify(newchat)
+        this.JSONStringFile = JSON.stringify(ChatsArray)
+        WriteFile(this.JSONString, "Models", "FirstChat.json");
+        WriteFile(this.JSONStringFile, "Models", "ChatsJSON.json")
+        console.log(this.JSONStringFile)
+        console.log(this.JSONString)
+        console.log(ReadFileSync("Models", "ChatsJSON.json"))
+        console.log("File not found, created new one!")
+      }
+    } catch (error) {
+     console.log("an error has occured") 
+    }
+
     this.$showModal(Chats, {
       fullscreen: true,
     });

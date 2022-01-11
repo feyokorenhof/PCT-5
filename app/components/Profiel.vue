@@ -65,9 +65,10 @@
   import ActionBarTop from "./ActionBars/ActionBarTop.vue";
   import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
   import UserProfile from "@/Models/UserProfile";
-  import { getJSON } from '@nativescript/core/http';
   import * as AppSettings from '@nativescript/core/application-settings';
-  
+  import {WriteFile, ReadFile, ReadFileSync} from "@/Models/FileSystemFunctions";
+  import newPerson from '~/Models/newPerson';
+
   //Defines main component and add other components if necessary
   @Component({
     name: "Profiel",
@@ -82,45 +83,24 @@
     msg: string = "Profiel";
     str: string = "";
     currentUser!: UserProfile;  
-
-    
     //The code that runs before the page is loaded
-    beforeMount() {
-    var TheUser = undefined;
-    // Http.request({
-    //   url: 'http://192.168.178.221/ASPNET_Core_Web_API/user',
-    //   method: 'GET'
-    // }).then(
-    //   (response: HttpResponse) => {
-    //     console.log(`Response Status Code: ${response.statusCode}` )
-    //     console.log(`Response String: ${response}`)
-    //     console.log(`Content: ${response.content}`)
-    //     TheUser = response.content?.toJSON;
-        
-        // const stuff = response.content
-        // var stuffToString = stuff?.toString;
-        // this.currentUser.gebruikerinfo = stuffToString;
-        // var json = stuff?.toJSON();
-        // this.currentUser = new UserProfile(json.Username, json.PfP_Url, json.Role, json.Email, json.Status)
-    //   },
-    //   ((reason: any) => {console.log(`error: ${reason}`)})
-    // )
-            //Get user info here.   
+    beforeMount() 
+    {
+    var FileContent = ReadFileSync("Models", "UserJSON.json");
+
+    let JSONFileContent = JSON.parse(FileContent);
+    this.currentUser =  JSON.parse(FileContent);
+    console.log(`CurrentUser: this.currentUser`)
+    console.log(`FileContent CurrentUser: ${JSONFileContent}`)
     console.log("User loaded test")
-
-    this.currentUser = new UserProfile(AppSettings.getString("LoggedinName"), AppSettings.getString("LoggedinPFPUrl"),
-    AppSettings.getString("LoggedinRole"), AppSettings.getString("LoggedinEmail"), AppSettings.getString("LoggedinDescription"));
-    
-    console.log("test");   
-    //Check if user is copied from Http Request
-    console.log(`The user is: ${TheUser}`)
-     }
+    }
     
 
-    goBack() {
+    goBack() 
+    {
       //Back to Posts page.
       if (this.$modal) this.$modal.close();
-  }
+    }
   }
 </script>
 
@@ -128,12 +108,14 @@
   @import '@nativescript/theme/scss/variables/blue';
 
   // Custom styles
-  .fas {
+  .fas 
+  {
     @include colorize($color: accent);
   }
 
   //Back button styling and border
-  .back-button {
+  .back-button 
+  {
     width: 40;
     height: 40;
     vertical-align: middle;
@@ -143,7 +125,8 @@
   }
 
   //Profile picture styling and border
-  .profile-pic {
+  .profile-pic 
+  {
     max-width: 40;
     max-height: 40;
     border-radius: 50;
@@ -155,31 +138,35 @@
   }
   
   //Top part of user info container
-  .profile-header {
+  .profile-header 
+  {
   background-color: rgb(255, 255, 255);
   border-top-width: 5px;
   border-left-width: 5px;
   border-right-width: 5px;
   border-top-right-radius: 10;
   border-top-left-radius: 10;
-  label {
+  label 
+    {
     color: black;
-  }
+    }
   padding: 10;
-}
+  }
 
 //Bottom part of user info container
-.profile-footer {
-  background-color: rgb(255, 255, 255);
-  border-bottom-right-radius: 10;
-  border-bottom-left-radius: 10;
-  border-top-width: 2px;
-  border-bottom-width: 5px;
-  border-left-width: 5px;
-  border-right-width: 5px;
-  label {
-    color: black;
+  .profile-footer 
+  {
+    background-color: rgb(255, 255, 255);
+    border-bottom-right-radius: 10;
+    border-bottom-left-radius: 10;
+    border-top-width: 2px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-right-width: 5px;
+    label 
+      {
+        color: black;
+      }
+    padding: 10;
   }
-  padding: 10;
-}
 </style>
