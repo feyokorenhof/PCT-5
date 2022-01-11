@@ -1,17 +1,16 @@
 <template>
-  <GridLayout>
+<GridLayout>
+  <Button class="logoutbutton" text="Uitloggen" @tap="logOutFunction()"></Button>
   <GridLayout rows="auto" height="100%">
     <GridLayout row="0" height="100%" class="posts-container">
       <ScrollView height="100%" width="95%" class="posts-listview">
         <StackLayout>
           <!-- Button that executes the goToProfiel() function -->
-          
-          <Button class="-outline -rounded-sm" text="Mijn Profiel" fontSize="20" marginTop= "70" padding="5" @tap="goToProfiel()"></Button>
-          <Button class="-outline -rounded-sm" text="Chats" width="20%" height="5%" fontsize="20" padding="5" @tap="goToChats"></Button>
-          
+          <Button class="-outline -rounded-sm" text="Mijn Profiel" fontSize="20" marginTop="70" padding="5" @tap="goToProfiel()"></Button>
+          <Button class="-outline -rounded-sm" text="Chats" width="20%" height="5%" fontsize="20" padding="5" @tap="goToChats()"></Button>
           <GridLayout row="0">
             <Label
-              text="Goedendag" 
+              text="Goedendag"
               fontSize="25"
               horizontalAlignment="center"
             ></Label>
@@ -25,46 +24,29 @@
             <!-- Username / Header / ? -->
             <GridLayout row="0" class="post-username">
               <Label :text="post.username"></Label>
-            <!-- <Button
-              src="~/Images/add_btn.png"
-              class="add-post"
-              @tap="MakePost"
-              horizontalAlignment="right"
-            >
-            </Button> -->
-            <!-- Header -->
-            <GridLayout row="0" class="post-header">
-              <Label :text="post.header" textWrap="true"></Label>
             </GridLayout>
-            </GridLayout>
-            <!-- Image / Tekst -->
+            <!-- Image -->
             <GridLayout row="1" class="post-body">
-              <Image :src=resizeInput(post)> </Image>
+              <Image :src="post.image" class="post-image"> </Image>
             </GridLayout>
-            <!-- Text -->
+            <!-- Footer van posts -->
             <GridLayout row="3" class="post-footer">
               <Label :text="post.footer" textWrap="true"></Label>
             </GridLayout>
             <!-- Heart -->
-              <!--<GridLayout 
-                row="2"
-                class="post-heart"
-              >
-                <Label :text="[post.likes + ' likes']"></Label>
-                <Button 
-                  class="button-heart"
-                  horizontalAlignment="left"
-                  src="~/Images/heart-empty.png"    
-                  @tap="heartPost"
-                ></Button>
-                   src="~/Images/heart-empty.png"
-                  @tap="heartPost($event, post)" 
-                 v-show="likes.includes(post.id)"
-                 <Image
-                  src="~/Images/heart-empty.png"
-                  class="post-heart"
-                ></Image>
-              </GridLayout> -->
+            <GridLayout columns="*, 4*" row="2" class="post-heart" width="100%" @tap="likePost($event, post)">
+              <Image src="~/Images/heart-empty.png" 
+                v-show="!hasLiked(post)" 
+                TintColor="black" 
+                col="0"
+              />
+              <Label :text="[post.likes.length + ' likes']" col="1"></Label>
+              <Image src="~/Images/heart-full.png" 
+                v-show="hasLiked(post)" 
+                TintColor="black" 
+                col="0"
+              />
+            </GridLayout>
             <!-- Comments preview (take first/last/most liked / ?) -->
             <StackLayout row="3" class="post-footer">
               <StackLayout
@@ -83,6 +65,20 @@
         </StackLayout>
       </ScrollView>
     </GridLayout>
+    <GridLayout columns="5*, 5*, 2*" rows="2*, 12*, 1*" height="94%" width="100%">
+      <!-- <Image
+      src="~/Images/add_btn.png"
+      class="button-image"
+      horizontalAlignment="right"
+      marginBottom="50"
+      row="2"
+      col="2"
+      @tap="MakePost()"
+      >
+      </Image> -->
+      </GridLayout> 
+    <GridLayout>
+  </GridLayout>
   </GridLayout>
 </GridLayout>
 </template>
@@ -90,21 +86,19 @@
 <script lang="ts">
 import Vue from "nativescript-vue";
 import { Component, Prop } from "vue-property-decorator";
-import { TapGestureEventData, Label } from "@nativescript/core";
-
+import { FormattedString, TapGestureEventData, Label, Span } from "@nativescript/core";
+import { Screen } from "@nativescript/core/platform";
 import Post from "@/Models/Post";
+import Chat from "@/Models/Chat";
+import Message from "@/Models/Message";
 import Comments from "@/components/Comments.vue";
 import AddPost from "@/components/AddPost.vue"
-import Profiel from "@/components/Profiel.vue"
 import Chats from "@/components/Chats.vue"
-import Chat from "@/Models/Chat";
-
+import Profiel from "@/components/Profiel.vue"
 import User from "@/Models/User";
-import { PostType } from "~/Models/PostType";
-import UserProfile from "~/Models/UserProfile";
 import {WriteFile, ReadFile, ReadFileSync, FileExist} from "@/Models/FileSystemFunctions";
+import UserProfile from "~/Models/UserProfile";
 import * as AppSettings from '@nativescript/core/application-settings';
-import Message from "~/Models/Message";
 
 // import { mapActions, mapGetters } from "vuex";
 
@@ -113,33 +107,84 @@ import Message from "~/Models/Message";
   components: {
     Comments,
     AddPost,
+    Chats,
     Profiel
   }
 })
+
 export default class Posts extends Vue {
-  posts2!: Post[];
-  liked!: Number[];
+  currentUser!: User;
   JSONString: string = "";
   JSONStringFile: string = "";
+  beforeMount() 
+  {
+    var FileContent = ReadFile("Models", "PostJSON.json");
+    FileContent = "{" + FileContent + "}";
+    let JSONFileContent = JSON.parse(FileContent);
+    this.currentUser =  new UserProfile(JSONFileContent.username, JSONFileContent.pfp_url, JSONFileContent.role, JSONFileContent.email, JSONFileContent.description);
+    this.currentUser = new UserProfile(AppSettings.getString("LoggedinName"), AppSettings.getString("LoggedinPFPUrl"),
+    AppSettings.getString("LoggedinRole"), AppSettings.getString("LoggedinEmail"), AppSettings.getString("LoggedinDescription"));    
+    }
 
-  heartContent!: (id: String) => void;
+  hasLiked(post: Post) {
+    if (post.likes.indexOf(this.currentUser.username) != -1){
+      return true;
+    }
+    return false;
+  }
 
+  likePost(args: TapGestureEventData, post: Post) {
+    let id = this.currentUser.username;
+    // Check of het al geliked is (anders hartje weer weghalen)
+    let index = post.likes.indexOf(id);
+    if (index != -1) {    
+      post.likes.splice(index, 1);
+    }
+    else {
+      post.likes.push(id);
+    }
+  }
+
+  // Post maken pagina
   MakePost(){
     this.$showModal(AddPost, {
       fullscreen: true,
     });
   }
 
-  heartPost($event: TapGestureEventData, post: Post) {
-    // let id = post.id;
-    // let found = post.likes.indexOf(id);
-    // if (found != -1) {
-    //   post.likes.splice(found, 1);
-    //   post.likes--;
-    //   return;
-    // }
-    // post.likes.push(id);
-    // post.likes++;
+  // Open your profile page 
+  goToProfiel(){
+    this.$showModal(Profiel, {
+      fullscreen: true,
+    });
+  }
+  
+  goToChats(){
+    try {
+      if (FileExist("Models", "ChatsJSON.json") != true){
+        let newMessage = new Message("FirstMessage", 5, null, null, "Welkom bij de team Phidippides app! \n heb je vragen of opmerkingen? \n Neem dan contact op met de berheerder.", AppSettings.getString("LoggedinID"), "ChatBot",)
+        let newchat = new Chat("FirstChat", "ChatBot", AppSettings.getString("LoggedinID"), "Team Phidippides", "https://i.ibb.co/vQDQgX3/ic-launcher.png", [newMessage], "Welkom bij de team Phidippides app! \n heb je vragen of opmerkingen? \n Neem dan contact op met de berheerder.", "nu")
+        let ChatsArray: Array<any> = ["FirstChat.json"];
+        this.JSONString = JSON.stringify(newchat)
+        this.JSONStringFile = JSON.stringify(ChatsArray)
+        WriteFile(this.JSONString, "Models", "FirstChat.json");
+        WriteFile(this.JSONStringFile, "Models", "ChatsJSON.json")
+        console.log(this.JSONStringFile)
+        console.log(this.JSONString)
+        console.log(ReadFileSync("Models", "ChatsJSON.json"))
+        console.log("File not found, created new one!")
+      }
+    } catch (error) {
+     console.log("an error has occured") 
+    }
+
+    this.$showModal(Chats, {
+      fullscreen: true,
+    });
+  }
+
+  logOutFunction(){
+    this.$emit("onLogin");
   }
 
   posts = [
@@ -147,12 +192,11 @@ export default class Posts extends Vue {
       id: "0",
       type: 2,
       mentions: [],
-      header: "Formule E: met de E van Energietransitie",
       image: "https://rotterdamsedromers.nl/wp-content/uploads/2020/10/WhatsApp-Image-2020-10-20-at-15.52.01-1536x778.jpeg",
       footer:
         "De toekomst is groen en de toekomst is elektrisch. De kaarten van de duurzame economie worden op dit moment geschud en een sterk imago met aansluitende strategie gaat helpen om de beste kaarten naar je regio toe te trekken. ",
       timestamp: "11/10/2021/2/44",
-      likes: 25,
+      likes: [],
       username: "TeamPhidippides",
       comments: [
         {
@@ -239,12 +283,11 @@ export default class Posts extends Vue {
       id: "1",
       type: 2,
       mentions: [],
-      header: "Team Phidippides 2020",
       image: "https://www.rdmcoe.nl/wp-content/uploads/2020/03/Triga-web-1536x864.jpg",
       footer:
         "We love to see it happen <3 #TeamPhiddipes #Dreams",
       timestamp: "11/10/2021/2/44",
-      likes: 120,
+      likes: [],
       username: "TeamPhidippides",
       comments: [
         {
@@ -309,68 +352,6 @@ export default class Posts extends Vue {
       }
     });
   }
-
-  resizeInput(input: Post): any{
-    if (input.type == 1){
-      console.log("ImageText!");
-      return input.image;
-    }
-    else if (input.type == 2){
-      console.log("Image!");
-      let width = input.image.clientWidth;
-      let height = input.image.clientHeight;
-      console.log(width);
-      console.log("PiXeLs")
-      console.log(height);
-      return input.image;
-    }
-    else if (input.type == 3){
-      console.log("Text!");
-      return input.image;
-    }
-    else{
-      console.log("Fail!")
-    }
-  }
-
-  goToHome() {
-    console.log("Going to home");
-  }
-
-  // Open your profile page 
-  goToProfiel(){
-    this.$showModal(Profiel, {
-      fullscreen: true,
-    });
-  }
-  goToChats(){
-    try {
-      if (FileExist("Models", "ChatsJSON.json") != true){
-        let newMessage = new Message("FirstMessage", 5, null, null, "Welkom bij de team Phidippides app! \n heb je vragen of opmerkingen? \n Neem dan contact op met de berheerder.", AppSettings.getString("LoggedinID"), "ChatBot",)
-        let newchat = new Chat("FirstChat", "ChatBot", AppSettings.getString("LoggedinID"), "Team Phidippides", "https://i.ibb.co/m0pQL9V/ic-launcher.png", [newMessage], "Welkom bij de team Phidippides app! \n heb je vragen of opmerkingen? \n Neem dan contact op met de berheerder.", "nu")
-        let ChatsArray: Array<any> = ["FirstChat.json"];
-        this.JSONString = JSON.stringify(newchat)
-        this.JSONStringFile = JSON.stringify(ChatsArray)
-        WriteFile(this.JSONString, "Models", "FirstChat.json");
-        WriteFile(this.JSONStringFile, "Models", "ChatsJSON.json")
-        console.log(this.JSONStringFile)
-        console.log(this.JSONString)
-        console.log(ReadFileSync("Models", "ChatsJSON.json"))
-        console.log("File not found, created new one!")
-      }
-    } catch (error) {
-     console.log("an error has occured") 
-    }
-
-    this.$showModal(Chats, {
-      fullscreen: true,
-    });
-  }
-  
-  logOutFunction(){
-    this.$emit("onLogin");
-  }
-  
 }
 </script>
 
@@ -378,7 +359,6 @@ export default class Posts extends Vue {
 @import "@nativescript/theme/scss/variables/blue";
 
 // Custom styles
-
 .fas {
   @include colorize($color: accent);
 }
@@ -388,36 +368,37 @@ export default class Posts extends Vue {
   background-color: rgb(239, 239, 239);
 }
 
-.button-heart{
-  
+.post-image{
+  background-color: white;
+  max-height: 1500px;
+  max-width: 1800px
+}
+
+.button-image{
+  height: 50;
+  width: 50;
 }
 
 .post-heart {
-  label
-  {
-    font-size:12;
-    color: rgb(0, 0, 0);
-    text-align:right;
-    margin-right: 100px;
-  }
+  background-color: white;
+  height: 25;
+  width: 25;
+  float:left;
 }
 
 .posts-listview {
-  // background-color: black;
   border-radius: 20;
 }
 
 .post-body{
-  // width: 900px;
   image
   {
     width: auto;
-    height: 500px;
+    height: 550px;
   }
 }
 
 .add-post{
-  // position: absolute;
   bottom: 500px;
   height: 50;
   width: 50;
@@ -435,25 +416,32 @@ export default class Posts extends Vue {
 }
 
 .post-username {
-  font-size: 18;
+  font-size: 16;
   background-color: rgb(255, 255, 255);
   border-top-right-radius: 10;
   border-top-left-radius: 10;
   border-bottom-width: 2px;
-  border-color: rgb(204, 200, 200);  
+  border-color: rgb(204, 200, 200); 
+  border-bottom-color: white; 
   label {
     color: black;
   }
   padding: 10;
 }
 
-.post-header{
-  font-size: 14;
-  text-align: left;
-  background-color: rgb(255, 255, 255);
-  label{
-    color: black;
-  }
+.logoutbutton{
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  border-radius: 10%;
+  background-color: rgb(57, 55, 121);
+  font-family: Arial;
+  font-size: 10;
+  font-weight: bold;
+  width: 60;
+  height: 20;
+  margin-left: -250;
+  margin-top: -500;
+  box-shadow: 6px 6px 6px rgba(0,0,0,155);
 }
 
 .post-footer {
