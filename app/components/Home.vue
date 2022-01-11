@@ -15,6 +15,13 @@
       <ActionBarTopLogIn row="0" v-show="!loggedIn"/>
       <ActionBarBottom row="2" />
     </GridLayout>
+    <GridLayout columns="60, 410, 60" rows="50, 720, 60">
+        <Image v-show="accountaanvragen" src="~/Images/back_btn.png" row="0" col="0" marginTop="10" @tap="acaangevraagd" ></Image>
+      </GridLayout>
+    <GridLayout columns="60, 410, 60" rows="50, 720, 60">
+      <Button v-show="loggedIn" class="logoutbutton" text="Uitloggen" @tap="login"></Button>
+    </GridLayout>
+    <!-- <Image :src="this.loggedinprofile" width = "40" height="40" horizontalAlignment="right" class="profile-pic"></Image> -->
     </AbsoluteLayout>
   </Page>
 </template>
@@ -34,6 +41,10 @@ import * as AppSettings from '@nativescript/core/application-settings';
 if (!AppSettings.hasKey("Loggedin")){
   AppSettings.setBoolean("Loggedin", false);
 }
+if (!AppSettings.hasKey("accountRequested")){
+  AppSettings.setBoolean("accountRequested", false);
+}
+// AppSettings.setBoolean("accountRequested", false);
 
 @Component({
   name: "Home",
@@ -50,6 +61,11 @@ export default class Home extends Vue {
   msg: string = "Home";
   loggedIn: boolean = AppSettings.getBoolean("Loggedin");
   accountaanvragen: boolean = false;
+
+  profilepicture(){
+    return AppSettings.getString('LoggedinPFPUrl');
+  }
+
   login() {
     if (AppSettings.getBoolean("Loggedin") == true){
       AppSettings.setBoolean("Loggedin", false);
@@ -77,6 +93,28 @@ export default class Home extends Vue {
 @import "@nativescript/theme/scss/variables/blue";
 
 // Custom styles
+
+.logoutbutton{
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  border-radius: 10%;
+  background-color: rgb(57, 55, 121);
+  font-family: Arial;
+  font-size: 10;
+  font-weight: bold;
+  width: 60;
+  height: 20;
+  margin-left: 40;
+  margin-top: -4;
+  box-shadow: 6px 6px 6px rgba(0,0,0,155);
+}
+
+.logoutbutton:active{
+    color:white;
+    background-color: rgb(21, 18, 110);
+    box-shadow: 6px 6px 6px rgba(0,0,0,200);
+}
+
 .fas {
   @include colorize($color: accent);
 }

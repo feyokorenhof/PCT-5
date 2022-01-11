@@ -1,14 +1,23 @@
 <template>
 <AbsoluteLayout>
   <GridLayout rows="4*, 1*, 8*" height="100%" width="100%">
-    <Label marginTop="30" class="accaantext" text="Account Aanvragen" fontSize=25em></Label>
-    <Label marginTop="85" class="verplicht" ref="badlog" text="De invulvakken met een ster '*' zijn verplicht"></Label>
-    <TextField autocapitalizationType="none" class="nom" height="7%" marginTop="140" ref="Voornaam" hint="Voornaam *"></TextField>
-    <TextField autocapitalizationType="none" class="nom" height="7%" marginTop="230" ref="Achternaam" hint="Achternaam *"></TextField>
-    <TextField autocapitalizationType="none" class="nom" height="7%" marginTop="320" ref="Emailadres" hint="E-mailadres *"></TextField>
-    <TextField autocapitalizationType="none" class="nom" height="7%" marginTop="410" ref="Bedrijfsnaam" hint="Bedrijfsnaam"></TextField>
+    <Label ref="Gelukttext" marginTop="30" class="accounttext" text="Gelukt!" fontSize=35em></Label>
+    <Label ref="accaantextref" marginTop="30" class="accaantext" text="Account Aanvragen" fontSize=25em></Label>
+    <Label marginTop="85" class="verplicht" ref="badlog2" text="De invulvakken met een ster '*' zijn verplicht"></Label>
+    <TextField autocapitalizationType="none" class="nom2" height="7%" marginTop="140" ref="Voornaam" hint="Voornaam *"></TextField>
+    <TextField autocapitalizationType="none" class="nom2" height="7%" marginTop="230" ref="Achternaam" hint="Achternaam *"></TextField>
+    <TextField autocapitalizationType="none" class="nom2" height="7%" marginTop="320" ref="Emailadres" hint="E-mailadres *"></TextField>
+    <TextField autocapitalizationType="none" class="nom2" height="7%" marginTop="410" ref="Bedrijfsnaam" hint="Student, sponsor, etc. *"></TextField>
     <Button class="accaanbutton" marginTop="560" text="Account Aanvragen" @tap="onLinkTap"></Button>
-    <TextField class="accountmaker" height="7%" marginTop="710" ref="accountmaker"></TextField>
+  </GridLayout>
+  <GridLayout>
+  <Label ref="accanngetext1" marginTop="9999999" class="accanngetext" text="Er is een code gegenereerd en deze is" fontSize=15em></Label>
+  <Label ref="accanngetext2" marginTop="9999999" class="accanngetext" text="gekopieerd naar uw klembord. Om een" fontSize=15em></Label>
+  <Label ref="accanngetext3" marginTop="9999999" class="accanngetext" text="account aan te kunnen maken, heeft u een" fontSize=15em></Label>
+  <Label ref="accanngetext4" marginTop="9999999" class="accanngetext" text="code nodig. Hiervoor moet u de gegenereerde" fontSize=15em></Label>
+  <Label ref="accanngetext5" marginTop="9999999" class="accanngetext" text="code via de mail naar de beheerder sturen." fontSize=15em></Label>
+  <Label ref="accanngetext6" marginTop="9999999" class="accanngetext" text="Dan krijgt u een toegangscode die ingevuld" fontSize=15em></Label>
+  <Label ref="accanngetext7" marginTop="9999999" class="accanngetext" text="kan worden bij het account aanmaken scherm." fontSize=15em></Label>
   </GridLayout>
 </AbsoluteLayout>
 </template>
@@ -18,6 +27,8 @@
   import Vue from "nativescript-vue";
   import { Component, Prop } from "vue-property-decorator";
   import "./Loginstyle.css";
+  import * as AppSettings from '@nativescript/core/application-settings';
+  var clipboard = require("nativescript-clipboard");
 
   @Component({ name: "AccountAanvragen", components: {}})
   
@@ -25,47 +36,117 @@
     msg: string = "AccountAanvragen";
 
     goBack(){
-
+      
     }
-    
-    onLinkTap(args: TapGestureEventData) {
-      const random = "1234" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + "4321";
+
+    getRandomIntInclusive(min: number, max: number) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    accountGelukt(args: TapGestureEventData){
+      let aat = (this.$refs.accaantextref as any).nativeView;
       let button: Button = args.object as Button;
       let voornaam: TextField = (this.$refs.Voornaam as any).nativeView as TextField;
       let achternaam: TextField = (this.$refs.Achternaam as any).nativeView as TextField;
       let emailadres: TextField = (this.$refs.Emailadres as any).nativeView as TextField;
       let bedrijfsnaam: TextField = (this.$refs.Bedrijfsnaam as any).nativeView as TextField;
-      let AccCode: TextField = (this.$refs.accountmaker as any).nativeView as TextField;
-      
-      if (voornaam.text != ""){
-        voornaam.className = "nom"
-      }
-      if (achternaam.text != ""){
-        achternaam.className = "nom"
-      }
-      if (emailadres.text != ""){
-        emailadres.className = "nom"
-      }
+      let blt = (this.$refs.badlog2 as any).nativeView;
+      let gelukt = (this.$refs.Gelukttext as any).nativeView;
+      let acantx1 = (this.$refs.accanngetext1 as any).nativeView;
+      let acantx2 = (this.$refs.accanngetext2 as any).nativeView;
+      let acantx3 = (this.$refs.accanngetext3 as any).nativeView;
+      let acantx4 = (this.$refs.accanngetext4 as any).nativeView;
+      let acantx5 = (this.$refs.accanngetext5 as any).nativeView;
+      let acantx6 = (this.$refs.accanngetext6 as any).nativeView;
+      let acantx7 = (this.$refs.accanngetext7 as any).nativeView;
 
-      if (voornaam.text == ""){
-        voornaam.className = "WrongG"
-        let blt = (this.$refs.badlog as any).nativeView;
-        blt.className = "badlogin2";
+      // account aanvragen scherm verdwijnt lol
+      button.marginTop = 9999999;
+      voornaam.marginTop = 9999999;
+      achternaam.marginTop = 9999999;
+      emailadres.marginTop = 9999999;
+      bedrijfsnaam.marginTop = 9999999;
+      blt.marginTop = 9999999;
+      aat.marginTop = 9999999;
+      button.opacity = 0;
+      voornaam.opacity = 0;
+      achternaam.opacity = 0;
+      emailadres.opacity = 0;
+      bedrijfsnaam.opacity = 0;
+      blt.opacity = 0;
+      aat.opacity = 0;
+
+      // Account aangevraagd scherm verschijnt lol
+      gelukt.className = "gelukttext";
+      acantx1.marginTop = 100;
+      acantx2.marginTop = 125;
+      acantx3.marginTop = 150;
+      acantx4.marginTop = 175;
+      acantx5.marginTop = 200;
+      acantx6.marginTop = 225;
+      acantx7.marginTop = 250;
+    }
+    
+    onLinkTap(args: TapGestureEventData) {
+      const random = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      const fakerandom = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      let voornaam: TextField = (this.$refs.Voornaam as any).nativeView as TextField;
+      let achternaam: TextField = (this.$refs.Achternaam as any).nativeView as TextField;
+      let emailadres: TextField = (this.$refs.Emailadres as any).nativeView as TextField;
+      let bedrijfsnaam: TextField = (this.$refs.Bedrijfsnaam as any).nativeView as TextField;
+      let blt = (this.$refs.badlog2 as any).nativeView;
+
+      if (AppSettings.getBoolean("accountRequested") == true){
+        this.accountGelukt(args);
+        clipboard.setTextSync(AppSettings.getString("codething"));
       }
-      if (achternaam.text == ""){
-        achternaam.className = "WrongG"
-        let blt = (this.$refs.badlog as any).nativeView;
-        blt.className = "badlogin2";
+      else{
+        if (voornaam.text != ""){
+          voornaam.className = "nom2"
+        }
+        if (achternaam.text != ""){
+          achternaam.className = "nom2"
+        }
+        if (emailadres.text != ""){
+          emailadres.className = "nom2"
+        }
+        if (bedrijfsnaam.text != ""){
+          bedrijfsnaam.className = "nom2"
+        }
+
+        if (voornaam.text == ""){
+          voornaam.className = "WrongG2"
+          blt.className = "badlogin3";
+        }
+        if (achternaam.text == ""){
+          achternaam.className = "WrongG2"
+          blt.className = "badlogin3";
+        }
+        if (emailadres.text == ""){
+          emailadres.className = "WrongG2"
+          blt.className = "badlogin3";
+        }
+        if (bedrijfsnaam.text == ""){
+          bedrijfsnaam.className = "WrongG2"
+          blt.className = "badlogin3";
+        }
+        if (voornaam.text != "" && achternaam.text != "" && emailadres.text != "" && bedrijfsnaam.text != ""){
+          const rand = this.getRandomIntInclusive(1,2);
+          const codething = voornaam.text + " " + achternaam.text + ", " + emailadres.text + ", " + bedrijfsnaam.text + "." + rand + " (" + fakerandom + ", " + random + ")";
+          clipboard.setTextSync(codething);
+          AppSettings.setString("codething", codething);
+          AppSettings.setBoolean("accountRequested", true);
+          if (rand == 1){
+            AppSettings.setString("AccountAanvragenKey", random);
+          }
+          else{
+            AppSettings.setString("AccountAanvragenKey", fakerandom);
+          }
+          this.accountGelukt(args);
+        }
       }
-      if (emailadres.text == ""){
-        emailadres.className = "WrongG"
-        let blt = (this.$refs.badlog as any).nativeView;
-        blt.className = "badlogin2";
-      }
-      if (voornaam.text != "" && achternaam.text != "" && emailadres.text != ""){
-        this.$emit("accountAangevraagd");
-      }
-        AccCode.text = random;
     }
   }
 </script>

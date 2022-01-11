@@ -52,8 +52,10 @@
       let button: Button = args.object as Button;
       let gebruikersnaam: TextField = (this.$refs.Naam as any).nativeView as TextField;
       let wachtwoord: TextField = (this.$refs.Wachtwoord as any).nativeView as TextField;
+      let loggedin: boolean = false;
 
       for (var index in users){
+        if (loggedin == false){
         if ((users[index].username.toLowerCase() == gebruikersnaam.text.toLowerCase() || users[index].email.toLowerCase() == gebruikersnaam.text.toLowerCase()) && users[index].password == wachtwoord.text){
           this.$emit("onLogin");
           AppSettings.setString("LoggedinUsername", users[index].username);
@@ -63,7 +65,7 @@
           AppSettings.setString("LoggedinPassword", users[index].password);
           AppSettings.setString("LoggedinDescription", users[index].description);
           AppSettings.setString("LoggedinRole", users[index].role);
-        }
+        }}
       }
       wachtwoord.text = "";
       gebruikersnaam.className = "WrongG";
