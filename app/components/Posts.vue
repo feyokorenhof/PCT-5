@@ -1,6 +1,5 @@
 <template>
 <GridLayout>
-  <Button class="logoutbutton" text="Uitloggen" @tap="logOutFunction()"></Button>
   <GridLayout rows="auto" height="100%">
     <GridLayout row="0" height="100%" class="posts-container">
       <ScrollView height="100%" width="95%" class="posts-listview">
@@ -182,11 +181,7 @@ export default class Posts extends Vue {
       fullscreen: true,
     });
   }
-
-  logOutFunction(){
-    this.$emit("onLogin");
-  }
-
+  
   posts = [
     {
       id: "0",
