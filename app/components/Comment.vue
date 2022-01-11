@@ -101,6 +101,7 @@ import {
 import { Screen } from "@nativescript/core/platform";
 
 import User from "@/Models/User";
+import * as AppSettings from '@nativescript/core/application-settings';
 
 @Component({
   name: "Comment",
@@ -137,7 +138,8 @@ export default class Comments extends Vue {
     new User(
       "Rick Slingerland",
       "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj"
-    )
+    ),
+    new User(AppSettings.getString("LoggedinName"), AppSettings.getString("LoggedinPFPUrl"))
   ];
 
   beforeMount() {

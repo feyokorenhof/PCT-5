@@ -70,12 +70,13 @@
           AppSettings.setString("LoggedinID", users[index].ID);
 
           //User information to JSON string
-          ProfielStuff = new UserProfile(users[index].username, users[index].pfp_url, "Student", users[index].email, users[index].description);
-          this.JSONString = JSON.stringify(ProfielStuff);
+          ProfielStuff = new UserProfile(users[index].username, users[index].pfp_url, users[index].role, users[index].email, users[index].description);
+          this.JSONString = `${JSON.stringify(ProfielStuff)}`;
           //JSON.parse(this.JSONString)
           console.log(this.JSONString);
           
           WriteFile(this.JSONString, "Models", "UserJSON.json");
+          console.log(ReadFileSync("Models", "UserJSON.json"));
         
           //back to Home
           this.$emit("onLogin", this.JSONString);
