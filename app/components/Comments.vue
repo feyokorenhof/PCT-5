@@ -16,7 +16,7 @@
       padding="10"
     >
       <GridLayout col="0" class="comments-back-button-container" @tap="goBack">
-        <Image src="~/Images/back_btn.png" class="comments-back-button"></Image>
+        <Image src="~/Images/back_btn.png" class="comments-back-button" tintColor="black"></Image>
       </GridLayout>
       <GridLayout col="1" class="comments-info-container">
         <Label text="Opmerkingen" class="comments-info"></Label>
@@ -60,7 +60,7 @@
         <!-- Reply Button -->
         <GridLayout col="2">
           <Label
-            text="Plaatsen" marginTop="8"
+            text="Plaatsen" marginTop="15"
             @tap="sendReply"
             class="reply-send-button"
             :isEnabled="canReply"
@@ -82,6 +82,7 @@ import Post from "@/Models/Post";
 import Comment from "@/components/Comment.vue";
 
 import User from "@/Models/User";
+import * as AppSettings from '@nativescript/core/application-settings';
 
 @Component({
   name: "Comments",
@@ -108,10 +109,7 @@ export default class Comments extends Vue {
   }
 
   beforeMount() {
-    this.currentUser = new User(
-      "Rick Slingerland",
-      "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj"
-    );
+    this.currentUser = new User(AppSettings.getString("LoggedinName"), AppSettings.getString("LoggedinPFPUrl")); 
   }
 
   sh() {
@@ -241,13 +239,9 @@ export default class Comments extends Vue {
 <style scoped lang="scss">
 @import "@nativescript/theme/scss/variables/blue";
 
-.reply-textfield-container {
-}
-
 .reply-textfield {
   color: black;
   font-size: 16;
-  placeholder-color: white;
   background-color: rgb(255, 255, 255);
   border-radius: 10;
   padding: 10;
@@ -279,7 +273,7 @@ export default class Comments extends Vue {
 }
 
 .reply-container {
-  background-color: rgb(36, 36, 36);
+  background-color: rgb(239, 239, 239);
   padding: 2;
   align-content: center;
   vertical-align: middle;
@@ -294,7 +288,7 @@ export default class Comments extends Vue {
 }
 
 .comments-info {
-  color: white;
+  color: black;
   font-size: 25;
   vertical-align: middle;
 }
@@ -331,7 +325,7 @@ export default class Comments extends Vue {
 }
 
 .comment-text {
-  color: black;
+  color: white;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 15em;
@@ -352,13 +346,9 @@ export default class Comments extends Vue {
   margin-top: 20;
 }
 
-// .comments-container {
-//   background-color: rgb(255, 255, 255);
-// }
-
 .comments-container {
-  background-color: rgb(102, 101, 101);
-  background-color: rgb(61, 60, 60);
+  background-color: rgb(239, 239, 239);
+  border-color: black;
   margin-bottom: 5;
   padding: 10;
 }

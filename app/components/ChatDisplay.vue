@@ -13,9 +13,8 @@
             </GridLayout>
             <GridLayout v-if="!isSender(msg)" columns="auto, *"                
                 orientation="horizontal"
-                col="0"
                 @tap="onMessageTap($event, msg)">
-                <Label :text="`${msg.text}`" textWrap="true" fontSize="20" class="message left" textAlignment="left" marginLeft="4" marginRight="4"/>
+                <Label :text="`${msg.text}`" textWrap="true" fontSize="20" class="message left" textAlignment="left" horizontalAlignment="right" marginLeft="4" marginRight="4"/>
             </GridLayout>
           </GridLayout>
           <Label height="120"/>
@@ -91,6 +90,8 @@ export default class ChatDisplay extends Vue {
         this.chat.messages.push({
         message_id: `${this.getRandomInt(99999999)}`,
         type: 5,
+        image: null,
+        video: null,
         text: txt,
         sender_id: this.chat.sender_id,
         receiver_id: this.chat.receiver_id
@@ -128,7 +129,7 @@ export default class ChatDisplay extends Vue {
 .message {
   color: white;
   border-radius: 20;
-  padding: 5 10;
+  padding: 5 8;
   margin-bottom: 5;
 }
 .right {
