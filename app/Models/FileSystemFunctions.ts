@@ -1,4 +1,4 @@
-import {knownFolders, Folder, File} from '@nativescript/core';
+import {knownFolders, Folder, File, path} from '@nativescript/core';
 
 export function WriteFile(FileContent: any, FolderName: string, FileName: string)
         {
@@ -41,3 +41,13 @@ export function ReadFileSync(FolderName: string, FileName: string): string
             JSONstring = file.readTextSync()
             return JSONstring;
         }
+
+export function FileExist(FolderName: string, FileName: string): boolean
+{
+    const documents : Folder =<Folder>knownFolders.documents();
+    const folder: Folder = <Folder>documents.getFolder(FolderName);
+    const filePath = path.join(folder.path, `${FileName}`);
+    const exists = File.exists(filePath);
+    console.log(`Does ${FileName} exists: ${exists}`);
+    return exists;
+}

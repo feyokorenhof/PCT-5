@@ -1,6 +1,7 @@
 <template>
     <AbsoluteLayout>
         <!-- text inputs field for user & view for message -->
+        <!-- TODO: create function to check if user exists -->
         <Gridlayout rows="1*, 3*, 1*, 7*" marginTop="10%" height="100%" width="100%">
             <TextField row="0" class="textfield" returnKeyType="next" autocapitalizationType="none" ref="Name" hint="Gebruikersnaam"></TextField>
             <TextView row="1" class="textfield" ref="Message" hint="Bericht" returnKeyType="done"></TextView>
@@ -33,8 +34,9 @@ import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
 import * as AppSettings from '@nativescript/core/application-settings';
 import Message from "@/Models/Message";
 import Chat from "@/Models/Chat";
-import Chats from "@/components/Chats.vue"
+import Chats from "@/components/Chats.vue";
 import ChatDisplay from "./ChatDisplay.vue";
+import {WriteFile, ReadFile, ReadFileSync} from "@/Models/FileSystemFunctions";
 
 @Component({
     name: "ChatNew",
@@ -46,10 +48,14 @@ import ChatDisplay from "./ChatDisplay.vue";
 
 export default class ChatNew extends Vue {
     msg: string = "ChatNew";
+    JSONString: string = "";
+    JSONStringFile: string = "";
     // function to go back to previous screen
     goBack() {
         if (this.$modal) this.$modal.close();
     }
+    // TODO: add current time
+    // TODO: create ID system
     openNewChat(event: TapGestureEventData) {
         let rawName: TextField = (this.$refs.Name as any).nativeView as TextField;
         let name = rawName.text.trim()
@@ -57,7 +63,25 @@ export default class ChatNew extends Vue {
         let txt = rawtxt.text.trim()
 
         if (txt !== null && txt !== "" && name !== null && name !== "") {
-            let ChatNew = new Chat(`${this.getRandomInt(99999999)}`, AppSettings.getString("LoggedinID"), `${this.getRandomInt(99999999)}`, name, "https://i.pinimg.com/236x/34/6e/1d/346e1df0044fd77dfb6f65cc086b2d5e.jpg", txt, "nu")
+            let tempID = `${this.getRandomInt(99999999)}`
+            let newMessage = new Message(`${this.getRandomInt(99999999)}`, 5, null, null, txt, AppSettings.getString("LoggedinID"), tempID)
+            let newchat = new Chat(`${this.getRandomInt(99999999)}`, AppSettings.getString("LoggedinID"), tempID, name, "https://i.pinimg.com/236x/34/6e/1d/346e1df0044fd77dfb6f65cc086b2d5e.jpg", [newMessage], txt, "nu")
+            let ChatsArray : Array<any>;
+            //Chat information to JSON string
+            this.JSONString = `${JSON.stringify(newchat)}`;
+            console.log(`newchat: ${this.JSONString}`);
+
+            // Adding JSON name of chat to db of all chat names
+            ChatsArray = JSON.parse(ReadFileSync("Models", "ChatsJSON.json"));
+            ChatsArray.push(`${tempID}.json`)
+            this.JSONStringFile = JSON.stringify(ChatsArray)
+            console.log(`AllChats2: ${ChatsArray}`);
+            WriteFile(this.JSONStringFile, "Models", "ChatsJSON.json")
+            console.log(ReadFileSync("Models", "ChatsJSON.json"))
+
+            WriteFile(this.JSONString, "Models", `${tempID}.json`);
+            console.log(ReadFileSync("Models", `${tempID}.json`))
+            if (this.$modal) this.$modal.close();
         }
     }
     getRandomInt(max: number) {
