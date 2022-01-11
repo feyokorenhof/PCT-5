@@ -60,7 +60,7 @@
         <!-- Reply Button -->
         <GridLayout col="2">
           <Label
-            text="Plaatsen" marginTop="8"
+            text="Plaatsen" marginTop="15"
             @tap="sendReply"
             class="reply-send-button"
             :isEnabled="canReply"
