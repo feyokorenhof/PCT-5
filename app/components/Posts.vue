@@ -120,6 +120,8 @@ import Message from "~/Models/Message";
 export default class Posts extends Vue {
   posts2!: Post[];
   liked!: Number[];
+  JSONString: string = "";
+  JSONStringFile: string = "";
 
   heartContent!: (id: String) => void;
 
