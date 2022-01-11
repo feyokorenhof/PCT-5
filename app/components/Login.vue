@@ -61,37 +61,42 @@
 
       for (var index in users){
         if (loggedin == false){
-        if ((users[index].username.toLowerCase() == gebruikersnaam.text.toLowerCase() || users[index].email.toLowerCase() == gebruikersnaam.text.toLowerCase()) && users[index].password == wachtwoord.text){
+          if ((users[index].username.toLowerCase() == gebruikersnaam.text.toLowerCase() || users[index].email.toLowerCase() == gebruikersnaam.text.toLowerCase()) && users[index].password == wachtwoord.text){
 
-          AppSettings.setString("LoggedinUsername", users[index].username);
-          AppSettings.setString("LoggedinPFPUrl", users[index].pfp_url);
-          AppSettings.setString("LoggedinName", users[index].name);
-          AppSettings.setString("LoggedinEmail", users[index].email);
-          AppSettings.setString("LoggedinPassword", users[index].password);
-          AppSettings.setString("LoggedinDescription", users[index].description);
-          AppSettings.setString("LoggedinRole", users[index].role);
-          AppSettings.setString("LoggedinID", users[index].ID);
+            AppSettings.setString("LoggedinUsername", users[index].username);
+            AppSettings.setString("LoggedinPFPUrl", users[index].pfp_url);
+            AppSettings.setString("LoggedinName", users[index].name);
+            AppSettings.setString("LoggedinEmail", users[index].email);
+            AppSettings.setString("LoggedinPassword", users[index].password);
+            AppSettings.setString("LoggedinDescription", users[index].description);
+            AppSettings.setString("LoggedinRole", users[index].role);
+            AppSettings.setString("LoggedinID", users[index].ID);
 
-          //User information to JSON string
-          ProfielStuff = new UserProfile(users[index].username, users[index].pfp_url, users[index].role, users[index].email, users[index].description);
-          this.JSONString = `${JSON.stringify(ProfielStuff)}`;
-          //JSON.parse(this.JSONString)
-          console.log(this.JSONString);
+            //User information to JSON string
+            ProfielStuff = new UserProfile(users[index].name, users[index].pfp_url, users[index].role, users[index].email, users[index].description);
+            this.JSONString = `${JSON.stringify(ProfielStuff)}`;
+            //JSON.parse(this.JSONString)
+            console.log(this.JSONString);
+            
+            WriteFile(this.JSONString, "Models", "UserJSON.json");
+            console.log(ReadFileSync("Models", "UserJSON.json"));
           
-          WriteFile(this.JSONString, "Models", "UserJSON.json");
-          console.log(ReadFileSync("Models", "UserJSON.json"));
-        
-          //back to Home
-          this.$emit("onLogin", this.JSONString);
-        }
-        else{
+            //back to Home
+            this.$emit("onLogin");
+            loggedin = true;
+
+          }
+          else{
+          }
         }
       }
-      wachtwoord.text = "";
-      gebruikersnaam.className = "WrongG";
-      wachtwoord.className = "WrongG";
-      let blt = (this.$refs.badlog as any).nativeView;
-      blt.className = "badlogin2";
+        wachtwoord.text = "";
+        if (loggedin == false){  
+          gebruikersnaam.className = "WrongG";
+          wachtwoord.className = "WrongG";
+          let blt = (this.$refs.badlog as any).nativeView;
+          blt.className = "badlogin2";
+        }
     }
   }
 </script>
