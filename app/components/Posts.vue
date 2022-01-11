@@ -120,15 +120,6 @@ import Message from "~/Models/Message";
 export default class Posts extends Vue {
   posts2!: Post[];
   liked!: Number[];
-  test: UserProfile = {
-    username: "Sponsor123",
-    pfp_url: "https://cdn.vox-cdn.com/thumbor/VVXayrypyYIMqiHWIYdL77FRF_o=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/22408516/Big_Chungus.png",
-    role: "Sponsor",
-    email: "Generic.Email@gmail.com",
-    gebruikerinfo: "Hier komt wat tekst te staan die de gebruiker zelf kan instellen. Denk aan Status of een quote. In iedergeval kan dit veel tekst zijn, maar ook erg weinig"
-  }
-  JSONString: string = "";
-  JSONStringFile: string = "";
 
   heartContent!: (id: String) => void;
 
