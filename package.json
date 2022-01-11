@@ -6,6 +6,8 @@
   "dependencies": {
     "@nativescript/core": "~8.1.1",
     "@nativescript/theme": "~3.0.1",
+    "@types/nodemailer": "^6.4.4",
+    "nativescript-clipboard": "^2.1.1",
     "nativescript-vue": "~2.9.0",
     "vue-class-component": "^7.2.6",
     "vue-property-decorator": "^9.1.2"
