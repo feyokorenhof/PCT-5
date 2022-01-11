@@ -57,11 +57,15 @@
       let wachtwoord: TextField = (this.$refs.Wachtwoord as any).nativeView as TextField;
       let loggedin: boolean = false;
       let ProfielStuff: UserProfile;
+      let blt = (this.$refs.badlog as any).nativeView;
       
 
       for (var index in users){
         if (loggedin == false){
           if ((users[index].username.toLowerCase() == gebruikersnaam.text.toLowerCase() || users[index].email.toLowerCase() == gebruikersnaam.text.toLowerCase()) && users[index].password == wachtwoord.text){
+            gebruikersnaam.className = "nom";
+            wachtwoord.className = "nom";
+            blt.className = "badlogin";
 
             AppSettings.setString("LoggedinUsername", users[index].username);
             AppSettings.setString("LoggedinPFPUrl", users[index].pfp_url);
@@ -90,13 +94,12 @@
           }
         }
       }
-        wachtwoord.text = "";
-        if (loggedin == false){  
-          gebruikersnaam.className = "WrongG";
-          wachtwoord.className = "WrongG";
-          let blt = (this.$refs.badlog as any).nativeView;
-          blt.className = "badlogin2";
-        }
+      wachtwoord.text = "";
+      if (loggedin == false){  
+        gebruikersnaam.className = "WrongG";
+        wachtwoord.className = "WrongG";
+        blt.className = "badlogin2";
+      }
     }
   }
 </script>
