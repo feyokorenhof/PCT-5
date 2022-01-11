@@ -281,20 +281,20 @@ export default class Comments extends Vue {
 }
 
 .comment-reply {
-  color: rgb(156, 156, 156);
+  color: rgb(0, 0, 0);
   font-style: italic;
 }
 
 .comment-open-comments {
-  color: rgb(156, 156, 156);
+  color: rgb(0, 0, 0);
 }
 
 .comment-likes {
-  color: rgb(156, 156, 156);
+  color: rgb(0, 0, 0);
 }
 
 .comment-time-passed {
-  color: rgb(156, 156, 156);
+  color: rgb(0, 0, 0);
   font-style: italic;
 }
 
@@ -306,7 +306,7 @@ export default class Comments extends Vue {
 }
 
 .comment-text {
-  color: white;
+  color: black;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 15em;
@@ -322,7 +322,7 @@ export default class Comments extends Vue {
 
 
 .comment-container {
-  background-color: rgb(82, 82, 82); // slightlylighter
+  background-color: rgb(255, 255, 255); // slightlylighter
   //background-color: rgb(102, 101, 101); // og
   //background-color: rgb(61, 60, 60); // instagram
   margin-bottom: 5;
