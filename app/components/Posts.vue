@@ -347,7 +347,7 @@ export default class Posts extends Vue {
     try {
       if (FileExist("Models", "ChatsJSON.json") != true){
         let newMessage = new Message("FirstMessage", 5, null, null, "Welkom bij de team Phidippides app! \n heb je vragen of opmerkingen? \n Neem dan contact op met de berheerder.", AppSettings.getString("LoggedinID"), "ChatBot",)
-        let newchat = new Chat("FirstChat", "ChatBot", AppSettings.getString("LoggedinID"), "Team Phidippides", "https://i.ibb.co/vQDQgX3/ic-launcher.png", [newMessage], "Welkom bij de team Phidippides app! \n heb je vragen of opmerkingen? \n Neem dan contact op met de berheerder.", "nu")
+        let newchat = new Chat("FirstChat", "ChatBot", AppSettings.getString("LoggedinID"), "Team Phidippides", "https://i.ibb.co/m0pQL9V/ic-launcher.png", [newMessage], "Welkom bij de team Phidippides app! \n heb je vragen of opmerkingen? \n Neem dan contact op met de berheerder.", "nu")
         let ChatsArray: Array<any> = ["FirstChat.json"];
         this.JSONString = JSON.stringify(newchat)
         this.JSONStringFile = JSON.stringify(ChatsArray)
