@@ -114,8 +114,12 @@ export default class Chats extends Vue {
   // function to create new chat
   goChatNew(args: TapGestureEventData) {
       this.$showModal(ChatNew, {
-      fullscreen: true
+      fullscreen: true,
+      props: {onAddNewChat: this.onNewChat}
     });
+  }
+  onNewChat(chat : Chat) {
+    this.chats.push(chat);
   }
   // chats to load in, hopefully later via API or local JSON
    beforeMount() {

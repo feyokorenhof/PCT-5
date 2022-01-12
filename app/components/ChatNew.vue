@@ -50,8 +50,15 @@ export default class ChatNew extends Vue {
     msg: string = "ChatNew";
     JSONString: string = "";
     JSONStringFile: string = "";
+    PushChat!: Chat;
+    @Prop() onAddNewChat!: any;
     // function to go back to previous screen
     goBack() {
+        if (this.$modal) this.$modal.close();
+    }
+
+    onClose() {
+        this.onAddNewChat(this.PushChat); //of hoe de nieuwe chat dan ook heet;
         if (this.$modal) this.$modal.close();
     }
     // TODO: add current time
@@ -81,7 +88,7 @@ export default class ChatNew extends Vue {
 
             WriteFile(this.JSONString, "Models", `${tempID}.json`);
             console.log(ReadFileSync("Models", `${tempID}.json`))
-            if (this.$modal) this.$modal.close();
+            this.onClose();
         }
     }
     getRandomInt(max: number) {
