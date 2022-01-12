@@ -118,8 +118,10 @@ export default class Chats extends Vue {
       props: {onAddNewChat: this.onNewChat}
     });
   }
-  onNewChat(chat : Chat) {
-    this.chats.push(chat);
+  onNewChat(chatTemp : Chat) {
+    console.log("List push activeert")
+    console.log("Chat die gepusht wordt: " + chatTemp)
+    this.chats.push(chatTemp);
   }
   // chats to load in, hopefully later via API or local JSON
    beforeMount() {
