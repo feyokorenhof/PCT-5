@@ -119,9 +119,6 @@
     width: 40;
     height: 40;
     vertical-align: middle;
-    border-width: 2px;
-    border-color: rgb(61, 60, 60);
-    border-radius: 5;
   }
 
   //Profile picture styling and border
