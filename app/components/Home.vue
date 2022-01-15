@@ -37,6 +37,8 @@ import Login from "./Login.vue";
 import Posts from "./Posts.vue";
 import AccountAanvragen from "./AccountAanvragen.vue";
 import * as AppSettings from '@nativescript/core/application-settings';
+import {WriteFile, ReadFileSync, FileExist} from "@/Models/FileSystemFunctions";
+import Post from "@/Models/Post";
 
 if (!AppSettings.hasKey("Loggedin")){
   AppSettings.setBoolean("Loggedin", false);
@@ -61,6 +63,24 @@ export default class Home extends Vue {
   msg: string = "Home";
   loggedIn: boolean = AppSettings.getBoolean("Loggedin");
   accountaanvragen: boolean = false;
+
+  beforeMount(){
+    try {
+        if (FileExist("Models", "PostJSON.json") != true){
+          let basicPost = new Post("0", 2, "Hajar Akkouh" ,"~/Images/welcome.png" , "Welkom bij de Team Phidippides Chat App!", [])
+          let postArray: Array<Post> = [basicPost];      
+          let postString: string = JSON.stringify(postArray)
+          WriteFile(postString, "Models", "PostJSON.json");
+          console.log("post as a string: " + postString)
+          console.log(ReadFileSync("Models", "PostJSON.json"));
+          console.log("File not found, created new one!");
+          console.log(JSON.parse(ReadFileSync("Models", "PostJSON.json")));
+        }
+      }
+      catch (error){
+      console.log("an error has occured") 
+      }
+  }
 
   profilepicture(){
     return AppSettings.getString('LoggedinPFPUrl');

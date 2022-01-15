@@ -9,7 +9,7 @@
           <Button class="-outline -rounded-sm" text="Chats" width="20%" height="5%" fontsize="20" padding="5" @tap="goToChats()"></Button>
           <GridLayout row="0">
             <Label
-              text="Goedendag"
+              :text="[ 'Goedendag ' + this.currentUser.username]"
               fontSize="25"
               horizontalAlignment="center"
             ></Label>
@@ -17,12 +17,14 @@
           <GridLayout
             v-for="post in posts"
             :key="post.id"
-            rows="*, auto, auto, *"
+            rows="*, auto, auto, auto, *"
             class="post-container"
           >
-            <!-- Username / Header / ? -->
-            <GridLayout row="0" class="post-username">
+            <!-- Username -->
+            <GridLayout columns="8*, *" row="0" class="post-username">
               <Label :text="post.username"></Label>
+            <!-- Remove Post Button -->
+              <Image  col="2" src="~/Images/remove_btn.png" class="post-remove-button"> </Image>
             </GridLayout>
             <!-- Image -->
             <GridLayout row="1" class="post-body">
@@ -30,7 +32,7 @@
             </GridLayout>
             <!-- Footer van posts -->
             <GridLayout row="3" class="post-footer">
-              <Label :text="post.footer" textWrap="true"></Label>
+              <Label :text="[post.username + ': ' + post.footer]" textWrap="true"></Label>
             </GridLayout>
             <!-- Heart -->
             <GridLayout columns="*, 4*" row="2" class="post-heart" width="100%" @tap="likePost($event, post)">
@@ -47,7 +49,7 @@
               />
             </GridLayout>
             <!-- Comments preview (take first/last/most liked / ?) -->
-            <StackLayout row="3" class="post-footer">
+            <StackLayout row="4" class="post-footer">
               <StackLayout
                 @tap="openComments($event, post)"
                 class="post-comments"
@@ -61,20 +63,21 @@
               </StackLayout>
             </StackLayout>
           </GridLayout>
+          <Label height=70> </Label>
         </StackLayout>
       </ScrollView>
     </GridLayout>
-    <GridLayout columns="5*, 5*, 2*" rows="2*, 12*, 1*" height="94%" width="100%">
-      <!-- <Image
-      src="~/Images/add_btn.png"
-      class="button-image"
-      horizontalAlignment="right"
-      marginBottom="50"
-      row="2"
-      col="2"
-      @tap="MakePost()"
+    <GridLayout columns="5*, 4*, 2*" rows="2*, 12*, 1*" height="94%" width="100%">
+      <Image
+        src="~/Images/add_btn.png"
+        class="button-image"
+        horizontalAlignment="right"
+        marginBottom="50"
+        row="2"
+        col="2"
+        @tap="MakePost()"
       >
-      </Image> -->
+      </Image>
       </GridLayout> 
     <GridLayout>
   </GridLayout>
@@ -115,15 +118,32 @@ export default class Posts extends Vue {
   currentUser!: User;
   JSONString: string = "";
   JSONStringFile: string = "";
+  posts: Array<any> = [];
+
   beforeMount() 
   {
-    var FileContent = ReadFile("Models", "PostJSON.json");
-    FileContent = "{" + FileContent + "}";
-    let JSONFileContent = JSON.parse(FileContent);
-    this.currentUser =  new UserProfile(JSONFileContent.username, JSONFileContent.pfp_url, JSONFileContent.role, JSONFileContent.email, JSONFileContent.description);
-    this.currentUser = new UserProfile(AppSettings.getString("LoggedinName"), AppSettings.getString("LoggedinPFPUrl"),
-    AppSettings.getString("LoggedinRole"), AppSettings.getString("LoggedinEmail"), AppSettings.getString("LoggedinDescription"));    
+    // Hier lees ik de Post.jason voor de posts :) 
+    try{
+      if (FileExist("Models", "PostJSON.json") == true){
+        var FileContent = ReadFileSync("Models", "PostJSON.json");
+        var JSONFileContent = JSON.parse(FileContent);
+        var post;
+        for (post in JSONFileContent){
+          this.posts.push(JSONFileContent[post]);
+          console.log(this.posts)
+        }
+        console.log("Test: " + JSONFileContent)
+      }
     }
+    catch (error)
+    { 
+      console.log("get rekt")
+    }
+
+    // beforemount voor de user: dit is nodig om posts te kunnen liken
+    this.currentUser = new User(AppSettings.getString("LoggedinName"), AppSettings.getString("LoggedinPFPUrl"));   
+    console.log(this.currentUser.username);
+  }
 
   hasLiked(post: Post) {
     if (post.likes.indexOf(this.currentUser.username) != -1){
@@ -161,7 +181,7 @@ export default class Posts extends Vue {
   goToChats(){
     try {
       if (FileExist("Models", "ChatsJSON.json") != true){
-        let newMessage = new Message("FirstMessage", 5, null, null, "Welkom bij de team Phidippides app! \n heb je vragen of opmerkingen? \n Neem dan contact op met de berheerder.", AppSettings.getString("LoggedinID"), "ChatBot",)
+        let newMessage = new Message("FirstMessage", 5, null, null, "Welkom bij de team Phidippides app! \n heb je vragen of opmerkingen? \n Neem dan contact op met de beheerder.", AppSettings.getString("LoggedinID"), "ChatBot",)
         let newchat = new Chat("FirstChat", "ChatBot", AppSettings.getString("LoggedinID"), "Team Phidippides", "https://i.ibb.co/vQDQgX3/ic-launcher.png", [newMessage], "Welkom bij de team Phidippides app! \n heb je vragen of opmerkingen? \n Neem dan contact op met de berheerder.", "nu")
         let ChatsArray: Array<any> = ["FirstChat.json"];
         this.JSONString = JSON.stringify(newchat)
@@ -181,162 +201,6 @@ export default class Posts extends Vue {
       fullscreen: true,
     });
   }
-  
-  posts = [
-    {
-      id: "0",
-      type: 2,
-      mentions: [],
-      image: "https://rotterdamsedromers.nl/wp-content/uploads/2020/10/WhatsApp-Image-2020-10-20-at-15.52.01-1536x778.jpeg",
-      footer:
-        "De toekomst is groen en de toekomst is elektrisch. De kaarten van de duurzame economie worden op dit moment geschud en een sterk imago met aansluitende strategie gaat helpen om de beste kaarten naar je regio toe te trekken. ",
-      timestamp: "11/10/2021/2/44",
-      likes: [],
-      username: "TeamPhidippides",
-      comments: [
-        {
-          id: "0-0",
-          type: "c1",
-          mentions: [],
-          username: "TeamPhidippides",
-          comment: "Wat vinden jullie er van 👀",
-          likes: 580,
-          timestamp: "11/10/2021/2/44",
-          comments: [
-            {
-              id: "0-0-0",
-              type: "c2",
-              mentions: [],
-              username: "Klaas",
-              comment: "Gaaf!",
-              likes: 16,
-              timestamp: "11/10/2021/2/44"
-            }
-          ]
-        },
-        {
-          id: "0-1",
-          type: "c1",
-          mentions: [],
-          username: "Keesje",
-          comment: "In mijn tijd reden ze nog gewoon op brandstof....",
-          likes: 0,
-          timestamp: "11/10/2021/2/44",
-          comments: [
-            {
-              id: "0-1-0",
-              type: "c2",
-              mentions: ["Keesje"],
-              username: "Klaas",
-              comment: "Okay leuk @Keesje ?",
-              likes: 5,
-              timestamp: "12/10/2021/22/44"
-            },
-            {
-              id: "0-1-1",
-              type: "c2",
-              mentions: ["Klaas"],
-              username: "Keesje",
-              comment: "Kom dan @Klaas",
-              likes: 30,
-              timestamp: "12/10/2021/22/46"
-            },
-            {
-              id: "0-1-2",
-              type: "c2",
-              mentions: ["Keesje"],
-              username: "Klaas",
-              comment: "Waar dan @Keesje",
-              likes: 30,
-              timestamp: "12/10/2021/22/47"
-            }
-          ]
-        },
-        {
-          id: "0-2",
-          type: "c1",
-          mentions: [],
-          username: "Klaas",
-          comment: "Vrrrrrrrooom",
-          likes: 112,
-          timestamp: "11/10/2021/22/58",
-          comments: []
-        },
-        {
-          id: "0-3",
-          type: "c1",
-          mentions: [],
-          username: "Klaas",
-          comment: "Lorem ipsum dorem et amit",
-          likes: 0,
-          timestamp: "11/10/2021/22/58",
-          comments: []
-        }
-      ]
-    },
-    {
-      id: "1",
-      type: 2,
-      mentions: [],
-      image: "https://www.rdmcoe.nl/wp-content/uploads/2020/03/Triga-web-1536x864.jpg",
-      footer:
-        "We love to see it happen <3 #TeamPhiddipes #Dreams",
-      timestamp: "11/10/2021/2/44",
-      likes: [],
-      username: "TeamPhidippides",
-      comments: [
-        {
-          id: "1-0",
-          type: "c1",
-          mentions: [],
-          username: "TeamPhidippides",
-          comment: "Wat vinden jullie er van 👀",
-          likes: 580,
-          timestamp: "17/11/2021/1/01",
-          comments: [
-            {
-              id: "1-0-0",
-              type: "c2",
-              mentions: [],
-              username: "Sofia",
-              comment: "I love it :D!",
-              likes: 16,
-              timestamp: "17/11/2021/1/01"
-            }
-          ]
-        }, 
-          {
-           id: "1-1",
-           type: "c1",
-           mentions: [],
-           username: "Tim",
-           comment: "Wat cool, ik duim voor jullie vandaag!",
-           likes: 165,
-           timestap: "17/11/2021/1/45",
-           comments: [
-            {
-              id: "1-1-1",
-              type: "c2",
-              mentions: [],
-              username: "Roos",
-              comment: "Wij ook hoor!",
-              likes: 25,
-              timestamp: "17/11/2021/1/50"     
-            }        
-           ]
-          },
-        {
-          id: "1-2",
-            type: "c1",
-            mentions: [],
-            username: "Kimberley",
-            comment: "VEEL SUCCES !!!",
-            likes: 2,
-            timestamp: "18/11/2021/1/53"
-        }
-      ]
-    }
-  ];
 
   openComments($event: TapGestureEventData, post: Post) {
     console.log(post.type);
@@ -358,6 +222,10 @@ export default class Posts extends Vue {
   @include colorize($color: accent);
 }
 
+.post-remove-button{
+  height: 25;
+  width: 25;
+}
 
 .posts-container{
   background-color: rgb(239, 239, 239);
@@ -366,7 +234,7 @@ export default class Posts extends Vue {
 .post-image{
   background-color: white;
   max-height: 1500px;
-  max-width: 1800px
+  max-width: 1400px
 }
 
 .button-image{
@@ -386,6 +254,8 @@ export default class Posts extends Vue {
 }
 
 .post-body{
+  border-color:rgb(239,239,239);
+  border-width: 2px;
   image
   {
     width: auto;
@@ -440,10 +310,9 @@ export default class Posts extends Vue {
 }
 
 .post-footer {
-  font-size: 16;
+  font-size: 14;
   background-color: rgb(255, 255, 255);
-  border-bottom-right-radius: 10;
-  border-bottom-left-radius: 10;
+  padding: 10;
   label {
     color: black;
   }
