@@ -2,10 +2,15 @@
     <AbsoluteLayout>
         <!-- text inputs field for user & view for message -->
         <!-- TODO: create function to check if user exists -->
-        <Gridlayout rows="1*, 3*, 1*, 7*" marginTop="10%" height="100%" width="100%">
-            <TextField row="0" class="textfield" returnKeyType="next" autocapitalizationType="none" ref="Name" hint="Gebruikersnaam"></TextField>
-            <TextView row="1" class="textfield" ref="Message" hint="Bericht" returnKeyType="done"></TextView>
-            <Button row="2" class="verzendbutton" text="Verzenden" @tap="openNewChat($event)"></Button>
+        <Gridlayout rows="1*, auto, 1*, 1*, 7*" marginTop="10%" height="100%" width="100%">
+            <TextField row="0" class="textfield" returnKeyType="next" autocapitalizationType="none" ref="Name" hint="Gebruikersnaam" @textChange="changeText"></TextField>
+            <ScrollView class="textfield" row="1" ref="scrollView" width="92%">
+                <StackLayout width="92%">
+                    <Label v-for="suggestion in suggestions" :key="suggestion" :text="suggestion"/>
+                </StackLayout>
+            </ScrollView>
+            <TextField row="2" class="textfield" ref="Message" hint="Bericht" returnKeyType="done"></TextField>
+            <Button row="3" class="verzendbutton" text="Verzenden" @tap="openNewChat($event)"></Button>
         </GridLayout>
         <!-- actionbars top/bottom -->
         <GridLayout rows="2*, 12*, *" height="100%" width=100%>
@@ -28,7 +33,7 @@
 <script lang="ts">
 import Vue from "nativescript-vue";
 import { Component, Prop } from "vue-property-decorator";
-import { Button, EventData, GridLayout, ImageAsset, ScrollView, TapGestureEventData, TextField, TextView } from "@nativescript/core";
+import { Button, EventData, GridLayout, ImageAsset, ScrollView, TapGestureEventData, TextField, TextView, SearchBar } from "@nativescript/core";
 import ActionBarTop from "./ActionBars/ActionBarTop.vue";
 import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
 import * as AppSettings from '@nativescript/core/application-settings';
@@ -37,6 +42,7 @@ import Chat from "@/Models/Chat";
 import Chats from "@/components/Chats.vue";
 import ChatDisplay from "./ChatDisplay.vue";
 import {WriteFile, ReadFile, ReadFileSync} from "@/Models/FileSystemFunctions";
+import {Levenshtein} from "@/Models/Levenshtein";
 
 @Component({
     name: "ChatNew",
@@ -52,6 +58,7 @@ export default class ChatNew extends Vue {
     JSONStringFile: string = "";
     PushChat!: Chat;
     @Prop() onAddNewChat!: any;
+    suggestions: Array<string> = [];
     // function to go back to previous screen
     goBack() {
         if (this.$modal) this.$modal.close();
@@ -98,6 +105,27 @@ export default class ChatNew extends Vue {
     }
     getRandomInt(max: number) {
         return Math.floor(Math.random() * max);
+    }
+    changeText(){
+        let rawName: TextField = (this.$refs.Name as any).nativeView as TextField;
+        let Name: string = rawName.text.toLowerCase();
+        let Names!: string;
+        console.log(rawName.text)
+        this.suggestions = []
+
+        let names = ["Herman van Vliet", "Anne van Brussel", "Anne-li Slokkers", "Hajar Akkouh", "Herman Akkouh"];
+
+        if(Name.length != 0){
+            for(Names in names){
+                console.log(names[Names].toLowerCase())
+                console.log(Levenshtein(Name, names[Names].toLowerCase()))
+                if(Levenshtein(Name.trim(), names[Names].toLowerCase().trim()) < (Name.length/2) || (names[Names].toLowerCase().trim().includes(Name.toLowerCase().trim())) && (Name.length > 2)){
+                    this.suggestions.push(names[Names])
+                    console.log(`these are the suggestions 1: ${this.suggestions}`)
+                }
+            }
+        }
+        console.log(`these are the suggestions 2: ${this.suggestions}`)
     }
 }
 </script>
