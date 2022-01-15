@@ -2,7 +2,7 @@
     <AbsoluteLayout>
         <!-- text inputs field for user & view for message -->
         <!-- TODO: create function to check if user exists -->
-        <Gridlayout rows="1*, auto, 1*, 1*, 7*" marginTop="10%" height="100%" width="100%">
+        <Gridlayout rows="1*, auto, 1*, 1*, 7*" marginTop="10%" height="100%" width="100%" class="backgroundChats">
             <TextField row="0" class="textfield" returnKeyType="next" autocapitalizationType="none" ref="Name" hint="Gebruikersnaam" @textChange="changeText"></TextField>
             <ScrollView class="textfield" row="1" ref="scrollView" width="92%">
                 <StackLayout width="92%">
@@ -153,5 +153,8 @@ export default class ChatNew extends Vue {
 .verzendbutton:active{
     color:white;
     background-color: #a00c36;
+}
+.backgroundChats {
+  background-color: rgb(239, 239, 239);
 }
 </style>

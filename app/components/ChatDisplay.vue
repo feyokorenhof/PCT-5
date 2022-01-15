@@ -2,7 +2,7 @@
   <Page actionBarHidden="true">
     <!-- absolute layout for custom actiobar -->
     <AbsoluteLayout>
-      <ScrollView width="100%" height="100%" marginTop="6%" ref="scrollView"> 
+      <ScrollView width="100%" height="100%" marginTop="6%" ref="scrollView" class="backgroundChats"> 
         <StackLayout>
           <Label height="20"/>
           <GridLayout v-for="msg in chat.messages" :key="msg.message_id">
@@ -155,5 +155,8 @@ export default class ChatDisplay extends Vue {
 }
 .left {
   background-color: #615a5c;
+}
+.backgroundChats {
+  background-color: rgb(239, 239, 239);
 }
 </style>

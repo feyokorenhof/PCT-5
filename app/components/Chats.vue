@@ -3,7 +3,7 @@
     <!-- absolute layout for custom actionbar -->
     <AbsoluteLayout>
       <!-- scroll for big amount of chats -->
-      <ScrollView width="100%" height="100%" marginBottom="10%">
+      <ScrollView width="100%" height="100%" marginBottom="10%" class="backgroundChats">
         <!-- start stacklayout with starter so chats don't fall behind actionbar -->
         <StackLayout> 
           <!-- create a frontend for every chat -->
@@ -12,7 +12,7 @@
             v-for="chat in this.chats"
             :key="chat.chat_id"
             columns="3*, 2*, 4*, 4*, 2*"
-            class="chat-container"
+            class="chat-container chatLabel"
             @tap="goChat($event, chat)"
           >
             <!-- profile picture -->
@@ -146,7 +146,7 @@ export default class Chats extends Vue {
   //background-color: #FFFFFF; // slightlylighter
   //background-color: rgb(102, 101, 101); // og
   //background-color: rgb(61, 60, 60); // instagram
-  margin-bottom: 5;
+  // margin-bottom: 5;
   padding: 10;
 }
 .chat-profile-pic {
@@ -168,5 +168,11 @@ export default class Chats extends Vue {
   color: black;
   font-style: italic;
   font-size: 14em;
+}
+.backgroundChats {
+  background-color: rgb(239, 239, 239);
+}
+.chatLabel {
+    background-color: white;
 }
 </style>
