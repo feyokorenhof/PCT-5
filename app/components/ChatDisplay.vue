@@ -55,6 +55,7 @@ import { Button, EventData, GridLayout, ImageAsset, ScrollView, TapGestureEventD
 import { Screen } from "@nativescript/core/platform";
 import Message from "@/Models/Message";
 import Chat from "@/Models/Chat";
+import {WriteFile, ReadFile, ReadFileSync} from "@/Models/FileSystemFunctions";
 @Component({
   name: "ChatDisplay",
   components: {
@@ -63,6 +64,7 @@ import Chat from "@/Models/Chat";
   }
 })
 export default class ChatDisplay extends Vue {
+  JSONString: string = "";
   @Prop() chat!: Chat;
   get GetSH() {
     return Screen.mainScreen.heightDIPs;
@@ -86,6 +88,7 @@ export default class ChatDisplay extends Vue {
   sendMsg(event: TapGestureEventData) {
     let rawtxt: TextField = (this.$refs.Message as any).nativeView as TextField;
     let txt = rawtxt.text.trim()
+    let JSONChat: Chat;
     if (txt !== null && txt !== "") {
         this.chat.messages.push({
         message_id: `${this.getRandomInt(99999999)}`,
@@ -96,6 +99,20 @@ export default class ChatDisplay extends Vue {
         sender_id: this.chat.sender_id,
         receiver_id: this.chat.receiver_id
       })
+      
+      JSONChat = JSON.parse(ReadFileSync("Models", `${this.chat.chat_id}.json`));
+      JSONChat.messages.push({
+        message_id: `${this.getRandomInt(99999999)}`,
+        type: 5,
+        image: null,
+        video: null,
+        text: txt,
+        sender_id: this.chat.sender_id,
+        receiver_id: this.chat.receiver_id
+      })
+      this.JSONString = JSON.stringify(JSONChat)
+      WriteFile(this.JSONString, "Models", `${this.chat.chat_id}.json`);
+
       rawtxt.text = ""
     }
     rawtxt.dismissSoftInput();
