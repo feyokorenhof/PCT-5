@@ -43,6 +43,7 @@ import Chats from "@/components/Chats.vue";
 import ChatDisplay from "./ChatDisplay.vue";
 import {WriteFile, ReadFile, ReadFileSync} from "@/Models/FileSystemFunctions";
 import {Levenshtein} from "@/Models/Levenshtein";
+import newPerson from "~/Models/newPerson";
 
 @Component({
     name: "ChatNew",
@@ -59,6 +60,7 @@ export default class ChatNew extends Vue {
     PushChat!: Chat;
     @Prop() onAddNewChat!: any;
     suggestions: Array<string> = [];
+    users: Array<string> = [];
     // function to go back to previous screen
     goBack() {
         if (this.$modal) this.$modal.close();
@@ -106,6 +108,16 @@ export default class ChatNew extends Vue {
     getRandomInt(max: number) {
         return Math.floor(Math.random() * max);
     }
+    beforeMount() {
+        var file;
+        var FileContentChats = JSON.parse(ReadFileSync("Models", "UsersListJSON.json"))
+        console.log(FileContentChats)
+        for (file in FileContentChats) {
+            console.log(file)
+            console.log(`${FileContentChats[file].username}`)
+            this.users.push(`${FileContentChats[file].username}`)
+        }
+    }
     changeText(){
         let rawName: TextField = (this.$refs.Name as any).nativeView as TextField;
         let Name: string = rawName.text.toLowerCase();
@@ -113,7 +125,7 @@ export default class ChatNew extends Vue {
         console.log(rawName.text)
         this.suggestions = []
 
-        let names = ["Herman van Vliet", "Anne van Brussel", "Anne-li Slokkers", "Hajar Akkouh", "Herman Akkouh"];
+        let names = this.users;
 
         if(Name.length != 0){
             for(Names in names){
