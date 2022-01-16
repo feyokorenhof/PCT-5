@@ -11,7 +11,8 @@
         <TextField returnKeyType="next" autocapitalizationType="none" class="nom" ref="Naam" hint="Gebruikersnaam of e-mailadres"></TextField>
         <TextField returnKeyType="done" autocapitalizationType="none" class="nom" ref="Wachtwoord" hint="Wachtwoord" secure="true" @returnPress="goToHome"></TextField>
       </StackLayout>
-      <Button class="loginbutton" text="Inloggen" @tap="goToHome"></Button>
+        <Button id="loginbutton2" class="loginbutton" text="Inloggen" @tap="goToHome"></Button>
+        <Button id="loginbutton" class="loginbutton2" text="Registreren" @tap="goToAccount"></Button>
       <Label textAlignment="center" @tap="onLinkTap($event)">
         <FormattedString linkTap="goToHome">
           <Label text="Geen account? Klik dan "/>
@@ -60,6 +61,10 @@
     onLinkTap(args: TapGestureEventData) {
       let button: Button = args.object as Button;
       this.$emit("accountAangevraagd");
+    }
+
+    goToAccount(){
+      this.$emit("accountAangemaakt");
     }
 
     goToHome(args: TapGestureEventData) {

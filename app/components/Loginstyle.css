@@ -12,7 +12,7 @@
 .loginbutton{
     color:rgb(255, 255, 255);
     border-radius: 75%;
-    background-color: rgb(57, 55, 121);
+    background-color: rgb(84, 93, 162);
     font-family: Arial;
     font-size: 30%;
     font-weight:bold;
@@ -23,7 +23,25 @@
 
 .loginbutton:active{
     color:white;
-    background-color: rgb(21, 18, 110);
+    background-color: rgb(48, 56, 151);
+    box-shadow: 6px 6px 6px rgba(0,0,0,200);
+}
+
+.loginbutton2{
+    color:rgb(255, 255, 255);
+    border-radius: 75%;
+    background-color: rgb(160, 78, 95);
+    font-family: Arial;
+    font-size: 28%;
+    font-weight:bold;
+    width: 45%;
+    padding: 5;
+    box-shadow: 6px 6px 6px rgba(0,0,0,155);
+}
+
+.loginbutton2:active{
+    color:white;
+    background-color: rgb(124, 41, 84);
     box-shadow: 6px 6px 6px rgba(0,0,0,200);
 }
 

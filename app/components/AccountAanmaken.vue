@@ -2,13 +2,13 @@
 <AbsoluteLayout>
   <GridLayout rows="4*, 1*, 8*" height="100%" width="100%">
     <Label ref="Gelukttext" marginTop="30" class="accounttext" text="Gelukt!" fontSize=35em></Label>
-    <Label ref="accaantextref" marginTop="30" class="accaantext" text="Account Aanvragen" fontSize=25em></Label>
+    <Label ref="accaantextref" marginTop="30" class="accaantext" text="Account Aanmaken" fontSize=25em></Label>
     <Label marginTop="85" class="verplicht" ref="badlog2" text="De invulvakken met een ster '*' zijn verplicht"></Label>
     <TextField autocapitalizationType="none" class="nom2" height="7%" marginTop="140" ref="Voornaam" hint="Voornaam *"></TextField>
     <TextField autocapitalizationType="none" class="nom2" height="7%" marginTop="230" ref="Achternaam" hint="Achternaam *"></TextField>
     <TextField autocapitalizationType="none" class="nom2" height="7%" marginTop="320" ref="Emailadres" hint="E-mailadres *"></TextField>
     <TextField autocapitalizationType="none" class="nom2" height="7%" marginTop="410" ref="Bedrijfsnaam" hint="Student, sponsor, etc. *"></TextField>
-    <Button class="accaanbutton" marginTop="560" text="Account Aanvragen" @tap="onLinkTap"></Button>
+    <Button class="accaanbutton" marginTop="560" text="Account Aanmaken" @tap="onLinkTap"></Button>
   </GridLayout>
   <GridLayout>
   <Label ref="accanngetext1" marginTop="9999999" class="accanngetext" text="U kunt nu door naar het inlogscherm" fontSize=15em></Label>

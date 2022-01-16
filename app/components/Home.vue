@@ -3,12 +3,13 @@
     <AbsoluteLayout>
     <GridLayout rows="2*, 12*, *" height="100%" width=100%>
       
-      <Login row="1" v-show="!loggedIn&&!accountaanvragen" @onLogin="login" @accountAangevraagd="acaangevraagd"/>
+      <Login row="1" v-show="!loggedIn&&!accountaanvragen&&!accountaanmaken" @onLogin="login" @accountAangemaakt="accountaangemaaktmethod" @accountAangevraagd="acaangevraagd"/>
       <AccountAanvragen row="1" v-show="accountaanvragen" @accountAangevraagd="acaangevraagd"/>
+      <AccountAanmaken row="1" v-show="accountaanmaken" @accountAangemaakt="accountaangemaaktmethod"/>
       
     </GridLayout>
     <GridLayout height="100%" width=100%>
-      <Posts row="1" v-show="loggedIn&&!accountaanvragen" @onLogin="login"/>
+      <Posts row="1" v-show="loggedIn&&!accountaanvragen&&!accountaanmaken" @onLogin="login"/>
     </GridLayout>
     <GridLayout rows="2*, 12*, *" height="100%" width=100%>
       <ActionBarTop row="0" v-show="loggedIn"/>
@@ -17,6 +18,7 @@
     </GridLayout>
     <GridLayout columns="60, 410, 60" rows="50, 720, 60">
         <Image v-show="accountaanvragen" src="~/Images/back_btn.png" row="0" col="0" marginTop="10" @tap="acaangevraagd" ></Image>
+        <Image v-show="accountaanmaken" src="~/Images/back_btn.png" row="0" col="0" marginTop="10" @tap="accountaangemaaktmethod" ></Image>
       </GridLayout>
     <GridLayout columns="60, 410, 60" rows="50, 720, 60">
       <Button v-show="loggedIn" class="logoutbutton" text="Uitloggen" @tap="login"></Button>
@@ -34,6 +36,7 @@ import ActionBarTopLogIn from "./ActionBars/ActionBarTopLogIn.vue";
 import ActionBarBottom from "./ActionBars/ActionBarBottom.vue";
 import Login from "./Login.vue";
 import Posts from "./Posts.vue";
+import AccountAanmaken from "./AccountAanmaken.vue";
 import AccountAanvragen from "./AccountAanvragen.vue";
 import * as AppSettings from '@nativescript/core/application-settings';
 import {WriteFile, ReadFileSync, FileExist} from "@/Models/FileSystemFunctions";
@@ -76,13 +79,15 @@ if (FileExist("Models", "UsersListJSON.json") != true){
     Login,
     Posts,
     AccountAanvragen,
-    ActionBarTopLogIn
+    ActionBarTopLogIn,
+    AccountAanmaken
   }
 })
 export default class Home extends Vue {
   msg: string = "Home";
   loggedIn: boolean = AppSettings.getBoolean("Loggedin");
   accountaanvragen: boolean = false;
+  accountaanmaken: boolean = false;
 
   beforeMount(){
     try {
@@ -126,6 +131,9 @@ export default class Home extends Vue {
   }
   acaangevraagd(){
     this.accountaanvragen = !this.accountaanvragen;
+  }
+  accountaangemaaktmethod(){
+    this.accountaanmaken = !this.accountaanmaken;
   }
 }
 </script>
