@@ -26,25 +26,36 @@
   import { Button, Color, EventData, Span, TapGestureEventData, TextField } from "@nativescript/core";
   import Vue from "nativescript-vue";
   import { Component, Prop } from "vue-property-decorator";
-  import newPerson from "@/Models/newPerson";
   import "./Loginstyle.css";
-
   import * as AppSettings from '@nativescript/core/application-settings';
   import UserProfile from "~/Models/UserProfile";
-  import {WriteFile, ReadFile, ReadFileSync} from "@/Models/FileSystemFunctions";
-
-  let users = [new newPerson("user1",
-      "https://yt3.ggpht.com/OHpZx8wQoQZiu45LMfcSKvDBO6gfR5_1ro_ZbS3xVpcRIu4Zqy_uHoWKpEdxTUD_Spq6zck0=s900-c-k-c0x00ffffff-no-rj",
-      "Rick Slingerland", "kotorem.sama@gmail.com", "password1", "useless thing here", "Student", "U1"),
-      new newPerson("user2", "https://i.pinimg.com/originals/d1/1e/20/d11e20d44501e1a59439b5344e07f5d7.jpg",
-      "Jeremy Jonker", "test.studenten@gmail.com", "password2", "This can not continue", "Student", "U2")];
-
+  import {WriteFile, ReadFile, ReadFileSync, FileExist} from "@/Models/FileSystemFunctions";
 
   @Component({ name: "Login", components: {}})
   
   export default class Login extends Vue {
     msg: string = "Login";
     public JSONString = "";
+    users: Array<any> = [];
+
+    usersuitjason(){
+      try{
+        if (FileExist("Models", "UsersListJSON.json") == true){
+          var FileContent = ReadFileSync("Models", "UsersListJSON.json");
+          var JSONFileContent = JSON.parse(FileContent);
+          var post;
+          for (post in JSONFileContent){
+            this.users.push(JSONFileContent[post]);
+            console.log(this.users)
+          }
+          console.log("Test: " + JSONFileContent)
+        }
+      }
+      catch (error)
+      { 
+        console.log(error)
+      }
+    }
 
     onLinkTap(args: TapGestureEventData) {
       let button: Button = args.object as Button;
@@ -58,26 +69,26 @@
       let loggedin: boolean = false;
       let ProfielStuff: UserProfile;
       let blt = (this.$refs.badlog as any).nativeView;
-      
+      this.usersuitjason()
 
-      for (var index in users){
+      for (var index in this.users){
         if (loggedin == false){
-          if ((users[index].username.toLowerCase() == gebruikersnaam.text.toLowerCase() || users[index].email.toLowerCase() == gebruikersnaam.text.toLowerCase()) && users[index].password == wachtwoord.text){
+          if ((this.users[index].username.toLowerCase() == gebruikersnaam.text.toLowerCase() || this.users[index].email.toLowerCase() == gebruikersnaam.text.toLowerCase()) && this.users[index].password == wachtwoord.text){
             gebruikersnaam.className = "nom";
             wachtwoord.className = "nom";
             blt.className = "badlogin";
 
-            AppSettings.setString("LoggedinUsername", users[index].username);
-            AppSettings.setString("LoggedinPFPUrl", users[index].pfp_url);
-            AppSettings.setString("LoggedinName", users[index].name);
-            AppSettings.setString("LoggedinEmail", users[index].email);
-            AppSettings.setString("LoggedinPassword", users[index].password);
-            AppSettings.setString("LoggedinDescription", users[index].description);
-            AppSettings.setString("LoggedinRole", users[index].role);
-            AppSettings.setString("LoggedinID", users[index].ID);
+            AppSettings.setString("LoggedinUsername", this.users[index].username);
+            AppSettings.setString("LoggedinPFPUrl", this.users[index].pfp_url);
+            AppSettings.setString("LoggedinName", this.users[index].name);
+            AppSettings.setString("LoggedinEmail", this.users[index].email);
+            AppSettings.setString("LoggedinPassword", this.users[index].password);
+            AppSettings.setString("LoggedinDescription", this.users[index].description);
+            AppSettings.setString("LoggedinRole", this.users[index].role);
+            AppSettings.setString("LoggedinID", this.users[index].ID);
 
             //User information to JSON string
-            ProfielStuff = new UserProfile(users[index].name, users[index].pfp_url, users[index].role, users[index].email, users[index].description);
+            ProfielStuff = new UserProfile(this.users[index].name, this.users[index].pfp_url, this.users[index].role, this.users[index].email, this.users[index].description);
             this.JSONString = `${JSON.stringify(ProfielStuff)}`;
             //JSON.parse(this.JSONString)
             console.log(this.JSONString);
